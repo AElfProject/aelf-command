@@ -1,0 +1,14 @@
+log/**
+node_modules/**
+test.js
+error.json
+config.js
+config/config.local.js
+config/config.js
+**.bak
+log.js
+.idea/
+.vscode/
+.node-xmlhttprequest-**
+.DS_Store
+package-lock.json
