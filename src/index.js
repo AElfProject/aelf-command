@@ -11,7 +11,7 @@ const generateKeyStore = (password, dir) => {
   dirname = dirname ? path.resolve(dirname) : './';
   const filePath = path.resolve(dirname, `${wallet.address}.json`);
   fs.writeFileSync(filePath, JSON.stringify(store, null, 4));
-  wallet.publicKey = wallet.keyPair.getPublic();
+  wallet.publicKey = wallet.keyPair.getPublic().encode('hex');
   console.log('Your wallet info is :');
   console.log(`Mnemonic            : ${wallet.mnemonic}`);
   console.log(`Private Key         : ${wallet.privateKey}`);
