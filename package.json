@@ -1,20 +1,96 @@
 {
   "name": "aelf-command",
   "version": "0.0.3",
-  "description": "",
+  "description": "A CLI tools for AElf",
   "main": "src/index.js",
-  "scripts": {},
+  "scripts": {
+    "commit": "git-cz",
+    "lint": "eslint src",
+    "release": "standard-version"
+  },
+  "preferGlobal": true,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/AElfProject/aelf-command.git"
   },
-  "author": "Atom Yang <atom.yang@hoopox.com>",
+  "author": "Atom Yang <atom.yang@aelf.io>",
+  "bin": {
+    "aelf-command": "./bin/aelf-command.js"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/AElfProject/aelf-command/issues"
   },
   "homepage": "https://github.com/AElfProject/aelf-command#readme",
+  "devEngines": {
+    "node": "10.x || 11.x || 12.x"
+  },
+  "files": [
+    "bin",
+    "src",
+    "README.md",
+    "yarn.lock"
+  ],
+  "engines": {
+    "node": ">=10.5.0"
+  },
+  "engineStrict": true,
   "dependencies": {
-    "aelf-sdk": "^3.2.11"
+    "aelf-sdk": "^3.2.12",
+    "async-validator": "^3.0.3",
+    "boxen": "^4.1.0",
+    "camelcase": "^5.3.1",
+    "chalk": "^2.4.2",
+    "columnify": "^1.5.4",
+    "commander": "^3.0.0",
+    "cross-env": "^5.2.0",
+    "glob": "^7.1.4",
+    "inquirer": "^6.5.1",
+    "mkdirp": "^0.5.1",
+    "ora": "^3.4.0",
+    "prompts": "^2.2.1",
+    "rimraf": "^2.6.3",
+    "shelljs": "^0.8.3",
+    "yargs": "^13.3.0"
+  },
+  "devDependencies": {
+    "commitizen": "^4.0.3",
+    "cz-conventional-changelog": "^3.0.2",
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jest": "^22.15.0",
+    "git-cz": "^3.2.1",
+    "husky": "^3.0.3",
+    "jest": "^24.8.0",
+    "lint-staged": "^9.2.1",
+    "standard-version": "^7.0.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "node scripts/verify-commit-msg.js"
+    }
+  },
+  "keywords": [
+    "AElf",
+    "aelf",
+    "CLI",
+    "aelf-sdk",
+    "blockchain"
+  ],
+  "lint-staged": {
+    "*.js": "eslint"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.js"
+    ],
+    "testEnvironment": "node"
   }
 }

@@ -1,35 +1,40 @@
-const AElf = require('aelf-sdk');
-const path = require('path');
-const fs = require('fs');
+/**
+ * @file command index
+ * @author atom-yang
+ */
+const commander = require('commander');
+const { execSync } = require('child_process');
+const commands = require('./command/index');
+const RC = require('./rc/index');
+const { version } = require('../package.json');
 
-const keyStore = AElf.wallet.keyStore;
+function init() {
+  commander.version(version, '-v, --version');
+  commander.usage('[command] [options]');
+  commander.option('-e, --endpoint <URI>', 'The URI of an AElf node. Eg: http://127.0.0.1:8000');
+  commander.option('-a, --account <account>', 'The address of AElf wallet');
+  commander.option('-p, --password <password>', 'The password of encrypted keyStore');
+  // eslint-disable-next-line max-len
+  commander.option('-d, --datadir <directory>', 'The directory that contains the AElf related files. Default to be `~/.local/share/aelf`');
+  const rc = new RC();
+  Object.values(commands).forEach(Value => {
+    const command = new Value(rc);
+    command.init(commander);
+  });
+  commander
+    .command('*')
+    .action(() => {
+      // change into help
+      console.log('not a valid command');
+      console.log(execSync('aelf-command -h').toString());
+    });
+  const args = process.env.NODE_ENV === 'test' ? process.env.mockArgs.split(',') : process.argv;
+  commander.parse(args);
+  if (commander.args.length === 0) commander.help();
+}
 
-const generateKeyStore = (password, dir) => {
-  const wallet = AElf.wallet.createNewWallet();
-  const store = keyStore.getKeystore(wallet, password);
-  let dirname = dir ? path.resolve(dir) : process.env.AELF_CLI_DATADIR;
-  dirname = dirname ? path.resolve(dirname) : './';
-  const filePath = path.resolve(dirname, `${wallet.address}.json`);
-  fs.writeFileSync(filePath, JSON.stringify(store, null, 4));
-  wallet.publicKey = wallet.keyPair.getPublic().encode('hex');
-  console.log('Your wallet info is :');
-  console.log(`Mnemonic            : ${wallet.mnemonic}`);
-  console.log(`Private Key         : ${wallet.privateKey}`);
-  console.log(`Public Key          : ${wallet.publicKey}`);
-  console.log(`Address             : ${wallet.address}`);
-  return {
-    wallet,
-    keyStore: store
-  };
-};
+function run() {
+  init();
+}
 
-const extractFromKeyStore = (filePath, password) => {
-  const file = filePath ? path.resolve(filePath) : process.env.AELF_CLI_DATADIR;
-  const store = JSON.parse(fs.readFileSync(file).toString());
-  return keyStore.unlockKeystore(store, password);
-};
-
-module.exports = {
-  generateKeyStore,
-  extractFromKeyStore
-};
+module.exports.run = run;
