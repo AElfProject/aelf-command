@@ -345,7 +345,7 @@ aelf-command call WnV9Gv3gioSh3Vgaw8SSB96nV8fWUNxuVozCf6Y14e7RXyGaM GetTokenInfo
   Error: null }
 ```
 
-### get-blk-height get the block height
+### get-blk-height - get the block height
 
 ```bash
 aelf-command get-blk-height
@@ -353,7 +353,7 @@ aelf-command get-blk-height
 > 7902091
 ```
 
-### get-blk-info get the block info by a block height
+### get-blk-info - get the block info by a block height
 
 ```bash
 aelf-command get-blk-info
@@ -384,7 +384,7 @@ aelf-command get-blk-info
       [ 'a365a682caf3b586cbd167b81b167979057246a726c7282530554984ec042625' ] } }
 ```
 
-### console open an interactive console
+### console - open an interactive console
 
 ```bash
 aelf-command console
