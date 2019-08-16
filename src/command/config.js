@@ -10,6 +10,14 @@ const {
   commonGlobalOptionValidatorDesc
 } = require('../utils/constants');
 
+const configCommandValidatorDesc = {
+  ...commonGlobalOptionValidatorDesc,
+  endpoint: {
+    ...commonGlobalOptionValidatorDesc.endpoint,
+    required: false
+  }
+};
+
 class ConfigCommand extends BaseSubCommand {
   constructor(
     rc
@@ -21,7 +29,7 @@ class ConfigCommand extends BaseSubCommand {
       [],
       configCommandUsage,
       rc,
-      commonGlobalOptionValidatorDesc
+      configCommandValidatorDesc
     );
   }
 
