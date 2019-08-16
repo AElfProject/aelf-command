@@ -1,5 +1,13 @@
 # aelf-command
 
+<p align="center">
+  <img alt="Node" src="https://img.shields.io/badge/node->=10.9.0-brightgreen">
+  <img alt="NPM" src="https://img.shields.io/npm/l/aelf-command">
+  <a href="http://commitizen.github.io/cz-cli/">
+    <img alt="Commitizen friendly" src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg">
+  </a>
+</p>
+
 ## Descriptions
 
 _A CLI tools built for AElf_
