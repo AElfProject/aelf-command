@@ -35,12 +35,12 @@ function camelCase(str) {
   return _camelCase(str);
 }
 
-function isHexString(str) {
-  return /^(0x)?[a-f0-9]+$/.test(str.toLowerCase());
+function isAElfContract(str) {
+  return str.trim().toLowerCase().startsWith('aelf.');
 }
 
 module.exports = {
   promisify,
   camelCase,
-  isHexString
+  isAElfContract
 };

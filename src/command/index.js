@@ -11,6 +11,8 @@ const GetTxResultCommand = require('./getTxResult');
 const ConsoleCommand = require('./console');
 const CreateCommand = require('./create');
 const LoadCommand = require('./load');
+const DeployCommand = require('./deploy');
+const ConfigCommand = require('./config');
 
 module.exports = {
   CallCommand,
@@ -20,5 +22,7 @@ module.exports = {
   GetTxResultCommand,
   ConsoleCommand,
   CreateCommand,
-  LoadCommand
+  LoadCommand,
+  DeployCommand,
+  ConfigCommand
 };

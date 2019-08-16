@@ -17,13 +17,13 @@ function getWallet(commandRoot, address, password) {
   const keyStoreFile = path.resolve(commandRoot, `keyStore/${address}.json`);
   const keyStore = JSON.parse(Registry.getFileOrNot(keyStoreFile, '{}').toString());
   if (Object.keys(keyStore).length === 0) {
-    throw new Error('Make sure you have entered the correct account address');
+    throw new Error('Make sure you entered the correct account address');
   }
   try {
     const { privateKey } = AElf.wallet.keyStore.unlockKeystore(keyStore, password);
     return AElf.wallet.getWalletByPrivateKey(privateKey);
   } catch (e) {
-    throw new Error('Make sure you have entered the correct password');
+    throw new Error('Make sure you entered the correct password');
   }
 }
 

@@ -2,6 +2,7 @@
  * @file constants
  * @author atom-yang
  */
+const path = require('path');
 
 const callCommandUsages = [
   '<contractName|contractAddress> <method> <params>',
@@ -92,6 +93,34 @@ const createCommandUsage = [
   ''
 ];
 
+const configCommandParameters = [
+  {
+    type: 'text',
+    name: 'flag',
+    required: true,
+    message: 'Config operation key, must one of set, get, delete, list'
+  },
+  {
+    type: 'text',
+    name: 'key',
+    required: false,
+    message: 'Enter the key of config'
+  },
+  {
+    type: 'text',
+    name: 'value',
+    required: false,
+    message: 'Only necessary for flag <set>'
+  }
+];
+
+const configCommandUsage = [
+  'get <key>',
+  'set <key> <value>',
+  'delete <key>',
+  'list'
+];
+
 const loadCommandParameters = [
   {
     type: 'text',
@@ -113,6 +142,28 @@ const loadCommandParameters = [
 const loadCommandUsage = [
   '<private-key|mnemonic> <save-to-file>',
   '<private-key|mnemonic>',
+  ''
+];
+
+const deployCommandParameters = [
+  {
+    type: 'text',
+    name: 'category',
+    message: 'Enter the category of the contract to be deployed'
+  },
+  {
+    type: 'text',
+    name: 'code-path',
+    message: 'Enter the relative or absolute path of contract code',
+    format(val) {
+      return path.resolve(process.cwd(), val);
+    }
+  }
+];
+
+const deployCommandUsage = [
+  '<category> <code-path>',
+  '<category>',
   ''
 ];
 
@@ -198,5 +249,9 @@ module.exports = {
   createCommandUsage,
   loadCommandParameters,
   loadCommandUsage,
-  passwordPrompts
+  passwordPrompts,
+  deployCommandUsage,
+  deployCommandParameters,
+  configCommandParameters,
+  configCommandUsage
 };

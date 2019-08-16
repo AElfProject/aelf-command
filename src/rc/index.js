@@ -106,7 +106,17 @@ class Registry {
     this.aelfConfig[key] = value;
     const rc = Registry.loadConfig(Registry.getFileOrCreate(filePath));
     rc[key] = value;
-    fs.writeFileSync(filePath, `${Registry.stringify(rc).join('\n')}\n`);
+    return fs.writeFileSync(filePath, `${Registry.stringify(rc).join('\n')}\n`);
+  }
+
+  deleteConfig(key, filePath = this.globalConfigLoc) {
+    const rc = Registry.loadConfig(Registry.getFileOrCreate(filePath));
+    delete rc[key];
+    return fs.writeFileSync(filePath, `${Registry.stringify(rc).join('\n')}\n`);
+  }
+
+  getFileConfigs(filePath = this.globalConfigLoc) {
+    return Registry.loadConfig(Registry.getFileOrCreate(filePath));
   }
 
   getConfigs() {

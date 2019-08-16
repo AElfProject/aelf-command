@@ -11,7 +11,7 @@ const {
 } = require('../utils/constants');
 const { saveKeyStore } = require('../utils/wallet');
 
-class ConsoleCommand extends BaseSubCommand {
+class CreateCommand extends BaseSubCommand {
   constructor(rc) {
     super(
       'create',
@@ -56,4 +56,4 @@ class ConsoleCommand extends BaseSubCommand {
   }
 }
 
-module.exports = ConsoleCommand;
+module.exports = CreateCommand;

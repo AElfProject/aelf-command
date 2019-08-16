@@ -25,7 +25,7 @@ function init() {
     .command('*')
     .action(() => {
       // change into help
-      console.log('not a valid command');
+      console.log('not a valid command\n');
       console.log(execSync('aelf-command -h').toString());
     });
   const args = process.env.NODE_ENV === 'test' ? process.env.mockArgs.split(',') : process.argv;

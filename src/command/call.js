@@ -10,7 +10,7 @@ const {
   callCommandParameters
 } = require('../utils/constants');
 const {
-  isHexString
+  isAElfContract
 } = require('../utils/utils');
 const { getWallet } = require('../utils/wallet');
 
@@ -32,7 +32,10 @@ class CallCommand extends BaseSubCommand {
   }
 
   static getContractMethods(contract) {
-    return Object.keys(contract).filter(v => /^[A-Z]/.test(v));
+    return Object.keys(contract).filter(v => /^[A-Z]/.test(v)).map(v => ({
+      value: v,
+      title: v
+    }));
   }
 
   async handleContract({ contractAddress }, aelf, wallet) {
@@ -41,7 +44,7 @@ class CallCommand extends BaseSubCommand {
     }
     this.oraInstance.start('Start to get contract');
     let contract = null;
-    if (isHexString(contractAddress)) {
+    if (!isAElfContract(contractAddress)) {
       contract = await aelf.chain.contractAt(contractAddress, wallet);
     } else {
       const {
@@ -97,9 +100,11 @@ class CallCommand extends BaseSubCommand {
         // eslint-disable-next-line no-restricted-syntax
         for (const prompt of this.parameters.slice(subOptionsLength)) {
           switch (prompt.name) {
-            case 'contractAddress':
+            case 'contract-address':
               // eslint-disable-next-line no-await-in-loop
-              contractAddress = await this.handleContract(await prompts(prompt), aelf, wallet);
+              contractAddress = BaseSubCommand.normalizeConfig(await prompts(prompt)).contractAddress;
+              // eslint-disable-next-line no-await-in-loop
+              contractAddress = await this.handleContract({ contractAddress }, aelf, wallet);
               break;
             case 'method':
               // eslint-disable-next-line no-await-in-loop
