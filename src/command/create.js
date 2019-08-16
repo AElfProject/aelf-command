@@ -24,7 +24,11 @@ class CreateCommand extends BaseSubCommand {
       'create',
       createCommandParameters,
       'create a new account',
-      [],
+      [{
+        flag: '-c, --cipher [cipher]',
+        name: 'cipher',
+        description: 'Which cipher algorithm to use, default to be aes-256-cbc'
+      }],
       createCommandUsage,
       rc,
       createCommandValidatorDesc
@@ -40,6 +44,7 @@ class CreateCommand extends BaseSubCommand {
     console.log(`Public Key          : ${wallet.publicKey}`);
     console.log(`Address             : ${wallet.address}`);
     const {
+      localOptions,
       options,
       subOptions
     } = await super.run(commander, ...args);
@@ -49,9 +54,10 @@ class CreateCommand extends BaseSubCommand {
     const {
       saveToFile
     } = subOptions;
+    const { cipher } = localOptions;
     try {
       if (saveToFile === true || saveToFile === 'true') {
-        const keyStorePath = await saveKeyStore(wallet, datadir);
+        const keyStorePath = await saveKeyStore(wallet, datadir, cipher);
         this.oraInstance.succeed(`\nAccount info has been saved to \"${keyStorePath}\"`);
       } else {
         this.oraInstance.succeed('\nSucceed!');

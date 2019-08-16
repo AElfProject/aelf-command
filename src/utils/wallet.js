@@ -27,7 +27,7 @@ function getWallet(commandRoot, address, password) {
   }
 }
 
-async function saveKeyStore(wallet, datadir) {
+async function saveKeyStore(wallet, datadir, cipher = 'aes-256-cbc') {
   const {
     password,
     confirmPassword
@@ -39,7 +39,7 @@ async function saveKeyStore(wallet, datadir) {
     throw new Error('password is to short');
   }
   const keyStore = AElf.wallet.keyStore.getKeystore(wallet, password, {
-    cipher: 'aes-256-cbc'
+    cipher
   });
   const keyStorePath = path.resolve(datadir, `keyStore/${wallet.address}.json`);
   if (!fs.existsSync(path.resolve(datadir, 'keyStore'))) {

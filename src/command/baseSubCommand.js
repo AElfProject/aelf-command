@@ -64,8 +64,8 @@ class BaseSubCommand {
       .command(`${this.commandName} ${this.getParameters()}`)
       .description(this.description);
     // eslint-disable-next-line no-restricted-syntax
-    for (const opt of this.options) {
-      command = command.option(opt.flags, opt.description);
+    for (const { flag, description } of this.options) {
+      command = command.option(flag, description);
     }
     command
       .action(async (...args) => {
@@ -147,6 +147,12 @@ class BaseSubCommand {
         subCommandOptions[name] = format(v);
       }
     });
+    // sub command options
+    const lastArg = args.slice(this.parameters.length)[0];
+    const localOptions = {};
+    this.options.forEach(({ name }) => {
+      localOptions[name] = lastArg[name] || undefined;
+    });
     const uniOptions = BaseSubCommand.getUniConfig(commander);
     // get options from global config and process.argv
     const rc = await this.rc.getConfigs();
@@ -171,6 +177,7 @@ class BaseSubCommand {
     if (this.customPrompts) {
       // custom prompts process
       return {
+        localOptions,
         options,
         subOptions: subCommandOptions
       };
@@ -184,6 +191,7 @@ class BaseSubCommand {
       };
     }
     return {
+      localOptions,
       options,
       subOptions: subCommandOptions
     };
