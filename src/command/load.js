@@ -11,6 +11,14 @@ const {
 } = require('../utils/constants');
 const { saveKeyStore } = require('../utils/wallet');
 
+const loadCommandValidatorDesc = {
+  ...commonGlobalOptionValidatorDesc,
+  endpoint: {
+    ...commonGlobalOptionValidatorDesc.endpoint,
+    required: false
+  }
+};
+
 class LoadCommand extends BaseSubCommand {
   constructor(rc) {
     super(
@@ -20,7 +28,7 @@ class LoadCommand extends BaseSubCommand {
       [],
       loadCommandUsage,
       rc,
-      commonGlobalOptionValidatorDesc
+      loadCommandValidatorDesc
     );
   }
 

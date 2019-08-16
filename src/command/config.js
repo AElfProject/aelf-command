@@ -43,7 +43,12 @@ class ConfigCommand extends BaseSubCommand {
   }
 
   handleList(content) {
-    return Object.entries(content).map(([key, value]) => `${key}=${value}\n`).join('');
+    return Object.entries(content).filter(([, value]) => {
+      if (value === '' || value === undefined || value === null) {
+        return false;
+      }
+      return true;
+    }).map(([key, value]) => `${key}=${value}\n`).join('');
   }
 
   async run(commander, ...args) {
@@ -51,6 +56,7 @@ class ConfigCommand extends BaseSubCommand {
     const {
       subOptions
     } = await super.run(commander, ...args);
+    // todo: specified which .aelfrc file to read or write
     const {
       flag,
       key,
@@ -66,7 +72,7 @@ class ConfigCommand extends BaseSubCommand {
         },
         key: {
           type: 'string',
-          required: flag !== 'list',
+          required: ['get', 'set', 'delete'].includes(flag),
           message: 'You need to enter the <key>'
         },
         value: {

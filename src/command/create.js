@@ -11,6 +11,13 @@ const {
 } = require('../utils/constants');
 const { saveKeyStore } = require('../utils/wallet');
 
+const createCommandValidatorDesc = {
+  ...commonGlobalOptionValidatorDesc,
+  endpoint: {
+    ...commonGlobalOptionValidatorDesc.endpoint,
+    required: false
+  }
+};
 class CreateCommand extends BaseSubCommand {
   constructor(rc) {
     super(
@@ -20,7 +27,7 @@ class CreateCommand extends BaseSubCommand {
       [],
       createCommandUsage,
       rc,
-      commonGlobalOptionValidatorDesc
+      createCommandValidatorDesc
     );
   }
 

@@ -47,7 +47,7 @@ class Registry {
     return '';
   }
 
-  static loadConfig(content) {
+  static loadConfig(content = '') {
     const result = {};
     content
       .split('\n')

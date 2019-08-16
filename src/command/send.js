@@ -14,7 +14,7 @@ class SendCommand extends CallCommand {
   }
 
   async callMethod(method, params) {
-    this.oraInstance.start('call method');
+    this.oraInstance.start('sending the transaction');
     const result = await method(params);
     this.oraInstance.succeed('Succeed!');
     return result;

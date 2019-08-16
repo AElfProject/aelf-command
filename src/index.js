@@ -15,7 +15,7 @@ function init() {
   commander.option('-a, --account <account>', 'The address of AElf wallet');
   commander.option('-p, --password <password>', 'The password of encrypted keyStore');
   // eslint-disable-next-line max-len
-  commander.option('-d, --datadir <directory>', 'The directory that contains the AElf related files. Default to be `~/.local/share/aelf`');
+  commander.option('-d, --datadir <directory>', 'The directory that contains the AElf related files. Default to be Default to be `{home}/.local/share/aelf`');
   const rc = new RC();
   Object.values(commands).forEach(Value => {
     const command = new Value(rc);
