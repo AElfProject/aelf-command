@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.3](https://github.com/AElfProject/aelf-command/compare/v0.1.2...v0.1.3) (2019-08-16)
+
+
+### Features
+
+* 🎸 add cipher option for create command ([7ecf012](https://github.com/AElfProject/aelf-command/commit/7ecf012))
+
 ### [0.1.2](https://github.com/AElfProject/aelf-command/compare/v0.1.1...v0.1.2) (2019-08-16)
 
 
