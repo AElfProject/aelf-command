@@ -43,15 +43,10 @@
     "chalk": "^2.4.2",
     "columnify": "^1.5.4",
     "commander": "^3.0.0",
-    "cross-env": "^5.2.0",
-    "glob": "^7.1.4",
-    "inquirer": "^6.5.1",
     "mkdirp": "^0.5.1",
     "ora": "^3.4.0",
     "prompts": "^2.2.1",
-    "rimraf": "^2.6.3",
-    "shelljs": "^0.8.3",
-    "yargs": "^13.3.0"
+    "update-notifier": "^3.0.1"
   },
   "devDependencies": {
     "commitizen": "^4.0.3",
