@@ -26,7 +26,7 @@ class Registry {
   constructor() {
     this.globalConfigLoc = path.resolve(userHomeDir, 'aelf/.aelfrc');
     if (!fs.existsSync(path.resolve(userHomeDir, 'aelf'))) {
-      mkdirp(path.resolve(userHomeDir, 'aelf'));
+      mkdirp.sync(path.resolve(userHomeDir, 'aelf'));
     }
     this.aelfConfig = {};
     this.init();
