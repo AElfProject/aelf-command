@@ -3,13 +3,14 @@
  * @author atom-yang
  */
 const commander = require('commander');
+const updateNotifier = require('update-notifier');
 const { execSync } = require('child_process');
 const commands = require('./command/index');
 const RC = require('./rc/index');
-const { version } = require('../package.json');
+const pkg = require('../package.json');
 
 function init() {
-  commander.version(version, '-v, --version');
+  commander.version(pkg.version, '-v, --version');
   commander.usage('[command] [options]');
   commander.option('-e, --endpoint <URI>', 'The URI of an AElf node. Eg: http://127.0.0.1:8000');
   commander.option('-a, --account <account>', 'The address of AElf wallet');
@@ -31,6 +32,10 @@ function init() {
   const args = process.env.NODE_ENV === 'test' ? process.env.mockArgs.split(',') : process.argv;
   commander.parse(args);
   if (commander.args.length === 0) commander.help();
+  updateNotifier({
+    pkg,
+    distTag: 'beta'
+  }).notify();
 }
 
 function run() {
