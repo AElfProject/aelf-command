@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.5](https://github.com/AElfProject/aelf-command/compare/v0.1.4...v0.1.5) (2019-08-17)
+
+
+### Bug Fixes
+
+* 🐛 mkdirp in sync ([242a23f](https://github.com/AElfProject/aelf-command/commit/242a23f))
+
+
+### Features
+
+* 🎸 add notification if there are any updates ([d327146](https://github.com/AElfProject/aelf-command/commit/d327146))
+
 ### [0.1.4](https://github.com/AElfProject/aelf-command/compare/v0.1.3...v0.1.4) (2019-08-16)
 
 ### [0.1.3](https://github.com/AElfProject/aelf-command/compare/v0.1.2...v0.1.3) (2019-08-16)
