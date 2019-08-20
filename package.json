@@ -36,11 +36,12 @@
   },
   "engineStrict": true,
   "dependencies": {
-    "aelf-sdk": "^3.2.12",
+    "aelf-sdk": "^3.2.13",
     "async-validator": "^3.0.3",
     "boxen": "^4.1.0",
     "camelcase": "^5.3.1",
     "chalk": "^2.4.2",
+    "check-node-version": "^4.0.1",
     "columnify": "^1.5.4",
     "commander": "^3.0.0",
     "mkdirp": "^0.5.1",

@@ -4,10 +4,14 @@
  */
 const commander = require('commander');
 const updateNotifier = require('update-notifier');
+const check = require('check-node-version');
+const chalk = require('chalk');
 const { execSync } = require('child_process');
 const commands = require('./command/index');
 const RC = require('./rc/index');
 const pkg = require('../package.json');
+
+const minVersion = '10.9.0';
 
 function init() {
   commander.version(pkg.version, '-v, --version');
@@ -34,12 +38,25 @@ function init() {
   if (commander.args.length === 0) commander.help();
   updateNotifier({
     pkg,
-    distTag: 'beta'
+    distTag: 'latest'
   }).notify();
 }
 
 function run() {
-  init();
+  check(
+    { node: `>= ${minVersion}` },
+    (error, results) => {
+      if (error) {
+        console.log(chalk.red(error));
+        return;
+      }
+      if (results.isSatisfied) {
+        init();
+      } else {
+        console.log(chalk.red('Your Node.js version is needed to >= %s'), minVersion);
+      }
+    }
+  );
 }
 
 module.exports.run = run;

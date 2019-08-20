@@ -542,9 +542,10 @@ acorn@^6.0.1, acorn@^6.0.7:
   version "6.3.0"
   resolved "https://registry.npm.taobao.org/acorn/download/acorn-6.3.0.tgz#0087509119ffa4fc0a0041d1e93a417e68cb856e"
 
-aelf-sdk@^3.2.12:
-  version "3.2.12"
-  resolved "https://registry.npm.taobao.org/aelf-sdk/download/aelf-sdk-3.2.12.tgz#a8962cc06d44f92ecfd9d2022ef3e3b659ccb195"
+aelf-sdk@^3.2.13:
+  version "3.2.13"
+  resolved "https://registry.yarnpkg.com/aelf-sdk/-/aelf-sdk-3.2.13.tgz#4d08e81692e629b6e0318c8e6a4bea86167f5f47"
+  integrity sha512-13fmHNTkIaMVgUwLs3p69pIVkhvaWSNTnRfw9r7C+Y4IZmR1yHQXbkOu7KPoURUNTdTSpCQwS/tVp1W1xPbLDA==
   dependencies:
     "@aelfqueen/protobufjs" "^6.8.9"
     "@babel/runtime" "^7.4.5"
@@ -560,7 +561,7 @@ aelf-sdk@^3.2.12:
     js-sha256 "^0.9.0"
     query-string "5.1.1"
     randombytes "^2.1.0"
-    scrypt.js "^0.3.0"
+    scryptsy "^2.1.0"
     xmlhttprequest "^1.8.0"
 
 ajv@^6.10.0, ajv@^6.10.2, ajv@^6.5.5:
@@ -1042,7 +1043,7 @@ caseless@~0.12.0:
   version "0.12.0"
   resolved "https://registry.npm.taobao.org/caseless/download/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
 
-chalk@2.4.2, chalk@^2.0.0, chalk@^2.0.1, chalk@^2.1.0, chalk@^2.4.1, chalk@^2.4.2:
+chalk@2.4.2, chalk@^2.0.0, chalk@^2.0.1, chalk@^2.1.0, chalk@^2.3.0, chalk@^2.4.1, chalk@^2.4.2:
   version "2.4.2"
   resolved "https://registry.npm.taobao.org/chalk/download/chalk-2.4.2.tgz#cd42541677a54333cf541a49108c1432b44c9424"
   dependencies:
@@ -1063,6 +1064,18 @@ chalk@^1.0.0, chalk@^1.1.3:
 chardet@^0.7.0:
   version "0.7.0"
   resolved "https://registry.npm.taobao.org/chardet/download/chardet-0.7.0.tgz?cache=0&sync_timestamp=1562887878067&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fchardet%2Fdownload%2Fchardet-0.7.0.tgz#90094849f0937f2eedc2425d0d28a9e5f0cbad9e"
+
+check-node-version@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/check-node-version/-/check-node-version-4.0.1.tgz#ae35200e5434c1aae3712c8d9f63b9a2144a10bd"
+  integrity sha512-pWV+uuJJoOGbODDC6+DPUYeprv1CUg/jr1SGKpgkANstGN22f9T0Vn40mdv6hvRZ25KMH/IjkVc0LZH5ms+qEg==
+  dependencies:
+    chalk "^2.3.0"
+    map-values "^1.0.1"
+    minimist "^1.2.0"
+    object-filter "^1.0.2"
+    run-parallel "^1.1.4"
+    semver "^5.7.0"
 
 chownr@^1.1.1:
   version "1.1.2"
@@ -3770,6 +3783,11 @@ map-obj@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npm.taobao.org/map-obj/download/map-obj-2.0.0.tgz#a65cd29087a92598b8791257a523e021222ac1f9"
 
+map-values@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/map-values/-/map-values-1.0.1.tgz#768b8e79c009bf2b64fee806e22a7b1c4190c990"
+  integrity sha1-douOecAJvytk/ugG4ip7HEGQyZA=
+
 map-visit@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npm.taobao.org/map-visit/download/map-visit-1.0.0.tgz#ecdca8f13144e660f1b5bd41f12f3479d98dfb8f"
@@ -3949,7 +3967,7 @@ mute-stream@0.0.7:
   version "0.0.7"
   resolved "https://registry.npm.taobao.org/mute-stream/download/mute-stream-0.0.7.tgz#3075ce93bc21b8fab43e1bc4da7e8115ed1e7bab"
 
-nan@^2.0.8, nan@^2.12.1, nan@^2.14.0:
+nan@^2.12.1, nan@^2.14.0:
   version "2.14.0"
   resolved "https://registry.npm.taobao.org/nan/download/nan-2.14.0.tgz#7818f722027b2459a86f0295d434d1fc2336c52c"
 
@@ -4107,6 +4125,11 @@ object-copy@^0.1.0:
     copy-descriptor "^0.1.0"
     define-property "^0.2.5"
     kind-of "^3.0.3"
+
+object-filter@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/object-filter/-/object-filter-1.0.2.tgz#af0b797ffebeaf8a52c6637cedbe8816cfec1bc8"
+  integrity sha1-rwt5f/6+r4pSxmN87b6IFs/sG8g=
 
 object-is@^1.0.1:
   version "1.0.1"
@@ -4403,7 +4426,7 @@ path-type@^4.0.0:
   version "4.0.0"
   resolved "https://registry.npm.taobao.org/path-type/download/path-type-4.0.0.tgz#84ed01c0a7ba380afe09d90a8c180dcd9d03043b"
 
-pbkdf2@^3.0.3, pbkdf2@^3.0.9:
+pbkdf2@^3.0.9:
   version "3.0.17"
   resolved "https://registry.npm.taobao.org/pbkdf2/download/pbkdf2-3.0.17.tgz#976c206530617b14ebb32114239f7b09336e93a6"
   dependencies:
@@ -4886,7 +4909,7 @@ run-node@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npm.taobao.org/run-node/download/run-node-1.0.0.tgz#46b50b946a2aa2d4947ae1d886e9856fd9cabe5e"
 
-run-parallel@^1.1.9:
+run-parallel@^1.1.4, run-parallel@^1.1.9:
   version "1.1.9"
   resolved "https://registry.npm.taobao.org/run-parallel/download/run-parallel-1.1.9.tgz#c9dd3a7cf9f4b2c4b6244e173a6ed866e61dd679"
 
@@ -4932,25 +4955,10 @@ sax@^1.2.4:
   version "1.2.4"
   resolved "https://registry.npm.taobao.org/sax/download/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
 
-scrypt.js@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.npm.taobao.org/scrypt.js/download/scrypt.js-0.3.0.tgz#6c62d61728ad533c8c376a2e5e3e86d41a95c4c0"
-  dependencies:
-    scryptsy "^1.2.1"
-  optionalDependencies:
-    scrypt "^6.0.2"
-
-scrypt@^6.0.2:
-  version "6.0.3"
-  resolved "https://registry.npm.taobao.org/scrypt/download/scrypt-6.0.3.tgz#04e014a5682b53fa50c2d5cce167d719c06d870d"
-  dependencies:
-    nan "^2.0.8"
-
-scryptsy@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.npm.taobao.org/scryptsy/download/scryptsy-1.2.1.tgz#a3225fa4b2524f802700761e2855bdf3b2d92163"
-  dependencies:
-    pbkdf2 "^3.0.3"
+scryptsy@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/scryptsy/-/scryptsy-2.1.0.tgz#8d1e8d0c025b58fdd25b6fa9a0dc905ee8faa790"
+  integrity sha512-1CdSqHQowJBnMAFyPEBRfqag/YP9OF394FV+4YREIJX4ljD7OxvQRDayyoyyCk+senRjSkP6VnUNQmVQqB6g7w==
 
 secp256k1@^3.0.1:
   version "3.7.1"
@@ -4975,7 +4983,7 @@ semver-diff@^2.0.0:
   dependencies:
     semver "^5.0.3"
 
-"semver@2 || 3 || 4 || 5", semver@^5.0.3, semver@^5.3.0, semver@^5.4.1, semver@^5.5.0, semver@^5.6.0:
+"semver@2 || 3 || 4 || 5", semver@^5.0.3, semver@^5.3.0, semver@^5.4.1, semver@^5.5.0, semver@^5.6.0, semver@^5.7.0:
   version "5.7.1"
   resolved "https://registry.npm.taobao.org/semver/download/semver-5.7.1.tgz?cache=0&sync_timestamp=1565627367398&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fsemver%2Fdownload%2Fsemver-5.7.1.tgz#a954f931aeba508d307bbf069eff0c01c96116f7"
 
