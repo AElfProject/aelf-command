@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.6](https://github.com/AElfProject/aelf-command/compare/v0.1.5...v0.1.6) (2019-08-20)
+
+
+### Features
+
+* 🎸 add node version checker ([a6d5034](https://github.com/AElfProject/aelf-command/commit/a6d5034))
+
 ### [0.1.5](https://github.com/AElfProject/aelf-command/compare/v0.1.4...v0.1.5) (2019-08-17)
 
 
