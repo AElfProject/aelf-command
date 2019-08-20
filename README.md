@@ -225,20 +225,25 @@ Notice the priority, the options given in higher priority will overwrite the low
 This command will create a new account.
 
 ```bash
-aelf-command create
-aelf-command create -h
-
 Usage: aelf-command create [options] [save-to-file]
 
 create a new account
 
 Options:
-  -h, --help  output usage information
+  -c, --cipher [cipher]  Which cipher algorithm to use, default to be aes-256-cbc
+  -h, --help             output usage information
 
 Examples:
 
 aelf-command create <save-to-file>
 aelf-command create
+```
+
+Example:
+
+* Specify the cipher way to encrypt account info by passing option `-c [cipher]`, such as:
+```shell script
+aelf-command create -c aes-128-cbc
 ```
 
 ### load - load an account by a given `private key` or `mnemonic`
