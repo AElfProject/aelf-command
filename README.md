@@ -230,7 +230,7 @@ Usage: aelf-command create [options] [save-to-file]
 create a new account
 
 Options:
-  -c, --cipher [cipher]  Which cipher algorithm to use, default to be aes-256-cbc
+  -c, --cipher [cipher]  Which cipher algorithm to use, default to be aes-128-ctr
   -h, --help             output usage information
 
 Examples:

@@ -27,7 +27,7 @@ function getWallet(commandRoot, address, password) {
   }
 }
 
-async function saveKeyStore(wallet, datadir, cipher = 'aes-256-cbc') {
+async function saveKeyStore(wallet, datadir, cipher = 'aes-128-ctr') {
   const {
     password,
     confirmPassword
