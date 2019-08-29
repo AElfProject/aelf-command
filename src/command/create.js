@@ -3,13 +3,11 @@
  * @author atom-yang
  */
 const AElf = require('aelf-sdk');
+const chalk = require('chalk');
 const BaseSubCommand = require('./baseSubCommand');
-const {
-  commonGlobalOptionValidatorDesc,
-  createCommandParameters,
-  createCommandUsage
-} = require('../utils/constants');
+const { commonGlobalOptionValidatorDesc, createCommandParameters, createCommandUsage } = require('../utils/constants');
 const { saveKeyStore } = require('../utils/wallet');
+const logger = require('../utils/myLogger');
 
 const createCommandValidatorDesc = {
   ...commonGlobalOptionValidatorDesc,
@@ -18,17 +16,20 @@ const createCommandValidatorDesc = {
     required: false
   }
 };
+
 class CreateCommand extends BaseSubCommand {
   constructor(rc) {
     super(
       'create',
       createCommandParameters,
       'create a new account',
-      [{
-        flag: '-c, --cipher [cipher]',
-        name: 'cipher',
-        description: 'Which cipher algorithm to use, default to be aes-256-cbc'
-      }],
+      [
+        {
+          flag: '-c, --cipher [cipher]',
+          name: 'cipher',
+          description: 'Which cipher algorithm to use, default to be aes-256-cbc'
+        }
+      ],
       createCommandUsage,
       rc,
       createCommandValidatorDesc
@@ -38,33 +39,25 @@ class CreateCommand extends BaseSubCommand {
   async run(commander, ...args) {
     const wallet = AElf.wallet.createNewWallet();
     wallet.publicKey = wallet.keyPair.getPublic().encode('hex');
-    console.log('Your wallet info is :');
-    console.log(`Mnemonic            : ${wallet.mnemonic}`);
-    console.log(`Private Key         : ${wallet.privateKey}`);
-    console.log(`Public Key          : ${wallet.publicKey}`);
-    console.log(`Address             : ${wallet.address}`);
-    const {
-      localOptions,
-      options,
-      subOptions
-    } = await super.run(commander, ...args);
-    const {
-      datadir
-    } = options;
-    const {
-      saveToFile
-    } = subOptions;
+    logger.info('Your wallet info is :');
+    logger.info(`Mnemonic            : ${wallet.mnemonic}`);
+    logger.info(`Private Key         : ${wallet.privateKey}`);
+    logger.info(`Public Key          : ${wallet.publicKey}`);
+    logger.info(`Address             : ${wallet.address}`);
+    const { localOptions, options, subOptions } = await super.run(commander, ...args);
+    const { datadir } = options;
+    const { saveToFile } = subOptions;
     const { cipher } = localOptions;
     try {
       if (saveToFile === true || saveToFile === 'true') {
         const keyStorePath = await saveKeyStore(wallet, datadir, cipher);
-        this.oraInstance.succeed(`\nAccount info has been saved to \"${keyStorePath}\"`);
+        this.oraInstance.succeed(`Account info has been saved to \"${chalk.underline(keyStorePath)}\"`);
       } else {
-        this.oraInstance.succeed('\nSucceed!');
+        this.oraInstance.succeed('Succeed!');
       }
     } catch (e) {
       this.oraInstance.fail('Failed!');
-      console.log(e);
+      logger.error(e);
     }
   }
 }
