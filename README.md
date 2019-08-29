@@ -25,6 +25,7 @@ _A CLI tools built for AElf_
 * Send a `transaction` or call a `read-only method` on a smart `contract`.
 * Deploy a smart `contract`.
 * Open a `REPL` for using `JavaScript` to interact with the chain.
+* Friendly interact, beautify with chalk & ora.
 
 ## Installing aelf-command
 
