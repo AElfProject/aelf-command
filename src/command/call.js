@@ -8,7 +8,7 @@ const BaseSubCommand = require('./baseSubCommand');
 const { callCommandUsages, callCommandParameters } = require('../utils/constants');
 const { isAElfContract } = require('../utils/utils');
 const { getWallet } = require('../utils/wallet');
-const logger = require('../utils/myLogger');
+const { logger, plainLogger } = require('../utils/myLogger');
 
 class CallCommand extends BaseSubCommand {
   constructor(rc, name = 'call', description = 'Call a read-only method on a contract.', usage = callCommandUsages) {
@@ -24,22 +24,41 @@ class CallCommand extends BaseSubCommand {
       }));
   }
 
+  /**
+   * @description Get contract by contractAddress
+   * @param {*} { contractAddress }
+   * @param {*} aelf
+   * @param {*} wallet
+   * @returns
+   * @memberof CallCommand
+   */
   async handleContract({ contractAddress }, aelf, wallet) {
     if (typeof contractAddress !== 'string') {
       return contractAddress;
     }
-    this.oraInstance.start('Start to get contract');
+    this.oraInstance.start('Start to get contract...\n');
     let contract = null;
     if (!isAElfContract(contractAddress)) {
-      contract = await aelf.chain.contractAt(contractAddress, wallet);
+      try {
+        contract = await aelf.chain.contractAt(contractAddress, wallet);
+        return contract;
+      } catch (err) {
+        this.oraInstance.fail(plainLogger.error('Failed to find the contract, please enter the right contract address!'));
+        return null;
+      }
     } else {
-      const { GenesisContractAddress } = await aelf.chain.getChainStatus();
-      const genesisContract = await aelf.chain.contractAt(GenesisContractAddress, wallet);
-      const address = await genesisContract.GetContractAddressByName.call(AElf.utils.sha256(contractAddress));
-      contract = await aelf.chain.contractAt(address, wallet);
+      try {
+        const { GenesisContractAddress } = await aelf.chain.getChainStatus();
+        const genesisContract = await aelf.chain.contractAt(GenesisContractAddress, wallet);
+        const address = await genesisContract.GetContractAddressByName.call(AElf.utils.sha256(contractAddress));
+        contract = await aelf.chain.contractAt(address, wallet);
+        this.oraInstance.succeed('Succeed');
+        return contract;
+      } catch (error) {
+        this.oraInstance.fail(plainLogger.error('Failed to find the contract, please enter the right contract address!'));
+        return null;
+      }
     }
-    this.oraInstance.succeed('Succeed');
-    return contract;
   }
 
   async handleMethods({ method }, contract) {
@@ -59,6 +78,39 @@ class CallCommand extends BaseSubCommand {
     return result;
   }
 
+
+  /**
+   * @description prompt contract address three times at most
+   * @param {*} aelf
+   * @param {*} wallet
+   * @param {*} prompt
+   * @returns
+   * @memberof CallCommand
+   */
+  async promptAddressTolerateThreeTimes(aelf, wallet, prompt) {
+    let askTimes = 0;
+    let contractAddress;
+    while (askTimes < 3) {
+      // eslint-disable-next-line no-await-in-loop
+      contractAddress = await prompts(prompt);
+      contractAddress = BaseSubCommand.normalizeConfig(contractAddress).contractAddress;
+      try {
+        // eslint-disable-next-line no-await-in-loop
+        contractAddress = await this.handleContract({ contractAddress }, aelf, wallet);
+        if (contractAddress === null) {
+          askTimes++;
+        } else { break; }
+      } catch (e) {
+        this.oraInstance.fail('Failed');
+      }
+    }
+    if (askTimes > 2 && contractAddress === null) {
+      this.oraInstance.fail(plainLogger.fatal('You has entered wrong message three times!'));
+      process.exit(1);
+    }
+    return contractAddress;
+  }
+
   async run(commander, ...args) {
     this.setCustomPrompts(true);
     const { options, subOptions } = await super.run(commander, ...args);
@@ -76,9 +128,7 @@ class CallCommand extends BaseSubCommand {
           switch (prompt.name) {
             case 'contract-address':
               // eslint-disable-next-line no-await-in-loop
-              contractAddress = BaseSubCommand.normalizeConfig(await prompts(prompt)).contractAddress;
-              // eslint-disable-next-line no-await-in-loop
-              contractAddress = await this.handleContract({ contractAddress }, aelf, wallet);
+              contractAddress = await this.promptAddressTolerateThreeTimes(aelf, wallet, prompt);
               break;
             case 'method':
               // eslint-disable-next-line no-await-in-loop
@@ -106,14 +156,19 @@ class CallCommand extends BaseSubCommand {
           }
         }
       }
-      contractAddress = await this.handleContract({ contractAddress }, aelf, wallet);
+      try {
+        console.log('333');
+        contractAddress = await this.handleContract({ contractAddress }, aelf, wallet);
+      } catch (err) {
+        console.log('444');
+      }
       method = await this.handleMethods({ method }, contractAddress);
       const result = await this.callMethod(method, params);
       logger.info(`\nResult:\n${JSON.stringify(result, null, 2)}`);
       this.oraInstance.succeed('Succeed!');
     } catch (e) {
       this.oraInstance.fail('Failed!');
-      logger.error(e);
+      logger.fatal(e);
     }
   }
 }
