@@ -6,7 +6,7 @@ const AElf = require('aelf-sdk');
 const Schema = require('async-validator/dist-node/index').default;
 const BaseSubCommand = require('./baseSubCommand');
 const { commonGlobalOptionValidatorDesc, txResultCommandParameters, txResultCommandUsage } = require('../utils/constants');
-const logger = require('../utils/myLogger');
+const { logger } = require('../utils/myLogger');
 
 class GetTxResultCommand extends BaseSubCommand {
   constructor(rc) {

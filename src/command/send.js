@@ -6,11 +6,7 @@ const CallCommand = require('./call');
 
 class SendCommand extends CallCommand {
   constructor(rc) {
-    super(
-      rc,
-      'send',
-      'Execute a method on a contract.'
-    );
+    super(rc, 'send', 'Execute a method on a contract.');
   }
 
   async callMethod(method, params) {

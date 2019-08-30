@@ -7,7 +7,7 @@ const fs = require('fs');
 const BaseSubCommand = require('./baseSubCommand');
 const { deployCommandParameters, deployCommandUsage } = require('../utils/constants');
 const { getWallet } = require('../utils/wallet');
-const logger = require('../utils/myLogger');
+const { logger } = require('../utils/myLogger');
 
 class DeployCommand extends BaseSubCommand {
   constructor(rc, name = 'deploy', description = 'Deploy a smart contract', usage = deployCommandUsage) {

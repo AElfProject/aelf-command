@@ -1,7 +1,13 @@
 const Logger = require('./Logger');
 
 const logger = new Logger({
-  name: 'aelf'
+  name: 'aelf',
+  log: true
 });
 
-module.exports = logger;
+const plainLogger = new Logger({
+  onlyWords: true,
+  log: false
+});
+
+module.exports = { logger, plainLogger };

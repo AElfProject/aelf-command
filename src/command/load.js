@@ -6,7 +6,7 @@ const AElf = require('aelf-sdk');
 const BaseSubCommand = require('./baseSubCommand');
 const { commonGlobalOptionValidatorDesc, loadCommandParameters, loadCommandUsage } = require('../utils/constants');
 const { saveKeyStore } = require('../utils/wallet');
-const logger = require('../utils/myLogger');
+const { logger } = require('../utils/myLogger');
 
 const loadCommandValidatorDesc = {
   ...commonGlobalOptionValidatorDesc,

@@ -5,7 +5,7 @@
 const Schema = require('async-validator/dist-node/index').default;
 const prompts = require('prompts');
 const ora = require('ora');
-const logger = require('../utils/myLogger');
+const { logger } = require('../utils/myLogger');
 const { camelCase } = require('../utils/utils');
 const { globalOptionsPrompts, strictGlobalOptionValidatorDesc } = require('../utils/constants');
 
@@ -116,7 +116,7 @@ class BaseSubCommand {
 
   static normalizeConfig(obj) {
     // dash to camel-case
-    // 'true', 'false to true, false
+    // 'true', 'false' to true, false
     const result = {};
     Object.entries(obj).forEach(([key, value]) => {
       result[camelCase(key)] = BaseSubCommand.parseBoolean(value);

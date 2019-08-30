@@ -9,7 +9,7 @@ const { execSync } = require('child_process');
 const commands = require('./command/index');
 const RC = require('./rc/index');
 const pkg = require('../package.json');
-const logger = require('./utils/myLogger');
+const { logger } = require('./utils/myLogger');
 
 const minVersion = '10.9.0';
 

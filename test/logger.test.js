@@ -11,6 +11,7 @@ logger.debug('123');
 logger.info('123');
 logger.warn('123');
 logger.error('123');
+logger.fatal('123');
 
 console.log('=========');
 console.log('=========');

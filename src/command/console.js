@@ -8,7 +8,7 @@ const columnify = require('columnify');
 const boxen = require('boxen');
 const BaseSubCommand = require('./baseSubCommand');
 const { getWallet } = require('../utils/wallet');
-const logger = require('../utils/myLogger');
+const { logger } = require('../utils/myLogger');
 
 class ConsoleCommand extends BaseSubCommand {
   constructor(rc, name = 'console', description = 'Open a node REPL') {

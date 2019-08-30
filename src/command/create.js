@@ -7,7 +7,7 @@ const chalk = require('chalk');
 const BaseSubCommand = require('./baseSubCommand');
 const { commonGlobalOptionValidatorDesc, createCommandParameters, createCommandUsage } = require('../utils/constants');
 const { saveKeyStore } = require('../utils/wallet');
-const logger = require('../utils/myLogger');
+const { logger } = require('../utils/myLogger');
 
 const createCommandValidatorDesc = {
   ...commonGlobalOptionValidatorDesc,

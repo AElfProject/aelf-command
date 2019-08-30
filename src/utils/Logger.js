@@ -20,17 +20,27 @@ const levels = [
   },
   {
     level: 'Warn',
-    color: chalk.keyword('orange')
+    color: chalk.yellow
   },
   {
     level: 'Error',
+    color: chalk.hex('#CF6679')
+  },
+  {
+    level: 'Fatal',
     color: chalk.red
   }
 ];
 
 class Logger {
   constructor(props) {
-    this.name = props.name;
+    this.symbol = '';
+    this.name = '';
+    this.log = props.log !== undefined ? props.log : true; // determin whether console.log or not
+    if (!props.onlyWords) {
+      this.symbol = '⬡';
+      this.name = props.name;
+    }
   }
 }
 
@@ -41,15 +51,21 @@ levels.forEach(item => {
   const fnName = level.toLocaleLowerCase();
   Logger.prototype[fnName] = function fn(firstParam, ...rest) {
     // if (typeof params === 'obejct') params = JSON.stringify(params);
-    let prefix = `⬡ ${this.name} [${level}]: `;
+    // eslint-disable-next-line prefer-template
+    let prefix = `${this.symbol ? this.symbol + ' ' : ''}${this.name ? this.name + ' ' : ''}[${level}]: `;
     if (typeof firstParam === 'object' && firstParam !== null) {
       prefix += '\n';
-      console.log(color(prefix), firstParam, ...rest);
-    } else {
-      // To compatible with the situation below, We need to surround the rest with method color
-      // logger.error('Your Node.js version is needed to >= %s', '10.1');
+      if (this.log) {
+        console.log(color(prefix), firstParam, ...rest);
+      }
+      return chalk(color(prefix), firstParam, ...rest);
+    }
+    // To compatible with the situation below, We need to surround the rest with method color
+    // logger.error('Your Node.js version is needed to >= %s', '10.1');
+    if (this.log) {
       console.log(color(prefix + firstParam), color(...rest));
     }
+    return chalk(color(prefix + firstParam), color(...rest));
   };
 });
 

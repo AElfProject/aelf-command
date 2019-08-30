@@ -5,7 +5,7 @@
 const AElf = require('aelf-sdk');
 const BaseSubCommand = require('./baseSubCommand');
 const { commonGlobalOptionValidatorDesc } = require('../utils/constants');
-const logger = require('../utils/myLogger');
+const { logger } = require('../utils/myLogger');
 
 class GetBlkHeightCommand extends BaseSubCommand {
   constructor(rc) {

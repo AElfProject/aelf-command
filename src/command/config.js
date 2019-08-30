@@ -5,7 +5,7 @@
 const Schema = require('async-validator/dist-node/index').default;
 const BaseSubCommand = require('./baseSubCommand');
 const { configCommandParameters, configCommandUsage, commonGlobalOptionValidatorDesc } = require('../utils/constants');
-const logger = require('../utils/myLogger');
+const { logger } = require('../utils/myLogger');
 
 const configCommandValidatorDesc = {
   ...commonGlobalOptionValidatorDesc,
