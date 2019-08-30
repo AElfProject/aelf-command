@@ -35,6 +35,8 @@ function camelCase(str) {
   return _camelCase(str);
 }
 
+// todo: repository aelf-sdk, add a method that return all contract's name
+// so that we can develop a better method to help us identify the aelf's contract
 function isAElfContract(str) {
   return str.trim().toLowerCase().startsWith('aelf.');
 }
