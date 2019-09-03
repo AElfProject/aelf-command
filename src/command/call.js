@@ -6,7 +6,7 @@ const AElf = require('aelf-sdk');
 const prompts = require('prompts');
 const BaseSubCommand = require('./baseSubCommand');
 const { callCommandUsages, callCommandParameters } = require('../utils/constants');
-const { isAElfContract } = require('../utils/utils');
+const { isAElfContract, isRegExp } = require('../utils/utils');
 const { getWallet } = require('../utils/wallet');
 const { logger, plainLogger } = require('../utils/myLogger');
 
@@ -43,7 +43,7 @@ class CallCommand extends BaseSubCommand {
         contract = await aelf.chain.contractAt(contractAddress, wallet);
         return contract;
       } catch (err) {
-        this.oraInstance.fail(plainLogger.error('Failed to find the contract, please enter the right contract address!'));
+        this.oraInstance.fail(plainLogger.error('Failed to find the contract, please enter the correct contract address!'));
         return null;
       }
     } else {
@@ -55,7 +55,7 @@ class CallCommand extends BaseSubCommand {
         this.oraInstance.succeed('Succeed!');
         return contract;
       } catch (error) {
-        this.oraInstance.fail(plainLogger.error('Failed to find the contract, please enter the right contract address!'));
+        this.oraInstance.fail(plainLogger.error('Failed to find the contract, please enter the correct contract address!'));
         return null;
       }
     }
@@ -80,37 +80,56 @@ class CallCommand extends BaseSubCommand {
 
   /**
    * @description prompt contract address three times at most
-   * @param {*} times
-   * @param {*} aelf
-   * @param {*} wallet
-   * @param {*} prompt
-   * @returns
+   * @param {*} {
+   *     times,
+   *     prompt,
+   *     processAfterPrompt, // a function that will process user's input with first param as the raw input value of user
+   *     pattern // the regular expression to validate the user's input
+   *   }
+   * @returns the correct input value, if no correct was inputed, it will throw an error then exit the process
    * @memberof CallCommand
    */
-  async promptAddressTolerateSeveralTimes(times, aelf, wallet, prompt) {
+  async promptTolerateSeveralTimes({
+    times, prompt, processAfterPrompt, pattern
+  }) {
+    if (pattern && !isRegExp(pattern)) {
+      throw new Error("param 'pattern' must be a regular expression!");
+    }
+    if (processAfterPrompt && typeof processAfterPrompt !== 'function') {
+      throw new Error("Param 'processAfterPrompt' must be a function!");
+    }
     let askTimes = 0;
-    let contractAddress;
+    let answerInput;
     while (askTimes < times) {
-      // eslint-disable-next-line no-await-in-loop
-      contractAddress = await prompts(prompt);
-      contractAddress = BaseSubCommand.normalizeConfig(contractAddress).contractAddress;
       try {
         // eslint-disable-next-line no-await-in-loop
-        contractAddress = await this.handleContract({ contractAddress }, aelf, wallet);
-        if (contractAddress === null) {
-          askTimes++;
-        } else {
+        answerInput = await prompts(prompt);
+        // process user's answer after prompt
+        if (typeof processAfterPrompt === 'function') {
+          // eslint-disable-next-line no-await-in-loop
+          answerInput = await processAfterPrompt(answerInput);
+        }
+        if (!pattern || pattern.test(answerInput)) {
           break;
+        } else {
+          askTimes++;
         }
       } catch (e) {
         this.oraInstance.fail('Failed');
       }
     }
-    if (askTimes > times - 1 && contractAddress === null) {
+    if (askTimes > times - 1 && answerInput === null) {
       this.oraInstance.fail(plainLogger.fatal(`You has entered wrong message ${times} times!`));
       process.exit(1);
     }
-    return contractAddress;
+    return answerInput;
+  }
+
+  async processAddressAfterPrompt(aelf, wallet, answerInput) {
+    let processedAnswer = BaseSubCommand.normalizeConfig(answerInput).contractAddress;
+    // eslint-disable-next-line no-await-in-loop
+    processedAnswer = await this.handleContract({ contractAddress: processedAnswer }, aelf, wallet);
+    return processedAnswer;
   }
 
   // todo: There is a bug when get contract by address
@@ -131,7 +150,12 @@ class CallCommand extends BaseSubCommand {
           switch (prompt.name) {
             case 'contract-address':
               // eslint-disable-next-line no-await-in-loop
-              contractAddress = await this.promptAddressTolerateSeveralTimes(3, aelf, wallet, prompt);
+              contractAddress = await this.promptTolerateSeveralTimes({
+                times: 3,
+                prompt,
+                processAfterPrompt: this.processAddressAfterPrompt.bind(this, aelf, wallet),
+                pattern: /^((?!null).)*$/
+              });
               break;
             case 'method':
               // eslint-disable-next-line no-await-in-loop
