@@ -52,7 +52,7 @@ class CallCommand extends BaseSubCommand {
         const genesisContract = await aelf.chain.contractAt(GenesisContractAddress, wallet);
         const address = await genesisContract.GetContractAddressByName.call(AElf.utils.sha256(contractAddress));
         contract = await aelf.chain.contractAt(address, wallet);
-        this.oraInstance.succeed('Succeed');
+        this.oraInstance.succeed('Succeed!');
         return contract;
       } catch (error) {
         this.oraInstance.fail(plainLogger.error('Failed to find the contract, please enter the right contract address!'));
@@ -72,25 +72,25 @@ class CallCommand extends BaseSubCommand {
   }
 
   async callMethod(method, params) {
-    this.oraInstance.start('call method');
+    this.oraInstance.start('Calling method...');
     const result = await method.call(params);
     this.oraInstance.succeed('Succeed!');
     return result;
   }
 
-
   /**
    * @description prompt contract address three times at most
+   * @param {*} times
    * @param {*} aelf
    * @param {*} wallet
    * @param {*} prompt
    * @returns
    * @memberof CallCommand
    */
-  async promptAddressTolerateThreeTimes(aelf, wallet, prompt) {
+  async promptAddressTolerateSeveralTimes(times, aelf, wallet, prompt) {
     let askTimes = 0;
     let contractAddress;
-    while (askTimes < 3) {
+    while (askTimes < times) {
       // eslint-disable-next-line no-await-in-loop
       contractAddress = await prompts(prompt);
       contractAddress = BaseSubCommand.normalizeConfig(contractAddress).contractAddress;
@@ -99,18 +99,21 @@ class CallCommand extends BaseSubCommand {
         contractAddress = await this.handleContract({ contractAddress }, aelf, wallet);
         if (contractAddress === null) {
           askTimes++;
-        } else { break; }
+        } else {
+          break;
+        }
       } catch (e) {
         this.oraInstance.fail('Failed');
       }
     }
-    if (askTimes > 2 && contractAddress === null) {
-      this.oraInstance.fail(plainLogger.fatal('You has entered wrong message three times!'));
+    if (askTimes > times - 1 && contractAddress === null) {
+      this.oraInstance.fail(plainLogger.fatal(`You has entered wrong message ${times} times!`));
       process.exit(1);
     }
     return contractAddress;
   }
 
+  // todo: There is a bug when get contract by address
   async run(commander, ...args) {
     this.setCustomPrompts(true);
     const { options, subOptions } = await super.run(commander, ...args);
@@ -128,7 +131,7 @@ class CallCommand extends BaseSubCommand {
           switch (prompt.name) {
             case 'contract-address':
               // eslint-disable-next-line no-await-in-loop
-              contractAddress = await this.promptAddressTolerateThreeTimes(aelf, wallet, prompt);
+              contractAddress = await this.promptAddressTolerateSeveralTimes(3, aelf, wallet, prompt);
               break;
             case 'method':
               // eslint-disable-next-line no-await-in-loop
@@ -157,10 +160,9 @@ class CallCommand extends BaseSubCommand {
         }
       }
       try {
-        console.log('333');
         contractAddress = await this.handleContract({ contractAddress }, aelf, wallet);
       } catch (err) {
-        console.log('444');
+        logger.error(err);
       }
       method = await this.handleMethods({ method }, contractAddress);
       const result = await this.callMethod(method, params);
