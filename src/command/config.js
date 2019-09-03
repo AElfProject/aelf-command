@@ -72,7 +72,9 @@ class ConfigCommand extends BaseSubCommand {
             type: 'string',
             required: flag === 'set',
             message: 'You need to enter the correct <value> for config set',
-            pattern: commonGlobalOptionValidatorDesc[key].pattern || null
+            // The follow validator will get the pattern if the [key] in commonGlobalOptionValidatorDesc.
+            // At the same time avoid an error if [key] is not in.
+            pattern: (key in commonGlobalOptionValidatorDesc && commonGlobalOptionValidatorDesc[key].pattern) || null
           }
         },
         subOptions
