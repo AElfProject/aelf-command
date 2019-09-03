@@ -1,7 +1,7 @@
 const Logger = require('./Logger');
 
 const logger = new Logger({
-  name: 'aelf',
+  name: 'AElf',
   log: true
 });
 
