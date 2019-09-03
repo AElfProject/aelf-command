@@ -5,11 +5,9 @@
 const Schema = require('async-validator/dist-node/index').default;
 const prompts = require('prompts');
 const ora = require('ora');
+const { logger } = require('../utils/myLogger');
 const { camelCase } = require('../utils/utils');
-const {
-  globalOptionsPrompts,
-  strictGlobalOptionValidatorDesc
-} = require('../utils/constants');
+const { globalOptionsPrompts, strictGlobalOptionValidatorDesc } = require('../utils/constants');
 
 Schema.warning = () => {};
 
@@ -60,9 +58,7 @@ class BaseSubCommand {
   }
 
   init(commander) {
-    let command = commander
-      .command(`${this.commandName} ${this.getParameters()}`)
-      .description(this.description);
+    let command = commander.command(`${this.commandName} ${this.getParameters()}`).description(this.description);
     // eslint-disable-next-line no-restricted-syntax
     for (const { flag, description } of this.options) {
       command = command.option(flag, description);
@@ -74,41 +70,33 @@ class BaseSubCommand {
       })
       .on('--help', () => {
         // todo: chalk
-        console.log('');
-        console.log('Examples:');
-        console.log('');
-        console.log(`${this.makeExamples().join('\n')}`);
+        logger.info('');
+        logger.info('Examples:');
+        logger.info('');
+        logger.info(`${this.makeExamples().join('\n')}`);
       });
   }
 
   getParameters() {
-    return this.parameters.map(v => {
-      const {
-        name,
-        required = false,
-        extraName = []
-      } = v;
-      const symbol = [name, ...extraName].join('|');
-      return required ? `<${symbol}>` : `[${symbol}]`;
-    }).join(' ');
+    return this.parameters
+      .map(v => {
+        const { name, required = false, extraName = [] } = v;
+        const symbol = [name, ...extraName].join('|');
+        return required ? `<${symbol}>` : `[${symbol}]`;
+      })
+      .join(' ');
   }
 
   handleUniOptionsError(error) {
     const { errors = [] } = error;
     // todo: chalk
-    console.log('Errors:\n');
-    console.log(errors.reduce((acc, i) => `${acc}\n${i.message}`, ''));
+    logger.error(errors.reduce((acc, i) => `${acc}${i.message}\n`, ''));
     process.exit(1);
   }
 
   static getUniConfig(commander) {
     const result = {};
-    [
-      'password',
-      'endpoint',
-      'account',
-      'datadir'
-    ].forEach(v => {
+    ['password', 'endpoint', 'account', 'datadir'].forEach(v => {
       if (commander[v]) {
         result[v] = commander[v];
       }
@@ -128,7 +116,7 @@ class BaseSubCommand {
 
   static normalizeConfig(obj) {
     // dash to camel-case
-    // 'true', 'false to true, false
+    // 'true', 'false' to true, false
     const result = {};
     Object.entries(obj).forEach(([key, value]) => {
       result[camelCase(key)] = BaseSubCommand.parseBoolean(value);
@@ -140,10 +128,7 @@ class BaseSubCommand {
     let subCommandOptions = {};
     args.slice(0, this.parameters.length).forEach((v, i) => {
       if (v) {
-        const {
-          name,
-          format = val => val
-        } = this.parameters[i];
+        const { name, format = val => val } = this.parameters[i];
         subCommandOptions[name] = format(v);
       }
     });
@@ -161,7 +146,9 @@ class BaseSubCommand {
       ...uniOptions
     });
     // eslint-disable-next-line max-len
-    const globalPrompts = globalOptionsPrompts.filter(prompt => this.validatorDesc[prompt.name].required && !options[prompt.name]);
+    const globalPrompts = globalOptionsPrompts.filter(
+      prompt => this.validatorDesc[prompt.name].required && !options[prompt.name]
+    );
     const globalPromptsAns = await prompts(globalPrompts);
     options = {
       ...options,

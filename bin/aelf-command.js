@@ -1,7 +1,8 @@
 #!/usr/bin/env node
+const { logger } = require('../src/utils/myLogger');
 
 process.on('uncaughtException', err => {
-  console.error(err.message || err);
+  logger.fatal(err.message || err);
   process.exit(1);
 });
 
