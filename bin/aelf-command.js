@@ -2,7 +2,7 @@
 const { logger } = require('../src/utils/myLogger');
 
 process.on('uncaughtException', err => {
-  logger.error(err.message || err);
+  logger.fatal(err.message || err);
   process.exit(1);
 });
 

@@ -1,10 +1,11 @@
 const chalk = require('chalk');
 
-// - TRACE: The unimportant detail about how the process run. You may hardly use it.
-// - DEBUG: A debug message for processing information to help during troubleshooting.
-// - INFO: Generally useful information to log (service start/stop, configuration assumptions, etc).
-// - WARN: Anything that can potentially cause application oddities.
-// - ERROR: The system is unusable.
+// - Trace: The unimportant detail about how the process run. You may hardly use it.
+// - Debug: A debug message for processing information to help during troubleshooting.
+// - Info: Generally useful information to log (service start/stop, configuration assumptions, etc).
+// - Warn: Anything that can potentially cause application oddities.
+// - Error: Error has happend, but the user can still use the system after fixing the error.
+// - Fatal: The system is unusable.
 const levels = [
   {
     level: 'Trace',
