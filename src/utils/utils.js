@@ -35,12 +35,24 @@ function camelCase(str) {
   return _camelCase(str);
 }
 
+// todo: repository aelf-sdk, add a method that return all contract's name
+// so that we can develop a better method to help us identify the aelf's contract
 function isAElfContract(str) {
   return str.trim().toLowerCase().startsWith('aelf.');
+}
+
+/**
+ * @description judge if the input is regular expression
+ * @param {*} o
+ * @returns boolean flag
+ */
+function isRegExp(o) {
+  return o && Object.prototype.toString.call(o) === '[object RegExp]';
 }
 
 module.exports = {
   promisify,
   camelCase,
-  isAElfContract
+  isAElfContract,
+  isRegExp
 };
