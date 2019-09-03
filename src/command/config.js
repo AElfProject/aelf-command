@@ -72,6 +72,7 @@ class ConfigCommand extends BaseSubCommand {
             type: 'string',
             required: flag === 'set',
             message: 'You need to enter the <value> for config set'
+            // todo: add validate rule to fix bug
           }
         },
         subOptions
