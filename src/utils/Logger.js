@@ -17,7 +17,7 @@ const levels = [
   },
   {
     level: 'Info',
-    color: chalk.blue
+    color: chalk.hex('#3753d3')
   },
   {
     level: 'Warn',
@@ -25,11 +25,11 @@ const levels = [
   },
   {
     level: 'Error',
-    color: chalk.hex('#CF6679')
+    color: chalk.hex('#cf342f')
   },
   {
     level: 'Fatal',
-    color: chalk.red
+    color: chalk.hex('#cf0014')
   }
 ];
 

@@ -39,7 +39,8 @@ function init() {
   if (commander.args.length === 0) commander.help();
   updateNotifier({
     pkg,
-    distTag: 'latest'
+    distTag: 'latest',
+    updateCheckInterval: 1000 * 60 * 60 * 2 // two hours
   }).notify();
 }
 

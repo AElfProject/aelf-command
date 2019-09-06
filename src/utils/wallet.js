@@ -36,7 +36,7 @@ async function saveKeyStore(wallet, datadir, cipher = 'aes-128-ctr') {
     throw new Error('Passwords are different');
   }
   if (password.length <= 6) {
-    throw new Error('password is to short');
+    throw new Error('password is too short');
   }
   const keyStore = AElf.wallet.keyStore.getKeystore(wallet, password, {
     cipher

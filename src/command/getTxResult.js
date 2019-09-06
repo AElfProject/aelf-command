@@ -48,8 +48,7 @@ class GetTxResultCommand extends BaseSubCommand {
       this.oraInstance.start();
       const txResult = await aelf.chain.getTxResult(txHash);
       this.oraInstance.succeed('Succeed!');
-      // todo: chalk
-      logger.info(txResult);
+      logger.info(JSON.stringify(txResult, null, 2));
     } catch (e) {
       this.oraInstance.fail('Failed to run this command');
       logger.error(e);

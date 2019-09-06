@@ -70,10 +70,10 @@ class BaseSubCommand {
       })
       .on('--help', () => {
         // todo: chalk
-        logger.info('');
-        logger.info('Examples:');
-        logger.info('');
-        logger.info(`${this.makeExamples().join('\n')}`);
+        console.info('');
+        console.info('Examples:');
+        console.info('');
+        console.info(`${this.makeExamples().join('\n')}`);
       });
   }
 

@@ -36,14 +36,13 @@ class CallCommand extends BaseSubCommand {
     if (typeof contractAddress !== 'string') {
       return contractAddress;
     }
-    this.oraInstance.start('Start to get contract...\n');
     let contract = null;
     if (!isAElfContract(contractAddress)) {
       try {
         contract = await aelf.chain.contractAt(contractAddress, wallet);
         return contract;
       } catch (err) {
-        this.oraInstance.fail(plainLogger.error('Failed to find the contract, please enter the correct contract address!'));
+        this.oraInstance.fail(plainLogger.error('Failed to find the contract, please enter the correct contract name!'));
         return null;
       }
     } else {

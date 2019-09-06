@@ -3,6 +3,7 @@
  * @author atom-yang
  */
 const path = require('path');
+const { logger } = require('./myLogger');
 
 const callCommandUsages = [
   '<contractName|contractAddress> <method> <params>',
@@ -226,7 +227,13 @@ const passwordPrompts = [
   {
     type: 'password',
     name: 'password',
-    message: 'Enter a password'
+    message: 'Enter a password',
+    validate(val) {
+      if (!val || val.length <= 6) {
+        logger.error('\npassword is too short');
+        process.exit(1);
+      }
+    }
   },
   {
     type: 'password',
