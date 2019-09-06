@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.10](https://github.com/AElfProject/aelf-command/compare/v0.1.9...v0.1.10) (2019-09-06)
+
+
+### Bug Fixes
+
+* 🐛 fix input password error ([af4e675](https://github.com/AElfProject/aelf-command/commit/af4e675))
+
 ### [0.1.9](https://github.com/AElfProject/aelf-command/compare/v0.1.8...v0.1.9) (2019-09-06)
 
 
