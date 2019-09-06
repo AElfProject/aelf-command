@@ -3,10 +3,10 @@
  * @author atom-yang
  */
 const AElf = require('aelf-sdk');
-const prompts = require('prompts');
 const fs = require('fs');
 const path = require('path');
 const mkdirp = require('mkdirp');
+const inquirer = require('inquirer');
 const Registry = require('../rc/index');
 const {
   passwordPrompts
@@ -31,7 +31,7 @@ async function saveKeyStore(wallet, datadir, cipher = 'aes-128-ctr') {
   const {
     password,
     confirmPassword
-  } = BaseSubCommand.normalizeConfig(await prompts(passwordPrompts));
+  } = BaseSubCommand.normalizeConfig(await inquirer.prompt(passwordPrompts));
   if (password !== confirmPassword) {
     throw new Error('Passwords are different');
   }

@@ -14,19 +14,21 @@ const callCommandUsages = [
 
 const callCommandParameters = [
   {
-    type: 'text',
+    type: 'input',
     name: 'contract-address',
     extraName: ['contract-name'],
     message: 'Enter contract name (System contracts only) or the address of contract',
+    suffix: ':'
   },
   {
-    type: 'select',
+    type: 'list',
     name: 'method',
     message: 'Pick up a contract method',
+    pageSize: 10,
     choices: []
   },
   {
-    type: 'text',
+    type: 'input',
     name: 'params',
     message: 'Enter the method params in JSON string format',
     format: (val = '') => {
@@ -70,7 +72,7 @@ const blkInfoCommandUsage = [
 
 const txResultCommandParameters = [
   {
-    type: 'text',
+    type: 'input',
     name: 'tx-hash',
     message: 'Enter a valid transaction hash in hex format'
   }
@@ -83,10 +85,11 @@ const txResultCommandUsage = [
 
 const createCommandParameters = [
   {
-    type: 'toggle',
+    type: 'confirm',
     name: 'save-to-file',
     required: false,
     initial: true,
+    default: true,
     message: 'Save account info into a file?',
     active: 'yes',
     inactive: 'no'
@@ -100,19 +103,19 @@ const createCommandUsage = [
 
 const configCommandParameters = [
   {
-    type: 'text',
+    type: 'input',
     name: 'flag',
     required: true,
     message: 'Config operation key, must one of set, get, delete, list'
   },
   {
-    type: 'text',
+    type: 'input',
     name: 'key',
     required: false,
     message: 'Enter the key of config'
   },
   {
-    type: 'text',
+    type: 'input',
     name: 'value',
     required: false,
     message: 'Only necessary for flag <set>'
@@ -128,15 +131,16 @@ const configCommandUsage = [
 
 const loadCommandParameters = [
   {
-    type: 'text',
+    type: 'input',
     name: 'private-key',
     extraName: ['mnemonic'],
     message: 'Enter a private key or mnemonic'
   },
   {
-    type: 'toggle',
+    type: 'confirm',
     name: 'save-to-file',
     required: false,
+    default: true,
     initial: true,
     message: 'Save account info into a file?',
     active: 'yes',
@@ -152,12 +156,12 @@ const loadCommandUsage = [
 
 const deployCommandParameters = [
   {
-    type: 'text',
+    type: 'input',
     name: 'category',
     message: 'Enter the category of the contract to be deployed'
   },
   {
-    type: 'text',
+    type: 'input',
     name: 'code-path',
     message: 'Enter the relative or absolute path of contract code',
     format(val) {
@@ -211,12 +215,12 @@ Object.entries(commonGlobalOptionValidatorDesc).forEach(([key, value]) => {
  */
 const globalOptionsPrompts = [
   {
-    type: 'text',
+    type: 'input',
     name: 'endpoint',
     message: 'Enter the the URI of an AElf node'
   },
   {
-    type: 'text',
+    type: 'input',
     name: 'account',
     message: 'Enter a valid wallet address, if you don\'t have, create one by aelf-command create'
   },

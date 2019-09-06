@@ -3,7 +3,7 @@
  * @author atom-yang
  */
 const AElf = require('aelf-sdk');
-const prompts = require('prompts');
+const inquirer = require('inquirer');
 const BaseSubCommand = require('./baseSubCommand');
 const { callCommandUsages, callCommandParameters } = require('../utils/constants');
 const { isAElfContract, isRegExp } = require('../utils/utils');
@@ -102,7 +102,7 @@ class CallCommand extends BaseSubCommand {
     while (askTimes < times) {
       try {
         // eslint-disable-next-line no-await-in-loop
-        answerInput = await prompts(prompt);
+        answerInput = await inquirer.prompt(prompt);
         // process user's answer after prompt
         if (typeof processAfterPrompt === 'function') {
           // eslint-disable-next-line no-await-in-loop
@@ -131,7 +131,6 @@ class CallCommand extends BaseSubCommand {
     return processedAnswer;
   }
 
-  // todo: There is a bug when get contract by address
   async run(commander, ...args) {
     this.setCustomPrompts(true);
     const { options, subOptions } = await super.run(commander, ...args);
@@ -162,7 +161,7 @@ class CallCommand extends BaseSubCommand {
               // eslint-disable-next-line no-await-in-loop
               method = await this.handleMethods(
                 // eslint-disable-next-line no-await-in-loop
-                await prompts({
+                await inquirer.prompt({
                   ...prompt,
                   choices: CallCommand.getContractMethods(contractAddress)
                 }),
@@ -175,7 +174,7 @@ class CallCommand extends BaseSubCommand {
               // eslint-disable-next-line no-await-in-loop
               method = await this.handleMethods({ method }, contractAddress);
               // eslint-disable-next-line no-await-in-loop
-              params = (await prompts(prompt)).params;
+              params = (await inquirer.prompt(prompt)).params;
               break;
             default:
               break;
