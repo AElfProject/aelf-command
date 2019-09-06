@@ -29,12 +29,16 @@ const callCommandParameters = [
     type: 'text',
     name: 'params',
     message: 'Enter the method params in JSON string format',
-    format: val => {
+    format: (val = '') => {
       let result = null;
+      let value = val;
+      if (val.startsWith('\'') && val.endsWith('\'')) {
+        value = val.slice(1, val.length - 1);
+      }
       try {
-        result = JSON.parse(val);
+        result = JSON.parse(value);
       } catch (e) {
-        result = val;
+        result = value;
       }
       return result;
     }
@@ -227,17 +231,20 @@ const passwordPrompts = [
   {
     type: 'password',
     name: 'password',
+    mask: '*',
     message: 'Enter a password',
     validate(val) {
       if (!val || val.length <= 6) {
         logger.error('\npassword is too short');
         process.exit(1);
       }
+      return true;
     }
   },
   {
     type: 'password',
     name: 'confirm-password',
+    mask: '*',
     message: 'Confirm password'
   }
 ];

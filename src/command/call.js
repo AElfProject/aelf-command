@@ -36,11 +36,11 @@ class CallCommand extends BaseSubCommand {
     if (typeof contractAddress !== 'string') {
       return contractAddress;
     }
+    this.oraInstance.start('Fetching contract');
     let contract = null;
     if (!isAElfContract(contractAddress)) {
       try {
         contract = await aelf.chain.contractAt(contractAddress, wallet);
-        return contract;
       } catch (err) {
         this.oraInstance.fail(plainLogger.error('Failed to find the contract, please enter the correct contract name!'));
         return null;
@@ -51,13 +51,13 @@ class CallCommand extends BaseSubCommand {
         const genesisContract = await aelf.chain.contractAt(GenesisContractAddress, wallet);
         const address = await genesisContract.GetContractAddressByName.call(AElf.utils.sha256(contractAddress));
         contract = await aelf.chain.contractAt(address, wallet);
-        this.oraInstance.succeed('Succeed!');
-        return contract;
       } catch (error) {
         this.oraInstance.fail(plainLogger.error('Failed to find the contract, please enter the correct contract address!'));
         return null;
       }
     }
+    this.oraInstance.succeed('Fetching contract successfully!');
+    return contract;
   }
 
   async handleMethods({ method }, contract) {
@@ -73,7 +73,7 @@ class CallCommand extends BaseSubCommand {
   async callMethod(method, params) {
     this.oraInstance.start('Calling method...');
     const result = await method.call(params);
-    this.oraInstance.succeed('Succeed!');
+    this.oraInstance.succeed('Calling method successfully!');
     return result;
   }
 
