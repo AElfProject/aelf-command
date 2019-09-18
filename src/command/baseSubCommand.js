@@ -128,8 +128,8 @@ class BaseSubCommand {
     let subCommandOptions = {};
     args.slice(0, this.parameters.length).forEach((v, i) => {
       if (v) {
-        const { name, format = val => val } = this.parameters[i];
-        subCommandOptions[name] = format(v);
+        const { name, filter = val => val } = this.parameters[i];
+        subCommandOptions[name] = filter(v);
       }
     });
     // sub command options

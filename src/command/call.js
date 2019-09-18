@@ -186,6 +186,9 @@ class CallCommand extends BaseSubCommand {
       } catch (err) {
         logger.error(err);
       }
+      try {
+        params = JSON.parse(params);
+      } catch (e) {}
       method = await this.handleMethods({ method }, contractAddress);
       const result = await this.callMethod(method, params);
       logger.info(`\nResult:\n${JSON.stringify(result, null, 2)}`);

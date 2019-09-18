@@ -25,13 +25,15 @@ const callCommandParameters = [
     name: 'method',
     message: 'Pick up a contract method',
     pageSize: 10,
-    choices: []
+    choices: [],
+    suffix: ':'
   },
   {
     type: 'input',
     name: 'params',
     message: 'Enter the method params in JSON string format',
-    format: (val = '') => {
+    suffix: ':',
+    filter: (val = '') => {
       let result = null;
       let value = val;
       if (val.startsWith('\'') && val.endsWith('\'')) {
@@ -42,7 +44,7 @@ const callCommandParameters = [
       } catch (e) {
         result = value;
       }
-      return result;
+      return JSON.stringify(result);
     }
   }
 ];
@@ -51,16 +53,18 @@ const blkInfoCommandParameters = [
   {
     type: 'number',
     name: 'height',
-    message: 'Enter a valid height'
+    message: 'Enter a valid height',
+    suffix: ':'
   },
   {
-    type: 'toggle',
+    type: 'confirm',
     name: 'include-txs',
     required: false,
     initial: false,
     message: 'Include transactions whether or not',
     active: 'yes',
-    inactive: 'no'
+    inactive: 'no',
+    suffix: '?'
   }
 ];
 
@@ -74,7 +78,8 @@ const txResultCommandParameters = [
   {
     type: 'input',
     name: 'tx-hash',
-    message: 'Enter a valid transaction hash in hex format'
+    message: 'Enter a valid transaction hash in hex format',
+    suffix: ':'
   }
 ];
 
@@ -106,19 +111,22 @@ const configCommandParameters = [
     type: 'input',
     name: 'flag',
     required: true,
-    message: 'Config operation key, must one of set, get, delete, list'
+    message: 'Config operation key, must one of set, get, delete, list',
+    suffix: ':'
   },
   {
     type: 'input',
     name: 'key',
     required: false,
-    message: 'Enter the key of config'
+    message: 'Enter the key of config',
+    suffix: ':'
   },
   {
     type: 'input',
     name: 'value',
     required: false,
-    message: 'Only necessary for flag <set>'
+    message: 'Only necessary for flag <set>',
+    suffix: ':'
   }
 ];
 
@@ -134,7 +142,8 @@ const loadCommandParameters = [
     type: 'input',
     name: 'private-key',
     extraName: ['mnemonic'],
-    message: 'Enter a private key or mnemonic'
+    message: 'Enter a private key or mnemonic',
+    suffix: ':'
   },
   {
     type: 'confirm',
@@ -142,9 +151,10 @@ const loadCommandParameters = [
     required: false,
     default: true,
     initial: true,
-    message: 'Save account info into a file?',
+    message: 'Save account info into a file',
     active: 'yes',
-    inactive: 'no'
+    inactive: 'no',
+    suffix: '?'
   }
 ];
 
@@ -158,15 +168,17 @@ const deployCommandParameters = [
   {
     type: 'input',
     name: 'category',
-    message: 'Enter the category of the contract to be deployed'
+    message: 'Enter the category of the contract to be deployed',
+    suffix: ':'
   },
   {
     type: 'input',
     name: 'code-path',
     message: 'Enter the relative or absolute path of contract code',
-    format(val) {
+    filter(val) {
       return path.resolve(process.cwd(), val);
-    }
+    },
+    suffix: ':'
   }
 ];
 
@@ -180,23 +192,27 @@ const commonGlobalOptionValidatorDesc = {
   password: {
     type: 'string',
     required: false,
-    message: 'set password in global config file or passed by -p <password>'
+    message: 'set password in global config file or passed by -p <password>',
+    suffix: ':'
   },
   endpoint: {
     type: 'string',
     required: true,
     pattern: /(https?):\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+/,
-    message: 'set a valid endpoint in global config file or passed by -e <endpoint>'
+    message: 'set a valid endpoint in global config file or passed by -e <endpoint>',
+    suffix: ':'
   },
   datadir: {
     type: 'string',
     required: true,
-    message: 'set a valid DATADIR in global config file or passed by -d <DATADIR>'
+    message: 'set a valid DATADIR in global config file or passed by -d <DATADIR>',
+    suffix: ':'
   },
   account: {
     type: 'string',
     required: false,
-    message: 'set a valid account address in global config file or passed by -a <address>'
+    message: 'set a valid account address in global config file or passed by -a <address>',
+    suffix: ':'
   }
 };
 
@@ -243,13 +259,15 @@ const passwordPrompts = [
         process.exit(1);
       }
       return true;
-    }
+    },
+    suffix: ':'
   },
   {
     type: 'password',
     name: 'confirm-password',
     mask: '*',
-    message: 'Confirm password'
+    message: 'Confirm password',
+    suffix: ':'
   }
 ];
 
