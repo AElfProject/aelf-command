@@ -13,11 +13,13 @@ const CreateCommand = require('./create');
 const LoadCommand = require('./load');
 const DeployCommand = require('./deploy');
 const ConfigCommand = require('./config');
+const GetChainStatus = require('./getChainStatus');
 
 module.exports = {
   CallCommand,
   SendCommand,
   GetBlkHeightCommand,
+  GetChainStatus,
   GetBlkInfoCommand,
   GetTxResultCommand,
   ConsoleCommand,
