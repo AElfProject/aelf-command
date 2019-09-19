@@ -330,6 +330,28 @@ aelf-command call AElf.ContractNames.Token GetTokenInfo '{"symbol":"ELF"}'
 aelf-command call WnV9Gv3gioSh3Vgaw8SSB96nV8fWUNxuVozCf6Y14e7RXyGaM GetTokenInfo '{"symbol":"ELF"}'
 ```
 
+### get-chain-status - get the current status of the block chain
+
+```bash
+$ aelf-command get-chain-status
+✔ Succeed
+{
+  "ChainId": "AELF",
+  "Branches": {
+    "59937e3c16860dedf0c80955f4995a5604ca43ccf39cd52f936fb4e5a5954445": 4229086
+  },
+  "NotLinkedBlocks": {},
+  "LongestChainHeight": 4229086,
+  "LongestChainHash": "59937e3c16860dedf0c80955f4995a5604ca43ccf39cd52f936fb4e5a5954445",
+  "GenesisBlockHash": "da5e200259320781a1851081c99984fb853385153991e0f00984a0f5526d121c",
+  "GenesisContractAddress": "2gaQh4uxg6tzyH1ADLoDxvHA14FMpzEiMqsQ6sDG5iHT8cmjp8",
+  "LastIrreversibleBlockHash": "497c24ff443f5cbd33da24a430f5c6c5e0be2f31651bd89f4ddf2790bcbb1906",
+  "LastIrreversibleBlockHeight": 4229063,
+  "BestChainHash": "59937e3c16860dedf0c80955f4995a5604ca43ccf39cd52f936fb4e5a5954445",
+  "BestChainHeight": 4229086
+}
+```
+
 ### get-tx-result - get a transaction result
 
 ```bash
@@ -367,10 +389,12 @@ aelf-command get-blk-height
 > 7902091
 ```
 
-### get-blk-info - get the block info by a block height
+### get-blk-info - get the block info by a block height or a block hash
+
+You can pass a block height or a block hash to this sub-command.
 
 ```bash
-aelf-command get-blk-info
+$ aelf-command get-blk-info
 ✔ Enter the the URI of an AElf node … http://13.231.179.27:8000
 ✔ Enter a valid height … 123
 ✔ Include transactions whether or not … no / yes
@@ -396,6 +420,11 @@ aelf-command get-blk-info
    { TransactionsCount: 1,
      Transactions:
       [ 'a365a682caf3b586cbd167b81b167979057246a726c7282530554984ec042625' ] } }
+```
+
+```bash
+$ aelf-command get-blk-info ca61c7c8f5fc1bc8af0536bc9b51c61a94f39641a93a748e72802b3678fea4a9 true
+$ aelf-command get-blk-info 12 true
 ```
 
 ### console - open an interactive console

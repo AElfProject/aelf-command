@@ -31,7 +31,7 @@ const callCommandParameters = [
   {
     type: 'input',
     name: 'params',
-    message: 'Enter the method params in JSON string format',
+    message: 'Enter the method params in JSON string or plain text format',
     suffix: ':',
     filter: (val = '') => {
       let result = null;
@@ -51,8 +51,9 @@ const callCommandParameters = [
 
 const blkInfoCommandParameters = [
   {
-    type: 'number',
+    type: 'text',
     name: 'height',
+    extraName: ['block-hash'],
     message: 'Enter a valid height',
     suffix: ':'
   },
@@ -69,8 +70,8 @@ const blkInfoCommandParameters = [
 ];
 
 const blkInfoCommandUsage = [
-  '<height> <include-txs>',
-  '<height>',
+  '<height|block-hash> <include-txs>',
+  '<height|block-hash>',
   ''
 ];
 
