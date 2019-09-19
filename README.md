@@ -389,10 +389,12 @@ aelf-command get-blk-height
 > 7902091
 ```
 
-### get-blk-info - get the block info by a block height
+### get-blk-info - get the block info by a block height or a block hash
+
+You can pass a block height or a block hash to this sub-command.
 
 ```bash
-aelf-command get-blk-info
+$ aelf-command get-blk-info
 ✔ Enter the the URI of an AElf node … http://13.231.179.27:8000
 ✔ Enter a valid height … 123
 ✔ Include transactions whether or not … no / yes
@@ -418,6 +420,11 @@ aelf-command get-blk-info
    { TransactionsCount: 1,
      Transactions:
       [ 'a365a682caf3b586cbd167b81b167979057246a726c7282530554984ec042625' ] } }
+```
+
+```bash
+$ aelf-command get-blk-info ca61c7c8f5fc1bc8af0536bc9b51c61a94f39641a93a748e72802b3678fea4a9 true
+$ aelf-command get-blk-info 12 true
 ```
 
 ### console - open an interactive console

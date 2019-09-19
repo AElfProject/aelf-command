@@ -47,9 +47,10 @@ const callCommandParameters = [
 
 const blkInfoCommandParameters = [
   {
-    type: 'number',
+    type: 'text',
     name: 'height',
-    message: 'Enter a valid height'
+    extraName: ['block-hash'],
+    message: 'Enter a valid height or a block hash'
   },
   {
     type: 'toggle',
@@ -63,8 +64,8 @@ const blkInfoCommandParameters = [
 ];
 
 const blkInfoCommandUsage = [
-  '<height> <include-txs>',
-  '<height>',
+  '<height|block-hash> <include-txs>',
+  '<height|block-hash>',
   ''
 ];
 
