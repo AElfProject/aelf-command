@@ -28,7 +28,7 @@ const callCommandParameters = [
   {
     type: 'text',
     name: 'params',
-    message: 'Enter the method params in JSON string format',
+    message: 'Enter the method params in JSON string or plain text format',
     format: (val = '') => {
       let result = null;
       let value = val;
