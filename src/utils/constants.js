@@ -51,7 +51,7 @@ const callCommandParameters = [
 
 const blkInfoCommandParameters = [
   {
-    type: 'text',
+    type: 'input',
     name: 'height',
     extraName: ['block-hash'],
     message: 'Enter a valid height',
@@ -193,27 +193,23 @@ const commonGlobalOptionValidatorDesc = {
   password: {
     type: 'string',
     required: false,
-    message: 'set password in global config file or passed by -p <password>',
-    suffix: ':'
+    message: 'set password in global config file or passed by -p <password>'
   },
   endpoint: {
     type: 'string',
     required: true,
     pattern: /(https?):\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+/,
-    message: 'set a valid endpoint in global config file or passed by -e <endpoint>',
-    suffix: ':'
+    message: 'set a valid endpoint in global config file or passed by -e <endpoint>'
   },
   datadir: {
     type: 'string',
     required: true,
-    message: 'set a valid DATADIR in global config file or passed by -d <DATADIR>',
-    suffix: ':'
+    message: 'set a valid DATADIR in global config file or passed by -d <DATADIR>'
   },
   account: {
     type: 'string',
     required: false,
-    message: 'set a valid account address in global config file or passed by -a <address>',
-    suffix: ':'
+    message: 'set a valid account address in global config file or passed by -a <address>'
   }
 };
 
@@ -234,17 +230,21 @@ const globalOptionsPrompts = [
   {
     type: 'input',
     name: 'endpoint',
-    message: 'Enter the the URI of an AElf node'
+    message: 'Enter the the URI of an AElf node',
+    suffix: ':'
   },
   {
     type: 'input',
     name: 'account',
-    message: 'Enter a valid wallet address, if you don\'t have, create one by aelf-command create'
+    message: 'Enter a valid wallet address, if you don\'t have, create one by aelf-command create',
+    suffix: ':'
   },
   {
     type: 'password',
     name: 'password',
-    message: 'Enter the password you typed when creating a wallet'
+    mask: '*',
+    message: 'Enter the password you typed when creating a wallet',
+    suffix: ':'
   }
 ];
 
