@@ -51,7 +51,7 @@ Address             : 2Ue31YTuB5Szy7cnr3SCEGU2gtGi5uMQBYarYUR5oGin1sys6H
 ✔ Enter a password … ********
 ✔ Confirm password … ********
 ✔
-Account info has been saved to "/Users/young/.local/share/aelf/keyStore/2Ue31YTuB5Szy7cnr...Gi5uMQBYarYUR5oGin1sys6H.json"
+Account info has been saved to "/Users/young/.local/share/aelf/keys/2Ue31YTuB5Szy7cnr...Gi5uMQBYarYUR5oGin1sys6H.json"
 
 ```
 
