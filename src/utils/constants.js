@@ -14,22 +14,26 @@ const callCommandUsages = [
 
 const callCommandParameters = [
   {
-    type: 'text',
+    type: 'input',
     name: 'contract-address',
     extraName: ['contract-name'],
     message: 'Enter contract name (System contracts only) or the address of contract',
+    suffix: ':'
   },
   {
-    type: 'select',
+    type: 'list',
     name: 'method',
     message: 'Pick up a contract method',
-    choices: []
+    pageSize: 10,
+    choices: [],
+    suffix: ':'
   },
   {
-    type: 'text',
+    type: 'input',
     name: 'params',
     message: 'Enter the method params in JSON string or plain text format',
-    format: (val = '') => {
+    suffix: ':',
+    filter: (val = '') => {
       let result = null;
       let value = val;
       if (val.startsWith('\'') && val.endsWith('\'')) {
@@ -40,7 +44,7 @@ const callCommandParameters = [
       } catch (e) {
         result = value;
       }
-      return result;
+      return JSON.stringify(result);
     }
   }
 ];
@@ -50,16 +54,18 @@ const blkInfoCommandParameters = [
     type: 'text',
     name: 'height',
     extraName: ['block-hash'],
-    message: 'Enter a valid height or a block hash'
+    message: 'Enter a valid height',
+    suffix: ':'
   },
   {
-    type: 'toggle',
+    type: 'confirm',
     name: 'include-txs',
     required: false,
     initial: false,
     message: 'Include transactions whether or not',
     active: 'yes',
-    inactive: 'no'
+    inactive: 'no',
+    suffix: '?'
   }
 ];
 
@@ -71,9 +77,10 @@ const blkInfoCommandUsage = [
 
 const txResultCommandParameters = [
   {
-    type: 'text',
+    type: 'input',
     name: 'tx-hash',
-    message: 'Enter a valid transaction hash in hex format'
+    message: 'Enter a valid transaction hash in hex format',
+    suffix: ':'
   }
 ];
 
@@ -84,10 +91,11 @@ const txResultCommandUsage = [
 
 const createCommandParameters = [
   {
-    type: 'toggle',
+    type: 'confirm',
     name: 'save-to-file',
     required: false,
     initial: true,
+    default: true,
     message: 'Save account info into a file?',
     active: 'yes',
     inactive: 'no'
@@ -101,22 +109,25 @@ const createCommandUsage = [
 
 const configCommandParameters = [
   {
-    type: 'text',
+    type: 'input',
     name: 'flag',
     required: true,
-    message: 'Config operation key, must one of set, get, delete, list'
+    message: 'Config operation key, must one of set, get, delete, list',
+    suffix: ':'
   },
   {
-    type: 'text',
+    type: 'input',
     name: 'key',
     required: false,
-    message: 'Enter the key of config'
+    message: 'Enter the key of config',
+    suffix: ':'
   },
   {
-    type: 'text',
+    type: 'input',
     name: 'value',
     required: false,
-    message: 'Only necessary for flag <set>'
+    message: 'Only necessary for flag <set>',
+    suffix: ':'
   }
 ];
 
@@ -129,19 +140,22 @@ const configCommandUsage = [
 
 const loadCommandParameters = [
   {
-    type: 'text',
+    type: 'input',
     name: 'private-key',
     extraName: ['mnemonic'],
-    message: 'Enter a private key or mnemonic'
+    message: 'Enter a private key or mnemonic',
+    suffix: ':'
   },
   {
-    type: 'toggle',
+    type: 'confirm',
     name: 'save-to-file',
     required: false,
+    default: true,
     initial: true,
-    message: 'Save account info into a file?',
+    message: 'Save account info into a file',
     active: 'yes',
-    inactive: 'no'
+    inactive: 'no',
+    suffix: '?'
   }
 ];
 
@@ -153,17 +167,19 @@ const loadCommandUsage = [
 
 const deployCommandParameters = [
   {
-    type: 'text',
+    type: 'input',
     name: 'category',
-    message: 'Enter the category of the contract to be deployed'
+    message: 'Enter the category of the contract to be deployed',
+    suffix: ':'
   },
   {
-    type: 'text',
+    type: 'input',
     name: 'code-path',
     message: 'Enter the relative or absolute path of contract code',
-    format(val) {
+    filter(val) {
       return path.resolve(process.cwd(), val);
-    }
+    },
+    suffix: ':'
   }
 ];
 
@@ -177,23 +193,27 @@ const commonGlobalOptionValidatorDesc = {
   password: {
     type: 'string',
     required: false,
-    message: 'set password in global config file or passed by -p <password>'
+    message: 'set password in global config file or passed by -p <password>',
+    suffix: ':'
   },
   endpoint: {
     type: 'string',
     required: true,
     pattern: /(https?):\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+/,
-    message: 'set a valid endpoint in global config file or passed by -e <endpoint>'
+    message: 'set a valid endpoint in global config file or passed by -e <endpoint>',
+    suffix: ':'
   },
   datadir: {
     type: 'string',
     required: true,
-    message: 'set a valid DATADIR in global config file or passed by -d <DATADIR>'
+    message: 'set a valid DATADIR in global config file or passed by -d <DATADIR>',
+    suffix: ':'
   },
   account: {
     type: 'string',
     required: false,
-    message: 'set a valid account address in global config file or passed by -a <address>'
+    message: 'set a valid account address in global config file or passed by -a <address>',
+    suffix: ':'
   }
 };
 
@@ -212,12 +232,12 @@ Object.entries(commonGlobalOptionValidatorDesc).forEach(([key, value]) => {
  */
 const globalOptionsPrompts = [
   {
-    type: 'text',
+    type: 'input',
     name: 'endpoint',
     message: 'Enter the the URI of an AElf node'
   },
   {
-    type: 'text',
+    type: 'input',
     name: 'account',
     message: 'Enter a valid wallet address, if you don\'t have, create one by aelf-command create'
   },
@@ -240,13 +260,15 @@ const passwordPrompts = [
         process.exit(1);
       }
       return true;
-    }
+    },
+    suffix: ':'
   },
   {
     type: 'password',
     name: 'confirm-password',
     mask: '*',
-    message: 'Confirm password'
+    message: 'Confirm password',
+    suffix: ':'
   }
 ];
 

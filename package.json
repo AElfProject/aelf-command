@@ -44,6 +44,7 @@
     "check-node-version": "^4.0.1",
     "columnify": "^1.5.4",
     "commander": "^3.0.0",
+    "inquirer": "^7.0.0",
     "mkdirp": "^0.5.1",
     "ora": "^3.4.0",
     "prompts": "^2.2.1",
