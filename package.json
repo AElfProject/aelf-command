@@ -36,7 +36,7 @@
   },
   "engineStrict": true,
   "dependencies": {
-    "aelf-sdk": "^3.2.17",
+    "aelf-sdk": "^3.2.13",
     "async-validator": "^3.0.3",
     "boxen": "^4.1.0",
     "camelcase": "^5.3.1",
@@ -44,10 +44,7 @@
     "check-node-version": "^4.0.1",
     "columnify": "^1.5.4",
     "commander": "^3.0.0",
-    "inquirer": "^7.0.0",
-    "inquirer-datepicker-prompt": "^0.4.2",
     "mkdirp": "^0.5.1",
-    "moment": "^2.24.0",
     "ora": "^3.4.0",
     "prompts": "^2.2.1",
     "update-notifier": "^3.0.1"

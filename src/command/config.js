@@ -91,7 +91,7 @@ class ConfigCommand extends BaseSubCommand {
           break;
         case 'list':
           result = this.rc.getFileConfigs();
-          console.log(`\n${this.handleList(result)}`);
+          logger.info(`\n${this.handleList(result)}`);
           break;
         case 'delete':
           result = this.rc.deleteConfig(key);

@@ -3,10 +3,10 @@
  * @author atom-yang
  */
 const AElf = require('aelf-sdk');
+const prompts = require('prompts');
 const fs = require('fs');
 const path = require('path');
 const mkdirp = require('mkdirp');
-const inquirer = require('inquirer');
 const Registry = require('../rc/index');
 const {
   passwordPrompts
@@ -14,7 +14,7 @@ const {
 const BaseSubCommand = require('../command/baseSubCommand');
 
 function getWallet(commandRoot, address, password) {
-  const keyStoreFile = path.resolve(commandRoot, `keys/${address}.json`);
+  const keyStoreFile = path.resolve(commandRoot, `keyStore/${address}.json`);
   const keyStore = JSON.parse(Registry.getFileOrNot(keyStoreFile, '{}').toString());
   if (Object.keys(keyStore).length === 0) {
     throw new Error('Make sure you entered the correct account address');
@@ -31,7 +31,7 @@ async function saveKeyStore(wallet, datadir, cipher = 'aes-128-ctr') {
   const {
     password,
     confirmPassword
-  } = BaseSubCommand.normalizeConfig(await inquirer.prompt(passwordPrompts));
+  } = BaseSubCommand.normalizeConfig(await prompts(passwordPrompts));
   if (password !== confirmPassword) {
     throw new Error('Passwords are different');
   }
@@ -41,9 +41,9 @@ async function saveKeyStore(wallet, datadir, cipher = 'aes-128-ctr') {
   const keyStore = AElf.wallet.keyStore.getKeystore(wallet, password, {
     cipher
   });
-  const keyStorePath = path.resolve(datadir, `keys/${wallet.address}.json`);
-  if (!fs.existsSync(path.resolve(datadir, 'keys'))) {
-    mkdirp.sync(path.resolve(datadir, 'keys'));
+  const keyStorePath = path.resolve(datadir, `keyStore/${wallet.address}.json`);
+  if (!fs.existsSync(path.resolve(datadir, 'keyStore'))) {
+    mkdirp.sync(path.resolve(datadir, 'keyStore'));
   }
   fs.writeFileSync(
     keyStorePath,

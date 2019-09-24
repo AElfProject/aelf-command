@@ -3,7 +3,7 @@
  * @author atom-yang
  */
 const Schema = require('async-validator/dist-node/index').default;
-const inquirer = require('inquirer');
+const prompts = require('prompts');
 const ora = require('ora');
 const { logger } = require('../utils/myLogger');
 const { camelCase } = require('../utils/utils');
@@ -119,9 +119,6 @@ class BaseSubCommand {
     // 'true', 'false' to true, false
     const result = {};
     Object.entries(obj).forEach(([key, value]) => {
-      if (value === '' || value === null || value === undefined) {
-        return;
-      }
       result[camelCase(key)] = BaseSubCommand.parseBoolean(value);
     });
     return result;
@@ -130,9 +127,9 @@ class BaseSubCommand {
   async run(commander, ...args) {
     let subCommandOptions = {};
     args.slice(0, this.parameters.length).forEach((v, i) => {
-      if (v !== undefined) {
-        const { name, filter = val => val } = this.parameters[i];
-        subCommandOptions[name] = filter(v);
+      if (v) {
+        const { name, format = val => val } = this.parameters[i];
+        subCommandOptions[name] = format(v);
       }
     });
     // sub command options
@@ -152,7 +149,7 @@ class BaseSubCommand {
     const globalPrompts = globalOptionsPrompts.filter(
       prompt => this.validatorDesc[prompt.name].required && !options[prompt.name]
     );
-    const globalPromptsAns = await inquirer.prompt(globalPrompts);
+    const globalPromptsAns = await prompts(globalPrompts);
     options = {
       ...options,
       ...globalPromptsAns
@@ -174,7 +171,7 @@ class BaseSubCommand {
     }
     const subOptionsLength = Object.keys(subCommandOptions).length;
     if (subOptionsLength < this.parameters.length) {
-      const response = BaseSubCommand.normalizeConfig(await inquirer.prompt(this.parameters.slice(subOptionsLength)));
+      const response = BaseSubCommand.normalizeConfig(await prompts(this.parameters.slice(subOptionsLength)));
       subCommandOptions = {
         ...subCommandOptions,
         ...response

@@ -3,8 +3,6 @@
  * @author atom-yang
  */
 const path = require('path');
-const moment = require('moment');
-const inquirer = require('inquirer');
 const { logger } = require('./myLogger');
 
 const callCommandUsages = [
@@ -16,26 +14,22 @@ const callCommandUsages = [
 
 const callCommandParameters = [
   {
-    type: 'input',
+    type: 'text',
     name: 'contract-address',
     extraName: ['contract-name'],
     message: 'Enter contract name (System contracts only) or the address of contract',
-    suffix: ':'
   },
   {
-    type: 'list',
+    type: 'select',
     name: 'method',
     message: 'Pick up a contract method',
-    pageSize: 10,
-    choices: [],
-    suffix: ':'
+    choices: []
   },
   {
-    type: 'input',
+    type: 'text',
     name: 'params',
-    message: 'Enter the method params in JSON string or plain text format',
-    suffix: ':',
-    filter: (val = '') => {
+    message: 'Enter the method params in JSON string format',
+    format: (val = '') => {
       let result = null;
       let value = val;
       if (val.startsWith('\'') && val.endsWith('\'')) {
@@ -46,71 +40,39 @@ const callCommandParameters = [
       } catch (e) {
         result = value;
       }
-      return JSON.stringify(result);
+      return result;
     }
   }
 ];
 
 const blkInfoCommandParameters = [
   {
-    type: 'input',
+    type: 'number',
     name: 'height',
-    extraName: ['block-hash'],
-    message: 'Enter a valid height',
-    suffix: ':'
+    message: 'Enter a valid height'
   },
   {
-    type: 'confirm',
+    type: 'toggle',
     name: 'include-txs',
     required: false,
     initial: false,
     message: 'Include transactions whether or not',
     active: 'yes',
-    inactive: 'no',
-    suffix: '?'
+    inactive: 'no'
   }
 ];
 
 const blkInfoCommandUsage = [
-  '<height|block-hash> <include-txs>',
-  '<height|block-hash>',
-  ''
-];
-
-inquirer.registerPrompt('datetime', require('inquirer-datepicker-prompt'));
-
-const proposalCommandParameters = [
-  {
-    type: 'input',
-    name: 'organization',
-    message: 'Enter an organization address',
-    suffix: ':'
-  },
-  {
-    type: 'datetime',
-    name: 'expired-time',
-    message: 'Select the expired time for this proposal',
-    format: ['yyyy', '/', 'mm', '/', 'dd', ' ', 'HH', ':', 'MM'],
-    initial: moment().add({
-      hours: 1,
-      minutes: 5
-    }).toDate(),
-    suffix: ':'
-  }
-];
-
-const proposalCommandUsage = [
-  '<organization> <expired-time>',
-  '<organization>',
+  '<height> <include-txs>',
+  '<height>',
   ''
 ];
 
 const txResultCommandParameters = [
   {
-    type: 'input',
+    type: 'text',
     name: 'tx-hash',
-    message: 'Enter a valid transaction hash in hex format',
-    suffix: ':'
+    message: 'Enter a valid transaction hash in hex format'
   }
 ];
 
@@ -121,11 +83,10 @@ const txResultCommandUsage = [
 
 const createCommandParameters = [
   {
-    type: 'confirm',
+    type: 'toggle',
     name: 'save-to-file',
     required: false,
     initial: true,
-    default: true,
     message: 'Save account info into a file?',
     active: 'yes',
     inactive: 'no'
@@ -133,32 +94,28 @@ const createCommandParameters = [
 ];
 
 const createCommandUsage = [
-  '<save-to-file> -c, cipher',
-  '-c, cipher',
+  '<save-to-file>',
   ''
 ];
 
 const configCommandParameters = [
   {
-    type: 'input',
+    type: 'text',
     name: 'flag',
     required: true,
-    message: 'Config operation key, must one of set, get, delete, list',
-    suffix: ':'
+    message: 'Config operation key, must one of set, get, delete, list'
   },
   {
-    type: 'input',
+    type: 'text',
     name: 'key',
     required: false,
-    message: 'Enter the key of config',
-    suffix: ':'
+    message: 'Enter the key of config'
   },
   {
-    type: 'input',
+    type: 'text',
     name: 'value',
     required: false,
-    message: 'Only necessary for flag <set>',
-    suffix: ':'
+    message: 'Only necessary for flag <set>'
   }
 ];
 
@@ -171,22 +128,19 @@ const configCommandUsage = [
 
 const loadCommandParameters = [
   {
-    type: 'input',
+    type: 'text',
     name: 'private-key',
     extraName: ['mnemonic'],
-    message: 'Enter a private key or mnemonic',
-    suffix: ':'
+    message: 'Enter a private key or mnemonic'
   },
   {
-    type: 'confirm',
+    type: 'toggle',
     name: 'save-to-file',
     required: false,
-    default: true,
     initial: true,
-    message: 'Save account info into a file',
+    message: 'Save account info into a file?',
     active: 'yes',
-    inactive: 'no',
-    suffix: '?'
+    inactive: 'no'
   }
 ];
 
@@ -198,19 +152,17 @@ const loadCommandUsage = [
 
 const deployCommandParameters = [
   {
-    type: 'input',
+    type: 'text',
     name: 'category',
-    message: 'Enter the category of the contract to be deployed',
-    suffix: ':'
+    message: 'Enter the category of the contract to be deployed'
   },
   {
-    type: 'input',
+    type: 'text',
     name: 'code-path',
     message: 'Enter the relative or absolute path of contract code',
-    filter(val) {
+    format(val) {
       return path.resolve(process.cwd(), val);
-    },
-    suffix: ':'
+    }
   }
 ];
 
@@ -259,23 +211,19 @@ Object.entries(commonGlobalOptionValidatorDesc).forEach(([key, value]) => {
  */
 const globalOptionsPrompts = [
   {
-    type: 'input',
+    type: 'text',
     name: 'endpoint',
-    message: 'Enter the the URI of an AElf node',
-    suffix: ':'
+    message: 'Enter the the URI of an AElf node'
   },
   {
-    type: 'input',
+    type: 'text',
     name: 'account',
-    message: 'Enter a valid wallet address, if you don\'t have, create one by aelf-command create',
-    suffix: ':'
+    message: 'Enter a valid wallet address, if you don\'t have, create one by aelf-command create'
   },
   {
     type: 'password',
     name: 'password',
-    mask: '*',
-    message: 'Enter the password you typed when creating a wallet',
-    suffix: ':'
+    message: 'Enter the password you typed when creating a wallet'
   }
 ];
 
@@ -291,15 +239,13 @@ const passwordPrompts = [
         process.exit(1);
       }
       return true;
-    },
-    suffix: ':'
+    }
   },
   {
     type: 'password',
     name: 'confirm-password',
     mask: '*',
-    message: 'Confirm password',
-    suffix: ':'
+    message: 'Confirm password'
   }
 ];
 
@@ -321,7 +267,5 @@ module.exports = {
   deployCommandUsage,
   deployCommandParameters,
   configCommandParameters,
-  configCommandUsage,
-  proposalCommandParameters,
-  proposalCommandUsage
+  configCommandUsage
 };
