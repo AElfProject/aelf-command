@@ -7,7 +7,7 @@ const BaseSubCommand = require('./baseSubCommand');
 const { commonGlobalOptionValidatorDesc } = require('../utils/constants');
 const { logger } = require('../utils/myLogger');
 
-class GetBlkHeightCommand extends BaseSubCommand {
+class GetChainStatusCommand extends BaseSubCommand {
   constructor(rc) {
     super('get-chain-status', [], 'get the current status of the block chain', [], [], rc, commonGlobalOptionValidatorDesc);
   }
@@ -26,4 +26,4 @@ class GetBlkHeightCommand extends BaseSubCommand {
   }
 }
 
-module.exports = GetBlkHeightCommand;
+module.exports = GetChainStatusCommand;
