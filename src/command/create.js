@@ -27,7 +27,7 @@ class CreateCommand extends BaseSubCommand {
         {
           flag: '-c, --cipher [cipher]',
           name: 'cipher',
-          description: 'Which cipher algorithm to use, default to be aes-256-cbc'
+          description: 'Which cipher algorithm to use, default to be aes-128-ctr'
         }
       ],
       createCommandUsage,
