@@ -32,12 +32,13 @@ class GetBlkInfoCommand extends BaseSubCommand {
 
   async run(commander, ...args) {
     const { options, subOptions } = await super.run(commander, ...args);
+    subOptions.height = parseInt(subOptions.height, 10);
     await this.validateParameters(
       {
         height: {
-          type: 'string',
+          type: 'number',
           required: true,
-          message: 'Input a valid <height|block-hash>'
+          message: 'Input a valid <height>'
         },
         includeTxs: {
           type: 'boolean',
@@ -50,13 +51,8 @@ class GetBlkInfoCommand extends BaseSubCommand {
     const { height, includeTxs = false } = subOptions;
     try {
       this.oraInstance.start();
-      let blockInfo;
-      // usually block hash is encoded with hex and has 64 characters
-      if (String(height).trim().length > 50) {
-        blockInfo = await aelf.chain.getBlock(height, includeTxs);
-      } else {
-        blockInfo = await aelf.chain.getBlockByHeight(height, includeTxs);
-      }
+      const blockInfo = await aelf.chain.getBlockByHeight(height, includeTxs);
+      // todo: chalk
       this.oraInstance.succeed('Succeed!');
       logger.info(blockInfo);
     } catch (e) {
