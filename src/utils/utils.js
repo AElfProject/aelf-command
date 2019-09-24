@@ -2,7 +2,12 @@
  * @file utils
  * @author atom-yang
  */
+const AElf = require('aelf-sdk');
+const path = require('path');
+const fs = require('fs');
 const _camelCase = require('camelcase');
+const inquirer = require('inquirer');
+const { plainLogger } = require('./myLogger');
 
 function promisify(fn, firstData) {
   return (...args) => new Promise(((resolve, reject) => {
@@ -50,9 +55,123 @@ function isRegExp(o) {
   return o && Object.prototype.toString.call(o) === '[object RegExp]';
 }
 
+/**
+ * get contract methods' keys
+ * @param {Object} contract contract instance
+ * @return {string[]}
+ */
+function getContractMethods(contract = {}) {
+  return Object.keys(contract)
+    .filter(v => /^[A-Z]/.test(v)).sort();
+}
+
+async function getContractInstance(
+  contractAddress,
+  aelf,
+  wallet,
+  oraInstance
+) {
+  if (typeof contractAddress !== 'string') {
+    return contractAddress;
+  }
+  oraInstance.start('Fetching contract');
+  let contract = null;
+  if (!isAElfContract(contractAddress)) {
+    try {
+      contract = await aelf.chain.contractAt(contractAddress, wallet);
+    } catch (err) {
+      oraInstance.fail(plainLogger.error('Failed to find the contract, please enter the correct contract name!'));
+      return null;
+    }
+  } else {
+    try {
+      const { GenesisContractAddress } = await aelf.chain.getChainStatus();
+      const genesisContract = await aelf.chain.contractAt(GenesisContractAddress, wallet);
+      const address = await genesisContract.GetContractAddressByName.call(AElf.utils.sha256(contractAddress));
+      contract = await aelf.chain.contractAt(address, wallet);
+    } catch (error) {
+      oraInstance.fail(plainLogger.error('Failed to find the contract, please enter the correct contract address!'));
+      return null;
+    }
+  }
+  oraInstance.succeed('Fetching contract successfully!');
+  return contract;
+}
+
+function getMethod(method, contract) {
+  if (typeof method !== 'string') {
+    return method;
+  }
+  if (contract[method]) {
+    return contract[method];
+  }
+  throw new Error(`Not exist method ${method}`);
+}
+
+/**
+ * @description prompt contract address three times at most
+ * @param {*} {
+ *     times,
+ *     prompt,
+ *     processAfterPrompt, // a function that will process user's input with first param as the raw input value of user
+ *     pattern // the regular expression to validate the user's input
+ *   }
+ * @param {Object} oraInstance the instance of ora library
+ * @return {Object} the correct input value, if no correct was inputted, it will throw an error then exit the process
+ */
+async function promptTolerateSeveralTimes(
+  {
+    processAfterPrompt = () => {},
+    pattern,
+    times = 3,
+    prompt = [],
+  },
+  oraInstance
+) {
+  if (pattern && !isRegExp(pattern)) {
+    throw new Error("param 'pattern' must be a regular expression!");
+  }
+  if (processAfterPrompt && typeof processAfterPrompt !== 'function') {
+    throw new Error("Param 'processAfterPrompt' must be a function!");
+  }
+  let askTimes = 0;
+  let answerInput;
+  while (askTimes < times) {
+    try {
+      // eslint-disable-next-line no-await-in-loop
+      answerInput = await inquirer.prompt(prompt);
+      // eslint-disable-next-line no-await-in-loop
+      answerInput = await processAfterPrompt(answerInput);
+      if (!pattern || pattern.test(answerInput)) {
+        break;
+      }
+      askTimes++;
+    } catch (e) {
+      oraInstance.fail('Failed');
+    }
+  }
+  if (askTimes >= times && answerInput === null) {
+    oraInstance.fail(plainLogger.fatal(`You has entered wrong message ${times} times!`));
+    process.exit(1);
+  }
+  return answerInput;
+}
+
+function isFilePath(val) {
+  if (!val) {
+    return false;
+  }
+  const filePath = path.resolve(process.cwd(), val);
+  return fs.existsSync(filePath);
+}
+
 module.exports = {
   promisify,
   camelCase,
+  getContractMethods,
+  getContractInstance,
+  getMethod,
+  promptTolerateSeveralTimes,
   isAElfContract,
-  isRegExp
+  isFilePath
 };
