@@ -3,6 +3,7 @@
  * @author atom-yang
  */
 const commander = require('commander');
+const chalk = require('chalk');
 const updateNotifier = require('update-notifier');
 const check = require('check-node-version');
 const { execSync } = require('child_process');
@@ -37,11 +38,18 @@ function init() {
   const args = process.env.NODE_ENV === 'test' ? process.env.mockArgs.split(',') : process.argv;
   commander.parse(args);
   if (commander.args.length === 0) commander.help();
-  updateNotifier({
+  const notifier = updateNotifier({
     pkg,
     distTag: 'latest',
-    updateCheckInterval: 1000 * 60 * 60 * 2 // two hours
-  }).notify();
+    updateCheckInterval: 1000 * 60 * 60 * 1 // one hours
+  });
+
+  if (notifier.update) {
+    notifier.notify({
+      message: `Update available ${chalk.dim(pkg.version)} ${chalk.reset('→')} ${chalk.green(notifier.update.latest)} 
+      Run ${chalk.cyan('npm i aelf-command -g')} to update`
+    });
+  }
 }
 
 function run() {
