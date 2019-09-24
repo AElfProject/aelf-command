@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.11](https://github.com/AElfProject/aelf-command/compare/v0.1.10...v0.1.11) (2019-09-24)
+
+
+### Bug Fixes
+
+* 🐛 change inquirer description ([d08ea99](https://github.com/AElfProject/aelf-command/commit/d08ea99))
+* 🐛 fix get chain status command name ([ad02330](https://github.com/AElfProject/aelf-command/commit/ad02330))
+
+
+### Features
+
+* 🎸 add proposal sub command ([8b9de42](https://github.com/AElfProject/aelf-command/commit/8b9de42))
+* 🎸 change default keyStore store location ([6cc0247](https://github.com/AElfProject/aelf-command/commit/6cc0247))
+
 ### [0.1.10](https://github.com/AElfProject/aelf-command/compare/v0.1.9...v0.1.10) (2019-09-06)
 
 
