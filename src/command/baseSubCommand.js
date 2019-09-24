@@ -119,6 +119,9 @@ class BaseSubCommand {
     // 'true', 'false' to true, false
     const result = {};
     Object.entries(obj).forEach(([key, value]) => {
+      if (value === '' || value === null || value === undefined) {
+        return;
+      }
       result[camelCase(key)] = BaseSubCommand.parseBoolean(value);
     });
     return result;
@@ -127,7 +130,7 @@ class BaseSubCommand {
   async run(commander, ...args) {
     let subCommandOptions = {};
     args.slice(0, this.parameters.length).forEach((v, i) => {
-      if (v) {
+      if (v !== undefined) {
         const { name, filter = val => val } = this.parameters[i];
         subCommandOptions[name] = filter(v);
       }

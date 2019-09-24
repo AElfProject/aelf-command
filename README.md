@@ -262,6 +262,95 @@ aelf-command load
 ...
 ```
 
+### proposal - create a proposal
+
+There are some transactions you can't send directly, such as deploying a smart contract, you need to create a proposal to a specific organization which contains BP nodes, and wait for the approve.
+
+Actually, you can create proposals on any contract method.
+
+* Get an organization address or create a organization
+```bash
+$ aelf-command call AElf.ContractNames.Parliament GetGenesisOwnerAddress ''
+✔ Fetching contract successfully!
+✔ Calling method successfully!
+⬡ AElf [Info]:
+Result:
+"BkcXRkykRC2etHp9hgFfbw2ec1edx7ERBxYtbC97z3Q2bNCwc"
+✔ Succeed!
+```
+
+`BkcXRkykRC2etHp9hgFfbw2ec1edx7ERBxYtbC97z3Q2bNCwc` is the organization address.
+
+You can get the default organization address and it has all BP nodes inside, every proposal can only be released when it has got over 2/3 BP nodes approve
+
+Create an organization
+```bash
+$ aelf-command send AElf.ContractNames.Parliament CreateOrganization '{"reviewers":["ada","asda"], "releaseThreshold": 660000}' 
+```
+
+* Create a proposal
+```bash
+$ aelf-command proposal
+
+? Enter an organization address: BkcXRkykRC2etHp9hgFfbw2ec1edx7ERBxYtbC97z3Q2bNCwc
+? Select the expired time for this proposal: 2022/09/23 22:06
+? Enter a contract address or name: 2gaQh4uxg6tzyH1ADLoDxvHA14FMpzEiMqsQ6sDG5iHT8cmjp8
+✔ Fetching contract successfully!
+? Pick up a contract method: DeploySmartContract
+
+If you need to pass file contents to the contractMethod, you can enter the relative or absolute path of the file instead
+
+Enter required params one by one:
+? Enter the required param <category>: 0
+? Enter the required param <code>: /Users/home/Downloads/AElf.Contracts.TokenConverter.dll
+? It seems that you have entered a file path, do you want to read the file content and take it as the value of <code> Yes
+⬡ AElf [Info]:
+ { TransactionId:
+   '09c8c824d2e3aea1d6cd15b7bb6cefe4e236c5b818d6a01d4f7ca0b60fe99535' }
+✔ loading proposal id...
+⬡ AElf [Info]: Proposal id: "bafe83ca4ec5b2a2f1e8016d09b21362c9345954a014379375f1a90b7afb43fb".
+✔ Succeed!
+```
+
+You can get the proposal id the get proposal status by it.
+
+* Get proposal status
+
+```bash
+$ aelf-command call AElf.ContractNames.Parliament GetProposal bafe83ca4ec5b2a2f1e8016d09b21362c9345954a014379375f1a90b7afb43fb
+
+{
+  ...
+  "expiredTime": {
+    "seconds": "1663942010",
+    "nanos": 496000
+  },
+  "organizationAddress": "BkcXRkykRC2etHp9hgFfbw2ec1edx7ERBxYtbC97z3Q2bNCwc",
+  "proposer": "2tj7Ea67fuQfVAtQZ3WBmTv7AAJ8S9D2L4g6PpRRJei6JXk7RG",
+  "toBeReleased": false
+}
+✔ Succeed!
+```
+
+`toBeReleased` indicates whether you can release this proposal, in default situation, a proposal need to get over 2/3 BP nodes approve.
+
+* Release a proposal
+
+You can release a proposal when it got approved.
+```bash
+$ aelf-command send AElf.ContractNames.Parliament Release bafe83ca4ec5b2a2f1e8016d09b21362c9345954a014379375f1a90b7afb43fb
+⬡ AElf [Info]:
+ { TransactionId:
+   '09c8c824d2e3aea1d...cefe4e236c5b818d6a01d4f7ca0b60fe99535' }
+```
+
+Get the transaction result
+
+```bash
+$ aelf-command get-tx-result 09c8c824d2e3aea1d...cefe4e236c5b818d6a01d4f7ca0b60fe99535
+```
+
+
 ### deploy - deploy a smart contract
 
 Deploy a smart contract to the chain

@@ -3,6 +3,8 @@
  * @author atom-yang
  */
 const path = require('path');
+const moment = require('moment');
+const inquirer = require('inquirer');
 const { logger } = require('./myLogger');
 
 const callCommandUsages = [
@@ -75,6 +77,34 @@ const blkInfoCommandUsage = [
   ''
 ];
 
+inquirer.registerPrompt('datetime', require('inquirer-datepicker-prompt'));
+
+const proposalCommandParameters = [
+  {
+    type: 'input',
+    name: 'organization',
+    message: 'Enter an organization address',
+    suffix: ':'
+  },
+  {
+    type: 'datetime',
+    name: 'expired-time',
+    message: 'Select the expired time for this proposal',
+    format: ['yyyy', '/', 'mm', '/', 'dd', ' ', 'HH', ':', 'MM'],
+    initial: moment().add({
+      hours: 1,
+      minutes: 5
+    }).toDate(),
+    suffix: ':'
+  }
+];
+
+const proposalCommandUsage = [
+  '<organization> <expired-time>',
+  '<organization>',
+  ''
+];
+
 const txResultCommandParameters = [
   {
     type: 'input',
@@ -103,7 +133,8 @@ const createCommandParameters = [
 ];
 
 const createCommandUsage = [
-  '<save-to-file>',
+  '<save-to-file> -c, cipher',
+  '-c, cipher',
   ''
 ];
 
@@ -290,5 +321,7 @@ module.exports = {
   deployCommandUsage,
   deployCommandParameters,
   configCommandParameters,
-  configCommandUsage
+  configCommandUsage,
+  proposalCommandParameters,
+  proposalCommandUsage
 };
