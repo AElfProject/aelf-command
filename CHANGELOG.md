@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.13](https://github.com/AElfProject/aelf-command/compare/v0.1.12...v0.1.13) (2019-09-25)
+
+
+### Bug Fixes
+
+* 🐛 get tx result serveral times ([b51db92](https://github.com/AElfProject/aelf-command/commit/b51db92))
+
 ### [0.1.12](https://github.com/AElfProject/aelf-command/compare/v0.1.11...v0.1.12) (2019-09-24)
 
 
