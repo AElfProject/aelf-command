@@ -20,7 +20,7 @@ class ConfigCommand extends BaseSubCommand {
     super(
       'config',
       configCommandParameters,
-      'get, set, delete or list aelf-command config',
+      'Get, set, delete or list aelf-command config',
       [],
       configCommandUsage,
       rc,

@@ -22,7 +22,7 @@ class CreateCommand extends BaseSubCommand {
     super(
       'create',
       createCommandParameters,
-      'create a new account',
+      'Create a new account',
       [
         {
           flag: '-c, --cipher [cipher]',

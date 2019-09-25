@@ -9,7 +9,15 @@ const { logger } = require('../utils/myLogger');
 
 class GetChainStatusCommand extends BaseSubCommand {
   constructor(rc) {
-    super('get-chain-status', [], 'get the current status of the block chain', [], [], rc, commonGlobalOptionValidatorDesc);
+    super(
+      'get-chain-status',
+      [],
+      'Get the current chain status',
+      [],
+      [],
+      rc,
+      commonGlobalOptionValidatorDesc
+    );
   }
 
   async run(commander, ...args) {

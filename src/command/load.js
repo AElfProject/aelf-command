@@ -18,7 +18,15 @@ const loadCommandValidatorDesc = {
 
 class LoadCommand extends BaseSubCommand {
   constructor(rc) {
-    super('load', loadCommandParameters, 'load wallet from ', [], loadCommandUsage, rc, loadCommandValidatorDesc);
+    super(
+      'load',
+      loadCommandParameters,
+      'Load wallet from a private key or mnemonic',
+      [],
+      loadCommandUsage,
+      rc,
+      loadCommandValidatorDesc
+    );
   }
 
   async run(commander, ...args) {

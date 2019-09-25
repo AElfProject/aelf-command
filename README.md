@@ -106,7 +106,7 @@ Welcome to aelf interactive console. Ctrl + C to terminate the program. Double t
 
 Type
 ```bash
-aelf-command -h
+$ aelf-command -h
 
 Usage: aelf-command [command] [options]
 
@@ -115,20 +115,22 @@ Options:
   -e, --endpoint <URI>                                     The URI of an AElf node. Eg: http://127.0.0.1:8000
   -a, --account <account>                                  The address of AElf wallet
   -p, --password <password>                                The password of encrypted keyStore
-  -d, --datadir <directory>                                The directory that contains the AElf related files. Default to be `{home}/.local/share/aelf`
+  -d, --datadir <directory>                                The directory that contains the AElf related files. Default to be Default to be `{home}/.local/share/aelf`
   -h, --help                                               output usage information
 
 Commands:
   call [contract-address|contract-name] [method] [params]  Call a read-only method on a contract.
   send [contract-address|contract-name] [method] [params]  Execute a method on a contract.
-  get-blk-height                                           get the current of specified chain
-  get-blk-info [height] [include-txs]                      get a block info
-  get-tx-result [tx-hash]                                  get a transaction result
+  get-blk-height                                           Get the current block height of specified chain
+  get-chain-status                                         Get the current chain status
+  get-blk-info [height|block-hash] [include-txs]           Get a block info
+  get-tx-result [tx-hash]                                  Get a transaction result
   console                                                  Open a node REPL
-  create [save-to-file]                                    create a new account
-  load [private-key|mnemonic] [save-to-file]               load wallet from
+  create [options] [save-to-file]                          Create a new account
+  load [private-key|mnemonic] [save-to-file]               Load wallet from a private key or mnemonic
+  proposal [organization] [expired-time]                   Send a proposal to an origination with a specific contract method
   deploy [category] [code-path]                            Deploy a smart contract
-  config <flag> [key] [value]                              get, set, delete or list aelf-command config
+  config <flag> [key] [value]                              Get, set, delete or list aelf-command config
 ```
 in your terminal and get useful information.
 
