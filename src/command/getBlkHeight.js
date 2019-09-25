@@ -9,7 +9,15 @@ const { logger } = require('../utils/myLogger');
 
 class GetBlkHeightCommand extends BaseSubCommand {
   constructor(rc) {
-    super('get-blk-height', [], 'get the current of specified chain', [], [], rc, commonGlobalOptionValidatorDesc);
+    super(
+      'get-blk-height',
+      [],
+      'Get the current block height of specified chain',
+      [],
+      [''],
+      rc,
+      commonGlobalOptionValidatorDesc
+    );
   }
 
   async run(commander, ...args) {

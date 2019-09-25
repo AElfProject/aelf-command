@@ -13,7 +13,7 @@ class GetTxResultCommand extends BaseSubCommand {
     super(
       'get-tx-result',
       txResultCommandParameters,
-      'get a transaction result',
+      'Get a transaction result',
       [],
       txResultCommandUsage,
       rc,

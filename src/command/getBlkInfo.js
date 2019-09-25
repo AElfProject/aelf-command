@@ -13,7 +13,7 @@ class GetBlkInfoCommand extends BaseSubCommand {
     super(
       'get-blk-info',
       blkInfoCommandParameters,
-      'get a block info',
+      'Get a block info',
       [],
       blkInfoCommandUsage,
       rc,

@@ -177,10 +177,23 @@ async function getTxResult(aelf, txId, times = 0, delay = 3000, timeLimit = 3) {
     const result = await getTxResult(aelf, txId, currentTime, delay, timeLimit);
     return result;
   }
+  if (tx.Status === 'PENDING' && currentTime > timeLimit) {
+    return tx;
+  }
   if (tx.Status === 'MINED') {
     return tx;
   }
   throw tx;
+}
+
+function parseJSON(str = '') {
+  let result = null;
+  try {
+    result = JSON.parse(str);
+  } catch (e) {
+    result = str;
+  }
+  return result;
 }
 
 module.exports = {
@@ -192,5 +205,6 @@ module.exports = {
   promptTolerateSeveralTimes,
   isAElfContract,
   isFilePath,
-  getTxResult
+  getTxResult,
+  parseJSON
 };

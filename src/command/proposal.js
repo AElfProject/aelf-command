@@ -17,7 +17,8 @@ const {
   getMethod,
   promptTolerateSeveralTimes,
   isFilePath,
-  getTxResult
+  getTxResult,
+  parseJSON
 } = require('../utils/utils');
 const { getWallet } = require('../utils/wallet');
 const { logger } = require('../utils/myLogger');
@@ -155,7 +156,7 @@ class ProposalCommand extends BaseSubCommand {
           };
           // eslint-disable-next-line no-await-in-loop
           const { value } = await inquirer.prompt(prompts);
-          result = value;
+          result = parseJSON(value);
         } else {
           // eslint-disable-next-line max-len
           console.log(chalk.yellow('\nIf you need to pass file contents to the contractMethod, you can enter the relative or absolute path of the file instead\n'));
@@ -168,9 +169,9 @@ class ProposalCommand extends BaseSubCommand {
               message: `Enter the required param <${fieldName}>:`
             };
             // eslint-disable-next-line no-await-in-loop
-            const value = await inquirer.prompt(prompts);
-            result[fieldName] = value[fieldName];
-            if (isFilePath(value[fieldName])) {
+            const value = (await inquirer.prompt(prompts))[fieldName];
+            result[fieldName] = value;
+            if (isFilePath(value)) {
               // eslint-disable-next-line no-await-in-loop
               const { read } = await inquirer.prompt({
                 type: 'confirm',
@@ -180,16 +181,19 @@ class ProposalCommand extends BaseSubCommand {
               });
               if (read) {
                 const code = fs.readFileSync(
-                  path.resolve(process.cwd(), value[fieldName])
+                  path.resolve(process.cwd(), value)
                 ).toString('base64');
                 result[fieldName] = code;
               }
             }
+            result[fieldName] = parseJSON(result[fieldName]);
           }
         }
+        result = method.packInput(BaseSubCommand.normalizeConfig(result));
+      } else {
+        result = method.packInput(null);
       }
-      result = method.packInput(BaseSubCommand.normalizeConfig(result));
-      const txId = await parliament.CreateProposal({
+      const txId = await parliament.CreateProposal(BaseSubCommand.normalizeConfig({
         contractMethodName: methodName,
         toAddress: this.toContractAddress,
         params: result,
@@ -198,13 +202,18 @@ class ProposalCommand extends BaseSubCommand {
           seconds: moment(expiredTime).unix(),
           nanos: moment(expiredTime).milliseconds() * 1000
         }
-      });
+      }));
       logger.info(txId);
       this.oraInstance.start('loading proposal id...');
       const tx = await getTxResult(aelf, txId.TransactionId);
       this.oraInstance.succeed();
-      logger.info(`Proposal id: ${tx.ReadableReturnValue}.`);
-      this.oraInstance.succeed('Succeed!');
+      if (tx.Status === 'PENDING') {
+        // eslint-disable-next-line max-len
+        logger.info(`Transaction is still pending, you can check it later by running ${chalk.yellow(`aelf-command get-tx-result ${txId.TransactionId}`)}`);
+      } else {
+        logger.info(`Proposal id: ${tx.ReadableReturnValue}.`);
+        this.oraInstance.succeed('Succeed!');
+      }
     } catch (e) {
       this.oraInstance.fail('Failed!');
       logger.fatal(e);
