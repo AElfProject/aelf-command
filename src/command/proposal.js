@@ -16,7 +16,8 @@ const {
   getContractInstance,
   getMethod,
   promptTolerateSeveralTimes,
-  isFilePath
+  isFilePath,
+  getTxResult
 } = require('../utils/utils');
 const { getWallet } = require('../utils/wallet');
 const { logger } = require('../utils/myLogger');
@@ -200,13 +201,8 @@ class ProposalCommand extends BaseSubCommand {
       });
       logger.info(txId);
       this.oraInstance.start('loading proposal id...');
-      await new Promise(resolve => {
-        setTimeout(() => {
-          resolve();
-        }, 3000);
-      });
+      const tx = await getTxResult(aelf, txId.TransactionId);
       this.oraInstance.succeed();
-      const tx = await aelf.chain.getTxResult(txId.TransactionId);
       logger.info(`Proposal id: ${tx.ReadableReturnValue}.`);
       this.oraInstance.succeed('Succeed!');
     } catch (e) {

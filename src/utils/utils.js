@@ -165,6 +165,24 @@ function isFilePath(val) {
   return fs.existsSync(filePath);
 }
 
+async function getTxResult(aelf, txId, times = 0, delay = 3000, timeLimit = 3) {
+  const currentTime = times + 1;
+  await new Promise(resolve => {
+    setTimeout(() => {
+      resolve();
+    }, delay);
+  });
+  const tx = await aelf.chain.getTxResult(txId);
+  if (tx.Status === 'PENDING' && currentTime <= timeLimit) {
+    const result = await getTxResult(aelf, txId, currentTime, delay, timeLimit);
+    return result;
+  }
+  if (tx.Status === 'MINED') {
+    return tx;
+  }
+  throw tx;
+}
+
 module.exports = {
   promisify,
   camelCase,
@@ -173,5 +191,6 @@ module.exports = {
   getMethod,
   promptTolerateSeveralTimes,
   isAElfContract,
-  isFilePath
+  isFilePath,
+  getTxResult
 };
