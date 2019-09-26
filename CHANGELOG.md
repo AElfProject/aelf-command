@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.15](https://github.com/AElfProject/aelf-command/compare/v0.1.14...v0.1.15) (2019-09-26)
+
+
+### Features
+
+* 🎸 add new sub command `wallet` to show wallet info ([c803159](https://github.com/AElfProject/aelf-command/commit/c803159))
+
 ### [0.1.14](https://github.com/AElfProject/aelf-command/compare/v0.1.13...v0.1.14) (2019-09-25)
 
 
