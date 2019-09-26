@@ -15,6 +15,7 @@ const ProposalCommand = require('./proposal');
 const DeployCommand = require('./deploy');
 const ConfigCommand = require('./config');
 const GetChainStatus = require('./getChainStatus');
+const WalletCommand = require('./wallet');
 
 module.exports = {
   CallCommand,
@@ -25,6 +26,7 @@ module.exports = {
   GetTxResultCommand,
   ConsoleCommand,
   CreateCommand,
+  WalletCommand,
   LoadCommand,
   ProposalCommand,
   DeployCommand,
