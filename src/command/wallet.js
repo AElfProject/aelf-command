@@ -12,6 +12,14 @@ const walletCommandValidatorDesc = {
   endpoint: {
     ...commonGlobalOptionValidatorDesc.endpoint,
     required: false
+  },
+  password: {
+    ...commonGlobalOptionValidatorDesc.password,
+    required: true
+  },
+  account: {
+    ...commonGlobalOptionValidatorDesc.account,
+    required: true
   }
 };
 

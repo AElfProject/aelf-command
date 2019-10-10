@@ -356,7 +356,7 @@ Enter required params one by one:
 ✔ Succeed!
 ```
 
-You can get the proposal id the get proposal status by it.
+You can get the proposal id, then get proposal status by it.
 
 * Get proposal status
 
