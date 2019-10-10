@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.16](https://github.com/AElfProject/aelf-command/compare/v0.1.15...v0.1.16) (2019-10-10)
+
+
+### Bug Fixes
+
+* 🐛 add aelf-command required account and password ([a7838ef](https://github.com/AElfProject/aelf-command/commit/a7838ef))
+
 ### [0.1.15](https://github.com/AElfProject/aelf-command/compare/v0.1.14...v0.1.15) (2019-09-26)
 
 
