@@ -253,7 +253,7 @@ $ aelf-command console -a sadaf -p password -e http://127.0.0.1:8000
 
 Notice the priority, the options given in higher priority will overwrite the lower priority.
 
-### create - create a new account
+### create - Create a new account
 
 This command will create a new account.
 
@@ -280,7 +280,7 @@ Example:
 $ aelf-command create -c aes-128-cbc
 ```
 
-### load - load an account by a given `private key` or `mnemonic`
+### load - Load an account by a given `private key` or `mnemonic`
 
 This command allow you load an account from backup.
 
@@ -295,7 +295,7 @@ $ aelf-command load
 ...
 ```
 
-### wallet - show wallet details which include `private key`, `address`, `public key` and `mnemonic`
+### wallet - Show wallet details which include `private key`, `address`, `public key` and `mnemonic`
 
 This command allow you print wallet info.
 
@@ -306,7 +306,7 @@ $ aelf-command wallet -a C91b1SF5mMbenHZTfdfbJSkJcK7HMjeiuw...8qYjGsESanXR
 ⬡ AElf [Info]: Address             : C91b1SF5mMbenHZTfdfbJSkJcK7HMjeiuw...8qYjGsESanXR 
 ```
 
-### proposal - create a proposal
+### proposal - Create a proposal
 
 There are some transactions you can't send directly, such as deploying a smart contract, you need to create a proposal to a specific organization which contains BP nodes, and wait for the approve.
 
@@ -392,10 +392,70 @@ Get the transaction result
 
 ```bash
 $ aelf-command get-tx-result 09c8c824d2e3aea1d...cefe4e236c5b818d6a01d4f7ca0b60fe99535
+
+⬡ AElf [Info]: {
+  "TransactionId": "09c8c824d2e3aea1d...cefe4e236c5b818d6a01d4f7ca0b60fe99535",
+  "Status": "MINED",
+  "Logs": [
+    {
+      "Address": "2gaQh4uxg6tzyH1ADLoDxvHA14FMpzEiMqsQ6sDG5iHT8cmjp8",
+      "Name": "ContractDeployed",
+      "Indexed": [
+        "CiIKIPklcv1FnKLzUEtsxyZC59it/lXsLhgWS5VpxEhR4FxE",
+        "EiIKIDKVFb+Kx1GM+Vus5MGJnCmbKmRg6d7MOuNP6FiQ9laq"
+      ],
+      "NonIndexed": "GiIKIKOmGZC08DAoVVq4bnxr6WsfKAUpflGo1WLHAKS9g+SD"
+    }
+  ],
+  "Bloom": "AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAACAAAAAAAAAAACAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAQAAA==",
+  "BlockNumber": 28411,
+  "BlockHash": "fa22e4eddff12a728895a608db99d40a4b21894f7c07df1a4fa8f0625eb914a2",
+  "Transaction": {
+    "From": "2tj7Ea67fuQfVAtQZ3WBmTv7AAJ8S9D2L4g6PpRRJei6JXk7RG",
+    "To": "29RDBXTqwnpWPSPHGatYsQXW2E17YrQUCj7QhcEZDnhPb6ThHW",
+    "RefBlockNumber": 28410,
+    "RefBlockPrefix": "0P+eTw==",
+    "MethodName": "Release",
+    "Params": "\"ad868c1e0d74127dd746ccdf3443a09459c55cf07d247df053ddf718df258c86\"",
+    "Signature": "DQcv55EBWunEFPXAbqZG20OLO5T0Sq/s0A+/iuwv1TdQqIV4318HrqFLsGpx9m3+sp5mzhAnMlrG7CSxM6EuIgA="
+  },
+  "ReturnValue": "",
+  "ReadableReturnValue": "{ }",
+  "Error": null
+}
 ```
 
+If you want to call a contract method by creating a proposal and released it, the transaction result could be confusing, you can use another `aelf-command` sub-command to get the readable result;
 
-### deploy - deploy a smart contract
+Take the example above which has deployed a smart contract by proposal, the contract address is necessary for sending transactions.
+The contract address has been given but need to be decoded. We supply `aelf-command event` to decode the results.
+
+Pass the transaction id as a parameter:
+```bash
+aelf-command event 09c8c824d2e3aea1d...cefe4e236c5b818d6a01d4f7ca0b60fe99535
+
+[Info]: 
+The results returned by 
+Transaction: 09c8c824d2e3aea1d...cefe4e236c5b818d6a01d4f7ca0b60fe99535 is: 
+[
+  {
+    "Address": "2gaQh4uxg6tzyH1ADLoDxvHA14FMpzEiMqsQ6sDG5iHT8cmjp8",
+    "Name": "ContractDeployed",
+    "NonIndexed": "GiIKIKOmGZC08DAoVVq4bnxr6WsfKAUpflGo1WLHAKS9g+SD",
+    "Result": {
+      "creator": null,
+      "codeHash": null,
+      "address": "2F5C128Srw5rHCXoSY2C7uT5sAku48mkgiaTTp1Hiprhbb7ED9"
+    }
+  }
+]
+``` 
+The `Result` field is the decoded result, in this example, the `Result.address` is the new deployed contract address. 
+
+For more details, check the descriptions of [`aelf-command event`](#send---send-a-transaction).
+
+
+### deploy - Deploy a smart contract
 
 Deploy a smart contract to the chain
 
@@ -407,7 +467,39 @@ $ aelf-command deploy
 ? Enter the relative or absolute path of contract code › /Users/home/home
 ```
 
-### send - send a transaction
+### event - Deserialize the result return by executing a transaction
+
+Only one parameter is required
+```bash
+$ aelf-command event 40872ea2d8a4d2cf7747263c5b9fdd5a4ad05b3e9fadc7a7dd134728a858d5de
+
+[Info]: 
+The results returned by 
+Transaction: 40872ea2d8a4d2cf7747263c5b9fdd5a4ad05b3e9fadc7a7dd134728a858d5de is: 
+[
+  {
+    "Address": "2gaQh4uxg6tzyH1ADLoDxvHA14FMpzEiMqsQ6sDG5iHT8cmjp8",
+    "Name": "ContractDeployed",
+    "NonIndexed": "GiIKIKOmGZC08DAoVVq4bnxr6WsfKAUpflGo1WLHAKS9g+SD",
+    "Result": {
+      "creator": null,
+      "codeHash": null,
+      "address": "2F5C128Srw5rHCXoSY2C7uT5sAku48mkgiaTTp1Hiprhbb7ED9"
+    }
+  }
+]
+```
+
+A transaction may be related with several `Contract Method`s' executions, so the transaction result can include several items.
+
+In each item, 
+* `Address`: the contract address.
+* `Name`: the executed method name of contract address.
+* `NoIndexed`: the encoded result returned by this contract method.
+* `Result`: the decoded result, this is readable and you can use it and get what the fields means inside the `Result` by reading the contract documents or contract related protobuf files.
+In this example, you can read the [protobuf file](https://github.com/AElfProject/AElf/blob/58ea343327ee25bb743562789fee0f92af276799/protobuf/acs0.proto#L95);
+
+### send - Send a transaction
 
 ```bash
 $ aelf-command send
@@ -432,7 +524,7 @@ $ aelf-command send AElf.ContractNames.Token GetTokenInfo '{"symbol":"ELF"}'
 $ aelf-command send WnV9Gv3gioSh3Vgaw8SSB96nV8fWUNxuVozCf6Y14e7RXyGaM GetTokenInfo '{"symbol":"ELF"}'
 ```
 
-### call - call a read-only method on a contract
+### call - Call a read-only method on a contract
 
 ```bash
 $ aelf-command call
@@ -463,7 +555,7 @@ $ aelf-command call AElf.ContractNames.Token GetTokenInfo '{"symbol":"ELF"}'
 $ aelf-command call WnV9Gv3gioSh3Vgaw8SSB96nV8fWUNxuVozCf6Y14e7RXyGaM GetTokenInfo '{"symbol":"ELF"}'
 ```
 
-### get-chain-status - get the current status of the block chain
+### get-chain-status - Get the current status of the block chain
 
 ```bash
 $ aelf-command get-chain-status
@@ -485,7 +577,7 @@ $ aelf-command get-chain-status
 }
 ```
 
-### get-tx-result - get a transaction result
+### get-tx-result - Get a transaction result
 
 ```bash
 $ aelf-command get-tx-result
@@ -516,7 +608,7 @@ $ aelf-command get-tx-result
   Error: null }
 ```
 
-### get-blk-height - get the block height
+### get-blk-height - Get the block height
 
 ```bash
 $ aelf-command get-blk-height
@@ -524,7 +616,7 @@ $ aelf-command get-blk-height
 > 7902091
 ```
 
-### get-blk-info - get the block info by a block height or a block hash
+### get-blk-info - Get the block info by a block height or a block hash
 
 You can pass a block height or a block hash to this sub-command.
 
@@ -562,7 +654,7 @@ $ aelf-command get-blk-info ca61c7c8f5fc1bc8af0536bc9b51c61a94f39641a93a748e7280
 $ aelf-command get-blk-info 12 true
 ```
 
-### console - open an interactive console
+### console - Open an interactive console
 
 ```bash
 $ aelf-command console

@@ -220,6 +220,20 @@ const deployCommandUsage = [
   ''
 ];
 
+const eventCommandParameters = [
+  {
+    type: 'input',
+    name: 'tx-id',
+    message: 'Enter the transaction id',
+    suffix: ':'
+  }
+];
+
+const eventCommandUsage = [
+  '<tx-id>',
+  ''
+];
+
 const commonGlobalOptionValidatorDesc = {
   password: {
     type: 'string',
@@ -323,5 +337,7 @@ module.exports = {
   configCommandParameters,
   configCommandUsage,
   proposalCommandParameters,
-  proposalCommandUsage
+  proposalCommandUsage,
+  eventCommandParameters,
+  eventCommandUsage
 };
