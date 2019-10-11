@@ -16,6 +16,7 @@ const DeployCommand = require('./deploy');
 const ConfigCommand = require('./config');
 const GetChainStatus = require('./getChainStatus');
 const WalletCommand = require('./wallet');
+const EventCommand = require('./event');
 
 module.exports = {
   CallCommand,
@@ -30,5 +31,6 @@ module.exports = {
   LoadCommand,
   ProposalCommand,
   DeployCommand,
-  ConfigCommand
+  ConfigCommand,
+  EventCommand
 };

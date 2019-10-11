@@ -28,9 +28,9 @@ class WalletCommand extends BaseSubCommand {
     super(
       'wallet',
       [],
-      'Show wallet details which include private key, address, public key and mnemonic',
+      'Show current account details which include private key, address, public key and mnemonic',
       [],
-      [''],
+      ['-a <account> -p <password>', ''],
       rc,
       walletCommandValidatorDesc
     );
