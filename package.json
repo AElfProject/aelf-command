@@ -36,7 +36,7 @@
   },
   "engineStrict": true,
   "dependencies": {
-    "aelf-sdk": "^3.2.17",
+    "aelf-sdk": "^3.2.19",
     "async-validator": "^3.0.3",
     "boxen": "^4.1.0",
     "camelcase": "^5.3.1",

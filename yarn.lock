@@ -622,10 +622,10 @@ acorn@^7.0.0:
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-7.0.0.tgz#26b8d1cd9a9b700350b71c0905546f64d1284e7a"
   integrity sha512-PaF/MduxijYYt7unVGRuds1vBC9bFxbNf+VWqhOClfdgy7RlVkQqt610ig1/yxTgsDIfW1cWDel5EBbOy3jdtQ==
 
-aelf-sdk@^3.2.17:
-  version "3.2.17"
-  resolved "https://registry.yarnpkg.com/aelf-sdk/-/aelf-sdk-3.2.17.tgz#35b68597fcad31306061a074c30982d1a9af1daa"
-  integrity sha512-0z7KICUILst6BkjTyKZrTDPKah3RkjKJDLRjfzJNR9Ez3CNm2x/TL4IWrB2ewppVy94zvibuJqs5/HwKTTfQUA==
+aelf-sdk@^3.2.19:
+  version "3.2.19"
+  resolved "https://registry.yarnpkg.com/aelf-sdk/-/aelf-sdk-3.2.19.tgz#bfd1e41a140a609f0d1f3f7751109d8a20f59286"
+  integrity sha512-ebtqeiLVI13dDJcg8/WoxBBZdorXsDKClVW88/fqXKseIT8S+tGpYo491ebDlkTa9sCtRum188i73I/SYu2qMg==
   dependencies:
     "@aelfqueen/protobufjs" "^6.8.9"
     "@babel/runtime" "^7.4.5"
