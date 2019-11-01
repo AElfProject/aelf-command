@@ -20,9 +20,20 @@ function isRootUser(uid) {
   return uid === 0;
 }
 
+function isWindows() {
+  return process.platform === 'win32';
+}
+
 const ROOT_USER = isRootUser(getUid()) && !isFakeRoot();
 
-const userHomeDir = ROOT_USER ? path.resolve('/usr/local/share') : path.resolve(home, './.local/share');
+let userHomeDir;
+if (isWindows()) {
+  userHomeDir = path.resolve(home, './AppData/Local');
+} else if (ROOT_USER) {
+  userHomeDir = path.resolve('/usr/local/share');
+} else {
+  path.resolve(home, './.local/share');
+}
 
 module.exports = {
   userHomeDir,
