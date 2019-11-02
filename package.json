@@ -44,13 +44,16 @@
     "check-node-version": "^4.0.1",
     "columnify": "^1.5.4",
     "commander": "^3.0.0",
+    "elliptic": "^6.5.1",
     "inquirer": "^7.0.0",
     "inquirer-datepicker-prompt": "^0.4.2",
     "mkdirp": "^0.5.1",
     "moment": "^2.24.0",
     "ora": "^3.4.0",
     "prompts": "^2.2.1",
-    "update-notifier": "^3.0.1"
+    "socket.io": "^2.3.0",
+    "update-notifier": "^3.0.1",
+    "uuid": "^3.3.3"
   },
   "devDependencies": {
     "commitizen": "^4.0.3",
