@@ -32,7 +32,7 @@ if (isWindows()) {
 } else if (ROOT_USER) {
   userHomeDir = path.resolve('/usr/local/share');
 } else {
-  path.resolve(home, './.local/share');
+  userHomeDir = path.resolve(home, './.local/share');
 }
 
 module.exports = {
