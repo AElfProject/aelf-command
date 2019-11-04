@@ -53,12 +53,13 @@ class EventCommand extends BaseSubCommand {
           const {
             Address: contractAddress,
             Name: dataTypeName,
-            NonIndexed: data
+            NonIndexed: data,
+            Indexed
           } = log;
           // eslint-disable-next-line no-await-in-loop
           const fileDescriptor = await aelf.chain.getContractFileDescriptorSet(contractAddress);
           const dataType = AElf.pbjs.Root.fromDescriptor(fileDescriptor).lookupType(dataTypeName);
-          let result = dataType.decode(Buffer.from(data, 'base64'));
+          let result = dataType.decode(Buffer.from(`${Indexed.join('')}${data}`, 'base64'));
           result = dataType.toObject(result, {
             enums: String, // enums as string names
             longs: String, // longs as strings (requires long.js)
@@ -80,7 +81,6 @@ class EventCommand extends BaseSubCommand {
               result[fieldName] = AElf.pbUtils.getRepForHash(fieldValue);
             }
           });
-          delete log.Indexed;
           logs[index] = {
             ...log,
             Result: result
