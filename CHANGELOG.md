@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.21](https://github.com/AElfProject/aelf-command/compare/v0.1.20...v0.1.21) (2019-11-04)
+
+
+### Bug Fixes
+
+* 🐛 add Indexed data to be deserialized ([116edee](https://github.com/AElfProject/aelf-command/commit/116edee))
+
 ### [0.1.20](https://github.com/AElfProject/aelf-command/compare/v0.1.19...v0.1.20) (2019-11-04)
 
 
