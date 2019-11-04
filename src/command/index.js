@@ -17,6 +17,7 @@ const ConfigCommand = require('./config');
 const GetChainStatus = require('./getChainStatus');
 const WalletCommand = require('./wallet');
 const EventCommand = require('./event');
+const DappServerCommand = require('./dappServer/index');
 
 module.exports = {
   CallCommand,
@@ -32,5 +33,6 @@ module.exports = {
   ProposalCommand,
   DeployCommand,
   ConfigCommand,
-  EventCommand
+  EventCommand,
+  DappServerCommand
 };

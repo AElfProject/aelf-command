@@ -29,6 +29,8 @@ _A CLI tools built for AElf_
 * Friendly interact, beautify with chalk & ora.
 * Get current chain status.
 * Create a proposal on any contract method.
+* Deserialize the result return by executing a transaction.
+* Start a socket.io server for supplying services for dapps.
 
 ## Installing aelf-command
 
@@ -678,3 +680,28 @@ Welcome to aelf interactive console. Ctrl + C to terminate the program. Double t
    ╚═══════════════════════════════════════════════════════════╝
 ```
 
+### dapp-server - Start a socket.io server for supplying services for dapps
+
+If you're developing a dapp and you need an environment to hold wallet info and connect to the AElf chain, you can use this sub-command to start a server for dapp local development.
+
+```bash
+$ aelf-command dapp-server
+⬡ AElf [Info]: DApp server is listening on port 35443
+
+# or listen on a specified port
+$ aelf-command dapp-server --port 40334
+⬡ AElf [Info]: DApp server is listening on port 40334 
+```
+
+This server use Socket.io to listen on local port `35443` and you can use [aelf-bridge](https://github.com/AElfProject/aelf-bridge) to connect to this server like this.
+
+```javascript
+import AElfBridge from 'aelf-bridge';
+const bridgeInstance = new AElfBridge({
+  proxyType: 'SOCKET.IO',
+  socketUrl: 'http://localhost:35443',
+  channelType: 'ENCRYPT'
+});
+// connect to dapp-server
+bridgeInstance.connect().then(console.log).catch(console.error);
+```

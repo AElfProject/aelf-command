@@ -4,6 +4,7 @@
  */
 const AElf = require('aelf-sdk');
 const path = require('path');
+const uuid = require('uuid/v4');
 const fs = require('fs');
 const _camelCase = require('camelcase');
 const inquirer = require('inquirer');
@@ -196,6 +197,10 @@ function parseJSON(str = '') {
   return result;
 }
 
+function randomId() {
+  return uuid().replace(/-/g, '');
+}
+
 module.exports = {
   promisify,
   camelCase,
@@ -206,5 +211,6 @@ module.exports = {
   isAElfContract,
   isFilePath,
   getTxResult,
-  parseJSON
+  parseJSON,
+  randomId
 };
