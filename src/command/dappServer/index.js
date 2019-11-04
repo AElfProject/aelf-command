@@ -17,7 +17,7 @@ const commandOptions = [
 ];
 
 const commandUsage = [
-  '-port',
+  '-port port',
   ''
 ];
 
@@ -45,7 +45,6 @@ class DeployCommand extends BaseSubCommand {
     } = options;
     const { port = 35443 } = localOptions;
     try {
-      this.oraInstance.start('Starting to deploy');
       const aelf = new AElf(new AElf.providers.HttpProvider(endpoint));
       const wallet = getWallet(datadir, account, password);
       // eslint-disable-next-line no-unused-vars

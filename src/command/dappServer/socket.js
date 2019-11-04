@@ -7,6 +7,7 @@ const AElf = require('aelf-sdk');
 const Schema = require('async-validator/dist-node/index').default;
 const Sign = require('./sign');
 const Encrypt = require('./encrypt');
+const { logger } = require('../../utils/myLogger');
 const {
   randomId
 } = require('../../utils/utils');
@@ -21,12 +22,12 @@ const {
 const signRequestRules = {
   id: {
     required: true,
-    type: 'hex',
+    type: 'string',
     min: 32
   },
   appId: {
     required: true,
-    type: 'hex',
+    type: 'string',
     min: 32
   },
   action: {
@@ -42,7 +43,7 @@ const signRequestRules = {
         required: true
       },
       signature: {
-        type: 'hex',
+        type: 'string',
         required: true,
         min: 129,
         max: 130
@@ -54,13 +55,17 @@ const signRequestRules = {
 const encryptRequestRules = {
   ...signRequestRules,
   params: {
-    iv: {
-      type: 'hex',
-      required: true
-    },
-    encryptedParams: {
-      type: 'string',
-      required: true
+    type: 'object',
+    required: true,
+    fields: {
+      iv: {
+        type: 'string',
+        required: true
+      },
+      encryptedParams: {
+        type: 'string',
+        required: true
+      }
     }
   }
 };
@@ -68,24 +73,28 @@ const encryptRequestRules = {
 const connectSignRules = {
   ...signRequestRules,
   params: {
-    encryptAlgorithm: {
-      type: 'enum',
-      enum: ['secp256k1'],
-      required: true
-    },
-    random: {
-      type: 'hex',
-      required: true
-    },
-    publicKey: {
-      type: 'hex',
-      required: true
-    },
-    signature: {
-      type: 'hex',
-      required: true,
-      min: 129,
-      max: 130
+    type: 'object',
+    required: true,
+    fields: {
+      encryptAlgorithm: {
+        type: 'enum',
+        enum: ['secp256k1'],
+        required: true
+      },
+      random: {
+        type: 'string',
+        required: true
+      },
+      publicKey: {
+        type: 'string',
+        required: true
+      },
+      signature: {
+        type: 'string',
+        required: true,
+        min: 129,
+        max: 130
+      }
     }
   }
 };
@@ -93,18 +102,22 @@ const connectSignRules = {
 const connectEncryptRules = {
   ...signRequestRules,
   params: {
-    encryptAlgorithm: {
-      type: 'enum',
-      enum: ['curve25519'],
-      required: true
-    },
-    cipher: {
-      type: 'hex',
-      required: true
-    },
-    publicKey: {
-      type: 'hex',
-      required: true
+    type: 'object',
+    required: true,
+    fields: {
+      encryptAlgorithm: {
+        type: 'enum',
+        enum: ['curve25519'],
+        required: true
+      },
+      cipher: {
+        type: 'string',
+        required: true
+      },
+      publicKey: {
+        type: 'string',
+        required: true
+      }
     }
   }
 };
@@ -127,7 +140,7 @@ class Socket {
     this.defaultEndpoint = endpoint;
     this.wallet = wallet;
     this.address = address;
-    this.handleConenction = this.handleConenction.bind(this);
+    this.handleConnection = this.handleConnection.bind(this);
     this.socket = new Server(port, {
       transports: ['websocket']
     });
@@ -163,17 +176,17 @@ class Socket {
     };
   }
 
-  send(client, appId, id, data, error, needSerialized = true) {
-    const result = this.responseFormat(id, data, error);
-    if (needSerialized) {
-      result.result = this.serializeResult(appId, result.result);
+  send(client, result, action, appId) {
+    client.emit('bridge', result);
+    if (action === 'disconnect') {
+      delete this.clientConfig[appId];
+      client.disconnect(true);
     }
-    client.emit('bridge', result);
-    client.emit('bridge', result);
   }
 
   handleConnection(client) {
     client.on('bridge', async data => {
+      logger.info('Message received');
       let result = {};
       const {
         action,
@@ -196,7 +209,7 @@ class Socket {
             result = await this.handleInvoke(data, action === 'invokeRead');
             break;
           case 'disconnect':
-            result = await this.handleDisconnect(appId);
+            result = await this.handleDisconnect(data);
             break;
           case null:
           case undefined:
@@ -205,9 +218,15 @@ class Socket {
           default:
             throw new Error(`${action} is not supported`);
         }
-        this.send(client, appId, id, result, null, action !== 'connect');
+        result = this.responseFormat(id, result, null);
+        if (action !== 'connect') {
+          result.result = this.serializeResult(appId, result.result);
+        }
+        this.send(client, result, action, appId);
       } catch (e) {
-        this.send(client, appId, id, {}, e);
+        console.log(e);
+        result = this.responseFormat(id, {}, e.errors ? e.errors : e);
+        this.send(client, result, action, appId);
       }
     });
   }
@@ -221,7 +240,7 @@ class Socket {
       throw new Error(`AppId ${appId} has not connected`);
     }
     if (this.clientConfig[appId].encryptWay === 'sign') {
-      await signRequestValidator.validate(params);
+      await signRequestValidator.validate(request);
       const {
         signature,
         originalParams
@@ -232,7 +251,7 @@ class Socket {
       }
       return deserializeMessage(originalParams);
     }
-    await encryptRequestValidator.validate(params);
+    await encryptRequestValidator.validate(request);
     const {
       iv,
       encryptedParams
@@ -279,6 +298,7 @@ class Socket {
           encrypt
         }
       };
+      logger.info(`App ${appId} has connected successfully in message encrypted way`);
       return {
         publicKey: encrypt.getPublicKey()
       };
@@ -301,14 +321,16 @@ class Socket {
         }
       };
       const responseRandom = randomId();
-      const responseSignature = this.clientConfig[appId].encrypt.sign(Buffer.from(random, 'hex'));
+      const responseSignature = this.clientConfig[appId].encrypt.sign(Buffer.from(responseRandom, 'hex'));
       const responsePublicKey = this.clientConfig[appId].encrypt.getPublicKey();
+      logger.info(`App ${appId} has connected successfully in message signed way`);
       return {
         publicKey: responsePublicKey,
         random: responseRandom,
         signature: responseSignature
       };
     }
+    logger.error('Not support encrypt method or not enough params');
     throw new Error('Not support encrypt method or not enough params');
   }
 
@@ -319,15 +341,17 @@ class Socket {
       apiPath,
       arguments: apiArgs
     } = params;
+    logger.info(`Querying api ${apiPath}...`);
     if (!CHAIN_APIS[apiPath]) {
       throw new Error(`Not support api ${apiPath}`);
     }
-    this.aelf.setProvider(new AElf.providers.HttpProvider(endpoint));
+    this.aelf.setProvider(new AElf.providers.HttpProvider(endpoint || this.defaultEndpoint));
     const result = await this.aelf.chain[CHAIN_APIS[apiPath]](apiArgs.map(v => v.value));
     return result;
   }
 
   handleAccount() {
+    logger.info('Querying account information');
     // todo: support config file or passed by CLI parameters
     return {
       accounts: [
@@ -354,7 +378,8 @@ class Socket {
       contractMethod,
       arguments: contractArgs
     } = params;
-    this.aelf.setProvider(new AElf.providers.HttpProvider(endpoint));
+    logger.info(`${isReadOnly ? 'Calling' : 'Sending'} contract ${contractAddress} method ${contractMethod}...`);
+    this.aelf.setProvider(new AElf.providers.HttpProvider(endpoint || this.defaultEndpoint));
     const contract = await this.aelf.chain.contractAt(contractAddress, this.wallet);
     if (!contract[contractMethod]) {
       throw new Error(`No such method ${contractMethod}`);
@@ -369,13 +394,10 @@ class Socket {
   }
 
   async handleDisconnect(message) {
-    const {
-      appId
-    } = message;
-    // just to verify client;
+    // just to verify client
     // eslint-disable-next-line no-unused-vars
     const params = await this.deserializeParams(message);
-    delete this.clientConfig[appId];
+    logger.info(`App ${message.appId} disconnected`);
     return {};
   }
 }

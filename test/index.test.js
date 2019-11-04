@@ -16,6 +16,6 @@ function execCommand(cmd, args) {
 
 describe('test index', () => {
   test('test', async () => {
-    execCommand('send', [123, 123, 123]);
+    execCommand('dapp-server', []);
   })
 });

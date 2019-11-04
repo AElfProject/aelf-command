@@ -24,20 +24,31 @@ class Encrypt {
     this.keyPair = keyPairs[algorithm];
     this.cipher = cipher;
     this.remoteKeyPair = elliptic.ec(algorithm).keyFromPublic(remotePublicKey, 'hex');
-    this.sharedKey = this.keyPair.derive(this.remoteKeyPair.getPublic()).toString('hex');
+    this.sharedKey = Buffer.from(this.keyPair.derive(this.remoteKeyPair.getPublic()).toString('hex'), 'hex');
   }
 
+  /**
+   * encrypt data
+   * @param {WindowBase64} data
+   * @return {{encryptedResult: string, iv: string}}
+   */
   encrypt(data) {
     const iv = randomId();
     const cipher = Crypto.createCipheriv(this.cipher, this.sharedKey.slice(0, 32), Buffer.from(iv, 'hex'));
     let encrypted = cipher.update(Buffer.from(data, 'base64'), null, 'base64');
     encrypted += cipher.final('base64');
     return {
-      encrypted,
+      encryptedResult: encrypted,
       iv
     };
   }
 
+  /**
+   * decrypt data
+   * @param {WindowBase64} encrypted
+   * @param {string} iv initial vector, hex string
+   * @return {string} result, base64 string
+   */
   decrypt(encrypted, iv) {
     const decipher = Crypto.createDecipheriv(this.cipher, this.sharedKey.slice(0, 32), Buffer.from(iv, 'hex'));
     const decrypted = Buffer.concat([
@@ -47,6 +58,9 @@ class Encrypt {
     return decrypted;
   }
 
+  /**
+   * @return {string} hex string, public key
+   */
   getPublicKey() {
     return this.keyPair.getPublic('hex');
   }

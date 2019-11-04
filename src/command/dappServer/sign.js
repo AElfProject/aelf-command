@@ -21,7 +21,7 @@ class Sign {
    * @return {boolean} result
    */
   static verify(algorithm, publicKey, msg, signature) {
-    const remoteKeyPair = elliptic.ec(algorithm).keyFromPublic(publicKey);
+    const remoteKeyPair = elliptic.ec(algorithm).keyFromPublic(publicKey, 'hex');
     const r = signature.slice(0, 64);
     const s = signature.slice(64, 128);
     const recoveryParam = signature.slice(128);
@@ -43,7 +43,7 @@ class Sign {
       keyPairs[algorithm] = elliptic.ec(algorithm).genKeyPair();
     }
     this.keyPair = keyPairs[algorithm];
-    this.remoteKeyPair = elliptic.ec(algorithm).keyFromPublic(publicKey);
+    this.remoteKeyPair = elliptic.ec(algorithm).keyFromPublic(publicKey, 'hex');
   }
 
   /**
