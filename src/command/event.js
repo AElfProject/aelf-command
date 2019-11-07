@@ -54,12 +54,12 @@ class EventCommand extends BaseSubCommand {
             Address: contractAddress,
             Name: dataTypeName,
             NonIndexed: data,
-            Indexed
+            Indexed = []
           } = log;
           // eslint-disable-next-line no-await-in-loop
           const fileDescriptor = await aelf.chain.getContractFileDescriptorSet(contractAddress);
           const dataType = AElf.pbjs.Root.fromDescriptor(fileDescriptor).lookupType(dataTypeName);
-          let result = dataType.decode(Buffer.from(`${Indexed.join('')}${data}`, 'base64'));
+          let result = dataType.decode(Buffer.from(`${Array.isArray(Indexed) ? Indexed.join('') : ''}${data}`, 'base64'));
           result = dataType.toObject(result, {
             enums: String, // enums as string names
             longs: String, // longs as strings (requires long.js)
@@ -75,10 +75,12 @@ class EventCommand extends BaseSubCommand {
               return;
             }
             if (field.type === '.aelf.Address' && typeof fieldValue !== 'string') {
-              result[fieldName] = AElf.pbUtils.getRepForAddress(fieldValue);
+              result[fieldName] = Array.isArray(fieldValue)
+                ? fieldValue.map(AElf.pbUtils.getRepForAddress) : AElf.pbUtils.getRepForAddress(fieldValue);
             }
             if (field.type === '.aelf.Hash' && typeof fieldValue !== 'string') {
-              result[fieldName] = AElf.pbUtils.getRepForHash(fieldValue);
+              result[fieldName] = Array.isArray(fieldValue)
+                ? fieldValue.map(AElf.pbUtils.getRepForHash) : AElf.pbUtils.getRepForHash(fieldValue);
             }
           });
           logs[index] = {
