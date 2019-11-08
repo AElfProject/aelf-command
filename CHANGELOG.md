@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.23](https://github.com/AElfProject/aelf-command/compare/v0.1.22...v0.1.23) (2019-11-08)
+
+
+### Bug Fixes
+
+* 🐛 error handler and message derialized ([85e557f](https://github.com/AElfProject/aelf-command/commit/85e557f))
+
 ### [0.1.22](https://github.com/AElfProject/aelf-command/compare/v0.1.21...v0.1.22) (2019-11-07)
 
 
