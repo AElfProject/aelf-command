@@ -154,11 +154,11 @@ class Socket {
   }
 
   responseFormat(id, result, errors) {
-    if (errors && (errors instanceof Error || (Array.isArray(errors) && errors.length > 0))) {
+    if (errors && (errors instanceof Error || (Array.isArray(errors) && errors.length > 0) || errors.Error)) {
       return {
         id,
         result: {
-          errors: Array.isArray(errors) ? errors : [errors],
+          errors: Array.isArray(errors) ? errors : [errors.Error ? errors.Error : errors],
           code: errors.code || 500,
           msg: errors.message || 'err happened',
           data: result
@@ -226,6 +226,9 @@ class Socket {
       } catch (e) {
         console.log(e);
         result = this.responseFormat(id, {}, e.errors ? e.errors : e);
+        if (action !== 'connect') {
+          result.result = this.serializeResult(appId, result.result);
+        }
         this.send(client, result, action, appId);
       }
     });

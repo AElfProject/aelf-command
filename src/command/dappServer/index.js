@@ -53,7 +53,7 @@ class DeployCommand extends BaseSubCommand {
         endpoint,
         aelf,
         wallet,
-        account
+        address: account
       });
       logger.info(`DApp server is listening on port ${port}`);
     } catch (e) {
