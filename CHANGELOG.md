@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.24](https://github.com/AElfProject/aelf-command/compare/v0.1.23...v0.1.24) (2019-11-21)
+
+
+### Features
+
+* 🎸 check timestamp when connection in dapp-server ([bd26a39](https://github.com/AElfProject/aelf-command/commit/bd26a39))
+
 ### [0.1.23](https://github.com/AElfProject/aelf-command/compare/v0.1.22...v0.1.23) (2019-11-08)
 
 
