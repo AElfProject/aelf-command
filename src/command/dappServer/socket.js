@@ -13,7 +13,8 @@ const {
 } = require('../../utils/utils');
 const {
   serializeMessage,
-  deserializeMessage
+  deserializeMessage,
+  checkTimestamp
 } = require('./utils');
 const {
   CHAIN_APIS
@@ -81,8 +82,8 @@ const connectSignRules = {
         enum: ['secp256k1'],
         required: true
       },
-      random: {
-        type: 'string',
+      timestamp: {
+        type: 'number',
         required: true
       },
       publicKey: {
@@ -202,7 +203,7 @@ class Socket {
             result = await this.handleApi(data);
             break;
           case 'account':
-            result = this.handleAccount();
+            result = await this.handleAccount(data);
             break;
           case 'invoke':
           case 'invokeRead':
@@ -252,7 +253,11 @@ class Socket {
       if (!isValid) {
         throw new Error('Signature is not valid');
       }
-      return deserializeMessage(originalParams);
+      const deserializeParams = deserializeMessage(originalParams);
+      if (checkTimestamp(deserializeParams.timestamp)) {
+        return deserializeParams;
+      }
+      throw new Error('Timestamp is not valid');
     }
     await encryptRequestValidator.validate(request);
     const {
@@ -260,7 +265,12 @@ class Socket {
       encryptedParams
     } = params;
     const originalParams = this.clientConfig[appId].encrypt.decrypt(encryptedParams, iv);
-    return deserializeMessage(originalParams);
+    const deserializeParams = deserializeMessage(originalParams);
+    console.log(deserializeParams);
+    if (checkTimestamp(deserializeParams.timestamp)) {
+      return deserializeParams;
+    }
+    throw new Error('Timestamp is not valid');
   }
 
   serializeResult(appId, result) {
@@ -309,12 +319,15 @@ class Socket {
     if (params.signature) {
       await connectSignValidator.validate(message);
       const {
-        random,
+        timestamp,
         signature
       } = params;
-      const result = Sign.verify(encryptAlgorithm, publicKey, Buffer.from(random, 'hex'), signature);
+      const result = Sign.verify(encryptAlgorithm, publicKey, Buffer.from(String(timestamp)), signature);
       if (!result) {
         throw new Error('Not a valid signature');
+      }
+      if (!checkTimestamp(timestamp)) {
+        throw new Error('Timestamp is not valid');
       }
       this.clientConfig = {
         ...this.clientConfig,
@@ -353,8 +366,9 @@ class Socket {
     return result;
   }
 
-  handleAccount() {
+  async handleAccount(message) {
     logger.info('Querying account information');
+    await this.deserializeParams(message);
     // todo: support config file or passed by CLI parameters
     return {
       accounts: [

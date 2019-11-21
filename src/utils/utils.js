@@ -81,7 +81,7 @@ async function getContractInstance(
     try {
       contract = await aelf.chain.contractAt(contractAddress, wallet);
     } catch (err) {
-      oraInstance.fail(plainLogger.error('Failed to find the contract, please enter the correct contract name!'));
+      oraInstance.fail(plainLogger.error('Failed to find the contract, please enter the correct contract address!'));
       return null;
     }
   } else {
@@ -91,7 +91,7 @@ async function getContractInstance(
       const address = await genesisContract.GetContractAddressByName.call(AElf.utils.sha256(contractAddress));
       contract = await aelf.chain.contractAt(address, wallet);
     } catch (error) {
-      oraInstance.fail(plainLogger.error('Failed to find the contract, please enter the correct contract address!'));
+      oraInstance.fail(plainLogger.error('Failed to find the contract, please enter the correct contract name!'));
       return null;
     }
   }

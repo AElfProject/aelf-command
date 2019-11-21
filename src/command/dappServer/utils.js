@@ -18,3 +18,16 @@ module.exports.deserializeMessage = str => {
   } catch (e) {}
   return result;
 };
+
+module.exports.checkTimestamp = (time, timeBuffer = 2400) => {
+  const checkTime = parseInt(time, 10);
+  if (!checkTime) {
+    return false;
+  }
+  const now = Math.ceil(new Date().getTime() / 1000);
+  console.log('now', now);
+  console.log('check', checkTime);
+  const diff = now - checkTime;
+  console.log('diff', diff);
+  return diff >= 0 && diff <= timeBuffer;
+};
