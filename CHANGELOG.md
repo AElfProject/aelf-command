@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.25](https://github.com/AElfProject/aelf-command/compare/v0.1.24...v0.1.25) (2019-11-28)
+
+
+### Bug Fixes
+
+* 🐛 get user home dir without root user condition ([f65f9b6](https://github.com/AElfProject/aelf-command/commit/f65f9b66594fb6eb56fce35e80acd896514e03f8))
+* 🐛 remove useless symbol ([d732c8d](https://github.com/AElfProject/aelf-command/commit/d732c8d4b369f80e1782d585c4a3672e18f53ec4))
+
 ### [0.1.24](https://github.com/AElfProject/aelf-command/compare/v0.1.23...v0.1.24) (2019-11-21)
 
 
