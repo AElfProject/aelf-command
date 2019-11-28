@@ -39,7 +39,7 @@ class Logger {
     this.name = '';
     this.log = props.log !== undefined ? props.log : true; // determin whether console.log or not
     if (!props.onlyWords) {
-      this.symbol = '⬡';
+      this.symbol = '';
       this.name = props.name;
     }
   }
