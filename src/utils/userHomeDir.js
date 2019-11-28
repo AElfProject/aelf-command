@@ -29,8 +29,6 @@ const ROOT_USER = isRootUser(getUid()) && !isFakeRoot();
 let userHomeDir;
 if (isWindows()) {
   userHomeDir = path.resolve(home, './AppData/Local');
-} else if (ROOT_USER) {
-  userHomeDir = path.resolve('/usr/local/share');
 } else {
   userHomeDir = path.resolve(home, './.local/share');
 }
@@ -39,5 +37,6 @@ module.exports = {
   userHomeDir,
   home,
   isFakeRoot,
-  isRootUser
+  isRootUser,
+  ROOT_USER
 };
