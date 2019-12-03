@@ -301,9 +301,10 @@ class Socket {
     if (params.cipher) {
       await connectEncryptValidator.validate(message);
       const {
-        cipher,
+        cipher
       } = params;
-      const encrypt = new Encrypt(encryptAlgorithm, publicKey, cipher);
+      const random = randomId();
+      const encrypt = new Encrypt(encryptAlgorithm, publicKey, random, cipher);
       this.clientConfig = {
         ...this.clientConfig,
         [appId]: {
@@ -313,7 +314,8 @@ class Socket {
       };
       logger.info(`App ${appId} has connected successfully in message encrypted way`);
       return {
-        publicKey: encrypt.getPublicKey()
+        publicKey: encrypt.getPublicKey(),
+        random
       };
     }
     if (params.signature) {

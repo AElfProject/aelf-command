@@ -7,6 +7,7 @@ const elliptic = require('elliptic');
 const {
   randomId
 } = require('../../utils/utils');
+const HKDF = require('./HKDF');
 
 const defaultEncryptAlgorithm = 'curve25519';
 const defaultCipher = 'aes-256-cbc';
@@ -17,7 +18,7 @@ const keyPairs = {
 };
 
 class Encrypt {
-  constructor(algorithm, remotePublicKey, cipher = defaultCipher) {
+  constructor(algorithm, remotePublicKey, random, cipher = defaultCipher) {
     if (!keyPairs[algorithm]) {
       keyPairs[algorithm] = elliptic.ec(algorithm).genKeyPair();
     }
@@ -25,6 +26,9 @@ class Encrypt {
     this.cipher = cipher;
     this.remoteKeyPair = elliptic.ec(algorithm).keyFromPublic(remotePublicKey, 'hex');
     this.sharedKey = Buffer.from(this.keyPair.derive(this.remoteKeyPair.getPublic()).toString('hex'), 'hex');
+    const hkdf = new HKDF('sha256', Buffer.from(random, 'hex'), this.sharedKey.toString('hex'));
+    this.derivedKey = hkdf.expand();
+    console.log(this.derivedKey.toString('hex'));
   }
 
   /**
@@ -34,7 +38,7 @@ class Encrypt {
    */
   encrypt(data) {
     const iv = randomId();
-    const cipher = Crypto.createCipheriv(this.cipher, this.sharedKey.slice(0, 32), Buffer.from(iv, 'hex'));
+    const cipher = Crypto.createCipheriv(this.cipher, this.derivedKey, Buffer.from(iv, 'hex'));
     let encrypted = cipher.update(Buffer.from(data, 'base64'), null, 'base64');
     encrypted += cipher.final('base64');
     return {
@@ -50,7 +54,7 @@ class Encrypt {
    * @return {string} result, base64 string
    */
   decrypt(encrypted, iv) {
-    const decipher = Crypto.createDecipheriv(this.cipher, this.sharedKey.slice(0, 32), Buffer.from(iv, 'hex'));
+    const decipher = Crypto.createDecipheriv(this.cipher, this.derivedKey, Buffer.from(iv, 'hex'));
     const decrypted = Buffer.concat([
       decipher.update(Buffer.from(encrypted, 'base64')),
       decipher.final()

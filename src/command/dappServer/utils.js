@@ -19,7 +19,7 @@ module.exports.deserializeMessage = str => {
   return result;
 };
 
-module.exports.checkTimestamp = (time, timeBuffer = 2400) => {
+module.exports.checkTimestamp = (time, timeBuffer = 4 * 60) => {
   const checkTime = parseInt(time, 10);
   if (!checkTime) {
     return false;
