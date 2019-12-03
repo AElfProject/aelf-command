@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.26](https://github.com/AElfProject/aelf-command/compare/v0.1.25...v0.1.26) (2019-12-03)
+
+
+### Features
+
+* 🎸 add HKDF to expand shared key ([999e3cd](https://github.com/AElfProject/aelf-command/commit/999e3cd4996cfea0572e58eef4c4a200e3cd5c53))
+
 ### [0.1.25](https://github.com/AElfProject/aelf-command/compare/v0.1.24...v0.1.25) (2019-11-28)
 
 
