@@ -82,8 +82,13 @@ class CallCommand extends BaseSubCommand {
               contractAddress = await getContractInstance(contractAddress, aelf, wallet, this.oraInstance);
               // eslint-disable-next-line no-await-in-loop
               method = getMethod(method, contractAddress);
-              // eslint-disable-next-line no-await-in-loop
-              params = (await inquirer.prompt(prompt)).params;
+              if (method.inputTypeInfo
+                && (Object.keys(method.inputTypeInfo.fields).length === 0 || !method.inputTypeInfo.fields)) {
+                params = '';
+              } else {
+                // eslint-disable-next-line no-await-in-loop
+                params = (await inquirer.prompt(prompt)).params;
+              }
               break;
             default:
               break;
@@ -95,6 +100,10 @@ class CallCommand extends BaseSubCommand {
         params = JSON.parse(params);
       } catch (e) {}
       method = getMethod(method, contractAddress);
+      if (method.inputTypeInfo
+        && (Object.keys(method.inputTypeInfo.fields).length === 0 || !method.inputTypeInfo.fields)) {
+        params = '';
+      }
       const result = await this.callMethod(method, params);
       logger.info(`\nResult:\n${JSON.stringify(result, null, 2)}`);
       this.oraInstance.succeed('Succeed!');
