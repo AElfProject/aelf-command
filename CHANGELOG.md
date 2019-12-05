@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.27](https://github.com/AElfProject/aelf-command/compare/v0.1.26...v0.1.27) (2019-12-05)
+
+
+### Bug Fixes
+
+* 🐛 optimize call emtpy parameter contract method ([0667016](https://github.com/AElfProject/aelf-command/commit/06670164c111189463c751acfef3a3c360af1921))
+
 ### [0.1.26](https://github.com/AElfProject/aelf-command/compare/v0.1.25...v0.1.26) (2019-12-03)
 
 
