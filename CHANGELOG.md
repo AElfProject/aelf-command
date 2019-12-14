@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.29](https://github.com/AElfProject/aelf-command/compare/v0.1.28...v0.1.29) (2019-12-14)
+
+
+### Bug Fixes
+
+* 🐛 fix camel case ([68a379e](https://github.com/AElfProject/aelf-command/commit/68a379e12d524d9149aa6e80c1f7d59a5d909207))
+
 ### [0.1.28](https://github.com/AElfProject/aelf-command/compare/v0.1.27...v0.1.28) (2019-12-14)
 
 
