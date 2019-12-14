@@ -376,7 +376,8 @@ class Socket {
       accounts: [
         {
           name: 'aelf-command',
-          address: this.address
+          address: this.address,
+          publicKey: this.wallet.keypair.getPublic('hex')
         }
       ],
       chains: [
