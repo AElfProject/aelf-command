@@ -159,7 +159,7 @@ class Socket {
       return {
         id,
         result: {
-          errors: Array.isArray(errors) ? errors : [errors.Error ? errors.Error : errors],
+          error: Array.isArray(errors) ? errors : [errors.Error ? errors.Error : errors],
           code: errors.code || 500,
           msg: errors.message || 'err happened',
           data: result
@@ -171,7 +171,7 @@ class Socket {
       result: {
         code: 0,
         msg: 'success',
-        errors: [],
+        error: [],
         data: result
       }
     };
