@@ -28,7 +28,6 @@ class Encrypt {
     this.sharedKey = Buffer.from(this.keyPair.derive(this.remoteKeyPair.getPublic()).toString('hex'), 'hex');
     const hkdf = new HKDF('sha256', Buffer.from(random, 'hex'), this.sharedKey.toString('hex'));
     this.derivedKey = hkdf.expand();
-    console.log(this.derivedKey.toString('hex'));
   }
 
   /**

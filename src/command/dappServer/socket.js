@@ -225,7 +225,7 @@ class Socket {
         }
         this.send(client, result, action, appId);
       } catch (e) {
-        console.log(e);
+        logger.error('error happened');
         result = this.responseFormat(id, {}, e.errors ? e.errors : e);
         if (action !== 'connect') {
           result.result = this.serializeResult(appId, result.result);
@@ -266,7 +266,6 @@ class Socket {
     } = params;
     const originalParams = this.clientConfig[appId].encrypt.decrypt(encryptedParams, iv);
     const deserializeParams = deserializeMessage(originalParams);
-    console.log(deserializeParams);
     if (checkTimestamp(deserializeParams.timestamp)) {
       return deserializeParams;
     }
@@ -415,8 +414,7 @@ class Socket {
 
   async handleDisconnect(message) {
     // just to verify client
-    // eslint-disable-next-line no-unused-vars
-    const params = await this.deserializeParams(message);
+    await this.deserializeParams(message);
     logger.info(`App ${message.appId} disconnected`);
     return {};
   }
