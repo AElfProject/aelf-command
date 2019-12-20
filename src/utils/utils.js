@@ -3,6 +3,8 @@
  * @author atom-yang
  */
 const AElf = require('aelf-sdk');
+const moment = require('moment');
+const chalk = require('chalk');
 const path = require('path');
 const uuid = require('uuid/v4');
 const fs = require('fs');
@@ -62,6 +64,10 @@ function isRegExp(o) {
  * @return {string[]}
  */
 function getContractMethods(contract = {}) {
+  if (!contract) {
+    plainLogger.fatal('There is no such contract');
+    process.exit(1);
+  }
   return Object.keys(contract)
     .filter(v => /^[A-Z]/.test(v)).sort();
 }
@@ -77,23 +83,18 @@ async function getContractInstance(
   }
   oraInstance.start('Fetching contract');
   let contract = null;
-  if (!isAElfContract(contractAddress)) {
-    try {
+  try {
+    if (!isAElfContract(contractAddress)) {
       contract = await aelf.chain.contractAt(contractAddress, wallet);
-    } catch (err) {
-      oraInstance.fail(plainLogger.error('Failed to find the contract, please enter the correct contract address!'));
-      return null;
-    }
-  } else {
-    try {
+    } else {
       const { GenesisContractAddress } = await aelf.chain.getChainStatus();
       const genesisContract = await aelf.chain.contractAt(GenesisContractAddress, wallet);
       const address = await genesisContract.GetContractAddressByName.call(AElf.utils.sha256(contractAddress));
       contract = await aelf.chain.contractAt(address, wallet);
-    } catch (error) {
-      oraInstance.fail(plainLogger.error('Failed to find the contract, please enter the correct contract name!'));
-      return null;
     }
+  } catch (e) {
+    oraInstance.fail(plainLogger.error('Failed to find the contract, please enter the correct contract name!'));
+    process.exit(1);
   }
   oraInstance.succeed('Fetching contract successfully!');
   return contract;
@@ -201,6 +202,90 @@ function randomId() {
   return uuid().replace(/-/g, '');
 }
 
+const PROTO_TYPE_PROMPT_TYPE = {
+  '.google.protobuf.Timestamp': {
+    type: 'datetime',
+    format: ['yyyy', '/', 'mm', '/', 'dd', ' ', 'HH', ':', 'MM'],
+    initial: moment().add({
+      hours: 1,
+      minutes: 5
+    }).toDate(),
+    transformFunc(time) {
+      return {
+        seconds: moment(time).unix(),
+        nanos: moment(time).milliseconds() * 1000
+      };
+    }
+  },
+  default: {
+    type: 'input',
+    transformFunc: v => v
+  }
+};
+
+function isSpecialParameters(inputType) {
+  return (
+    inputType.fieldsArray
+    && inputType.fieldsArray.length === 1
+    && ['Hash', 'Address'].includes(inputType.name)
+    && inputType.fieldsArray[0].type === 'bytes'
+  );
+}
+
+async function getParams(method) {
+  const fields = Object.entries(method.inputTypeInfo.fields || {});
+  let result = {};
+  if (fields.length > 0) {
+    // eslint-disable-next-line max-len
+    console.log(chalk.yellow('\nIf you need to pass file contents as a parameter, you can enter the relative or absolute path of the file\n'));
+    console.log('Enter the params one by one, type `Enter` to skip optional param:');
+    if (isSpecialParameters(method.inputType)) {
+      let prompts = PROTO_TYPE_PROMPT_TYPE.default;
+      prompts = {
+        ...prompts,
+        name: 'value',
+        message: 'Enter the required param <value>:'
+      };
+      // eslint-disable-next-line no-await-in-loop
+      const promptValue = (await inquirer.prompt(prompts)).value;
+      result = parseJSON(promptValue);
+    } else {
+      // eslint-disable-next-line no-restricted-syntax
+      for (const [fieldName, fieldType] of fields) {
+        const { type } = fieldType;
+        let prompts = PROTO_TYPE_PROMPT_TYPE[type] || PROTO_TYPE_PROMPT_TYPE.default;
+        prompts = {
+          ...prompts,
+          name: fieldName,
+          message: `Enter the required param <${fieldName}>:`
+        };
+        // eslint-disable-next-line no-await-in-loop
+        const promptValue = (await inquirer.prompt(prompts))[fieldName];
+        // eslint-disable-next-line no-await-in-loop
+        const value = await prompts.transformFunc(promptValue);
+        result[fieldName] = value;
+        if (typeof value === 'string' && isFilePath(value)) {
+          // eslint-disable-next-line no-await-in-loop
+          const { read } = await inquirer.prompt({
+            type: 'confirm',
+            name: 'read',
+            // eslint-disable-next-line max-len
+            message: `It seems that you have entered a file path, do you want to read the file content and take it as the value of <${fieldName}>`
+          });
+          if (read) {
+            const file = fs.readFileSync(
+              path.resolve(process.cwd(), value)
+            ).toString('base64');
+            result[fieldName] = file;
+          }
+        }
+        result[fieldName] = parseJSON(result[fieldName]);
+      }
+    }
+  }
+  return result;
+}
+
 module.exports = {
   promisify,
   camelCase,
@@ -209,8 +294,8 @@ module.exports = {
   getMethod,
   promptTolerateSeveralTimes,
   isAElfContract,
-  isFilePath,
   getTxResult,
   parseJSON,
-  randomId
+  randomId,
+  getParams
 };

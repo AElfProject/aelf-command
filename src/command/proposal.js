@@ -2,8 +2,6 @@
  * @file call read-only method on contract
  * @author atom-yang
  */
-const fs = require('fs');
-const path = require('path');
 const AElf = require('aelf-sdk');
 const moment = require('moment');
 const chalk = require('chalk');
@@ -16,9 +14,8 @@ const {
   getContractInstance,
   getMethod,
   promptTolerateSeveralTimes,
-  isFilePath,
   getTxResult,
-  parseJSON
+  getParams
 } = require('../utils/utils');
 const { getWallet } = require('../utils/wallet');
 const { logger } = require('../utils/myLogger');
@@ -42,16 +39,6 @@ const toContractPrompts = [
     suffix: ':'
   }
 ];
-
-function isSingleParameters(inputType) {
-  if (!inputType.name || (inputType.name !== 'Address' && inputType.name !== 'Hash')) {
-    return false;
-  }
-  if (!inputType.fieldsArray || inputType.fieldsArray.length !== 1) {
-    return false;
-  }
-  return inputType.fieldsArray[0].type === 'bytes';
-}
 
 async function getContractAddress(aelf, wallet, address) {
   if (!isAElfContract(address)) {
@@ -77,13 +64,6 @@ class ProposalCommand extends BaseSubCommand {
     options = [],
   ) {
     super(name, parameters, description, options, usage, rc);
-  }
-
-  async callMethod(method, params) {
-    this.oraInstance.start('Calling method...');
-    const result = await method.call(params);
-    this.oraInstance.succeed('Calling method successfully!');
-    return result;
   }
 
   async processAddressAfterPrompt(aelf, wallet, answerInput) {
@@ -144,55 +124,9 @@ class ProposalCommand extends BaseSubCommand {
             break;
         }
       }
-      const fields = Object.entries(method.inputTypeInfo.fields);
-      let result = {};
-      if (fields.length > 0) {
-        if (isSingleParameters(method.inputType)) {
-          console.log('Enter required params:');
-          const prompts = {
-            type: 'input',
-            name: 'value',
-            message: 'Enter the required param:'
-          };
-          // eslint-disable-next-line no-await-in-loop
-          const { value } = await inquirer.prompt(prompts);
-          result = parseJSON(value);
-        } else {
-          // eslint-disable-next-line max-len
-          console.log(chalk.yellow('\nIf you need to pass file contents to the contractMethod, you can enter the relative or absolute path of the file instead\n'));
-          console.log('Enter required params one by one:');
-          // eslint-disable-next-line no-restricted-syntax
-          for (const [fieldName] of Object.entries(method.inputTypeInfo.fields)) {
-            const prompts = {
-              type: 'input',
-              name: fieldName,
-              message: `Enter the required param <${fieldName}>:`
-            };
-            // eslint-disable-next-line no-await-in-loop
-            const value = (await inquirer.prompt(prompts))[fieldName];
-            result[fieldName] = value;
-            if (isFilePath(value)) {
-              // eslint-disable-next-line no-await-in-loop
-              const { read } = await inquirer.prompt({
-                type: 'confirm',
-                name: 'read',
-                // eslint-disable-next-line max-len
-                message: `It seems that you have entered a file path, do you want to read the file content and take it as the value of <${fieldName}>`
-              });
-              if (read) {
-                const code = fs.readFileSync(
-                  path.resolve(process.cwd(), value)
-                ).toString('base64');
-                result[fieldName] = code;
-              }
-            }
-            result[fieldName] = parseJSON(result[fieldName]);
-          }
-        }
-        result = method.packInput(BaseSubCommand.normalizeConfig(result));
-      } else {
-        result = method.packInput(null);
-      }
+      let params = await getParams(method);
+      params = typeof params === 'string' ? params : BaseSubCommand.normalizeConfig(params);
+      const result = method.packInput(params);
       const txId = await parliament.CreateProposal(BaseSubCommand.normalizeConfig({
         contractMethodName: methodName,
         toAddress: this.toContractAddress,

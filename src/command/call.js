@@ -4,13 +4,16 @@
  */
 const AElf = require('aelf-sdk');
 const inquirer = require('inquirer');
+const chalk = require('chalk');
 const BaseSubCommand = require('./baseSubCommand');
 const { callCommandUsages, callCommandParameters } = require('../utils/constants');
 const {
   getContractMethods,
   getContractInstance,
   getMethod,
-  promptTolerateSeveralTimes
+  promptTolerateSeveralTimes,
+  getParams,
+  parseJSON
 } = require('../utils/utils');
 const { getWallet } = require('../utils/wallet');
 const { logger } = require('../utils/myLogger');
@@ -82,12 +85,13 @@ class CallCommand extends BaseSubCommand {
               contractAddress = await getContractInstance(contractAddress, aelf, wallet, this.oraInstance);
               // eslint-disable-next-line no-await-in-loop
               method = getMethod(method, contractAddress);
-              if (method.inputTypeInfo
-                && (Object.keys(method.inputTypeInfo.fields).length === 0 || !method.inputTypeInfo.fields)) {
-                params = '';
-              } else {
-                // eslint-disable-next-line no-await-in-loop
-                params = (await inquirer.prompt(prompt)).params;
+              // eslint-disable-next-line no-await-in-loop
+              params = await getParams(method);
+              params = typeof params === 'string' ? params : BaseSubCommand.normalizeConfig(params);
+              if (Object.keys(params || {}).length > 0) {
+                console.log(
+                  chalk.hex('#3753d3')(`The params you entered is:\n${JSON.stringify(params, null, 2)}`)
+                );
               }
               break;
             default:
@@ -96,9 +100,7 @@ class CallCommand extends BaseSubCommand {
         }
       }
       contractAddress = await getContractInstance(contractAddress, aelf, wallet, this.oraInstance);
-      try {
-        params = JSON.parse(params);
-      } catch (e) {}
+      params = parseJSON(params);
       method = getMethod(method, contractAddress);
       if (method.inputTypeInfo
         && (Object.keys(method.inputTypeInfo.fields).length === 0 || !method.inputTypeInfo.fields)) {
