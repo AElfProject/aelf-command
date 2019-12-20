@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.31](https://github.com/AElfProject/aelf-command/compare/v0.1.30...v0.1.31) (2019-12-20)
+
+
+### Features
+
+* 🎸 input contarct method parameters one by one ([f5cdd43](https://github.com/AElfProject/aelf-command/commit/f5cdd43284942ce342bc6f4b6a176bbd595b4d42))
+
+
+### Bug Fixes
+
+* 🐛 remove console ([46e2312](https://github.com/AElfProject/aelf-command/commit/46e2312704fe50e54360a98f506be8f9412d7e9f))
+
 ### [0.1.30](https://github.com/AElfProject/aelf-command/compare/v0.1.29...v0.1.30) (2019-12-18)
 
 
