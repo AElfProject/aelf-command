@@ -28,7 +28,7 @@ class DeployCommand extends BaseSubCommand {
     super(
       'dapp-server',
       [],
-      'Create a dapp server',
+      'Start a dAPP SOCKET.IO server',
       commandOptions,
       commandUsage,
       rc

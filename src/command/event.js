@@ -19,7 +19,7 @@ class EventCommand extends BaseSubCommand {
     super(
       'event',
       eventCommandParameters,
-      'Deserialize the result return by executing a transaction',
+      'Deserialize the result returned by executing a transaction',
       [],
       eventCommandUsage,
       rc,
