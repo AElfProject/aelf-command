@@ -34,7 +34,7 @@ class Registry {
 
   static getFileOrNot(file, defaultContent = '') {
     if (fs.existsSync(file)) {
-      return fs.readFileSync(file);
+      return fs.readFileSync(file).toString();
     }
     return defaultContent;
   }
