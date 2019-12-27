@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.32](https://github.com/AElfProject/aelf-command/compare/v0.1.31...v0.1.32) (2019-12-27)
+
+
+### Bug Fixes
+
+* 🐛 fix missing toString() ([a96ccd3](https://github.com/AElfProject/aelf-command/commit/a96ccd3))
+
 ### [0.1.31](https://github.com/AElfProject/aelf-command/compare/v0.1.30...v0.1.31) (2019-12-20)
 
 
