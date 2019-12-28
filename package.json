@@ -6,7 +6,8 @@
   "scripts": {
     "commit": "git-cz",
     "lint": "eslint src",
-    "release": "standard-version"
+    "release": "standard-version",
+    "test": "npx cross-env NODE_ENV=test jest"
   },
   "preferGlobal": true,
   "repository": {
@@ -57,6 +58,7 @@
   },
   "devDependencies": {
     "commitizen": "^4.0.3",
+    "cross-env": "^6.0.3",
     "cz-conventional-changelog": "^3.0.2",
     "eslint": "^6.1.0",
     "eslint-config-airbnb-base": "^14.0.0",
