@@ -56,7 +56,7 @@ const blkInfoCommandParameters = [
     type: 'input',
     name: 'height',
     extraName: ['block-hash'],
-    message: 'Enter a valid height',
+    message: 'Enter a valid height or block hash',
     suffix: ':'
   },
   {

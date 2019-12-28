@@ -11,6 +11,9 @@ const commands = require('./command/index');
 const RC = require('./rc/index');
 const pkg = require('../package.json');
 const { logger } = require('./utils/myLogger');
+const {
+  userHomeDir
+} = require('./utils/userHomeDir');
 
 const minVersion = '10.9.0';
 
@@ -23,7 +26,7 @@ function init() {
   // eslint-disable-next-line max-len
   commander.option(
     '-d, --datadir <directory>',
-    'The directory that contains the AElf related files. Default to be Default to be `{home}/.local/share/aelf`'
+    `The directory that contains the AElf related files. Default to be ${userHomeDir}/aelf`
   );
   const rc = new RC();
   Object.values(commands).forEach(Value => {
@@ -35,20 +38,24 @@ function init() {
     logger.warn('not a valid command\n');
     logger.info(execSync('aelf-command -h').toString());
   });
-  const args = process.env.NODE_ENV === 'test' ? process.env.mockArgs.split(',') : process.argv;
+  const isTest = process.env.NODE_ENV === 'test';
+  const args = isTest ? process.env.mockArgs.split(',') : process.argv;
   commander.parse(args);
   if (commander.args.length === 0) commander.help();
-  const notifier = updateNotifier({
-    pkg,
-    distTag: 'latest',
-    updateCheckInterval: 1000 * 60 * 60 * 1 // one hours
-  });
 
-  if (notifier.update) {
-    notifier.notify({
-      message: `Update available ${chalk.dim(pkg.version)} ${chalk.reset('→')} ${chalk.green(notifier.update.latest)} 
-      Run ${chalk.cyan('npm i aelf-command -g')} to update`
+  if (!isTest) {
+    const notifier = updateNotifier({
+      pkg,
+      distTag: 'latest',
+      updateCheckInterval: 1000 * 60 * 60 * 1 // one hours
     });
+
+    if (notifier.update) {
+      notifier.notify({
+        message: `Update available ${chalk.dim(pkg.version)} ${chalk.reset('→')} ${chalk.green(notifier.update.latest)}
+      Run ${chalk.cyan('npm i aelf-command -g')} to update`
+      });
+    }
   }
 }
 
