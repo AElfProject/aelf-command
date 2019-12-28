@@ -35,18 +35,18 @@ class GetTxResultCommand extends BaseSubCommand {
     try {
       await this.validateParameters(
         {
-          txHash: {
+          txId: {
             type: 'string',
             required: true,
-            message: 'Input a valid <tx-hash>'
+            message: 'Input a valid <tx-id>'
           }
         },
         subOptions
       );
       const aelf = new AElf(new AElf.providers.HttpProvider(options.endpoint));
-      const { txHash } = subOptions;
+      const { txId } = subOptions;
       this.oraInstance.start();
-      const txResult = await aelf.chain.getTxResult(txHash);
+      const txResult = await aelf.chain.getTxResult(txId);
       this.oraInstance.succeed('Succeed!');
       logger.info(JSON.stringify(txResult, null, 2));
     } catch (e) {

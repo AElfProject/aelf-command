@@ -108,14 +108,14 @@ const proposalCommandUsage = [
 const txResultCommandParameters = [
   {
     type: 'input',
-    name: 'tx-hash',
-    message: 'Enter a valid transaction hash in hex format',
+    name: 'tx-id',
+    message: 'Enter a valid transaction id in hex format',
     suffix: ':'
   }
 ];
 
 const txResultCommandUsage = [
-  '<tx-hash>',
+  '<tx-id>',
   ''
 ];
 
