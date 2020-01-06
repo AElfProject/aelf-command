@@ -32,11 +32,11 @@ class ConsoleCommand extends BaseSubCommand {
           },
           {
             Name: 'aelf',
-            description: `the instance of an aelf-sdk, connect to ${endpoint}`
+            description: `instance of aelf-sdk, connect to ${endpoint}`
           },
           {
             Name: '_account',
-            description: `the instance of an AElf wallet, address is ${account}`
+            description: `instance of AElf wallet, wallet address is ${account}`
           }
         ],
         {
@@ -47,7 +47,6 @@ class ConsoleCommand extends BaseSubCommand {
           }
         }
       );
-      // todo: chalk
       logger.info('Welcome to aelf interactive console. Ctrl + C to terminate the program. Double tap Tab to list objects');
       logger.info(
         boxen(columns, {

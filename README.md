@@ -786,9 +786,9 @@ Welcome to aelf interactive console. Ctrl + C to terminate the program. Double t
    ║                                                           ║
    ║   NAME       | DESCRIPTION                                ║
    ║   AElf       | imported from aelf-sdk                     ║
-   ║   aelf       | the instance of an aelf-sdk, connect to    ║
+   ║   aelf       | instance of aelf-sdk, connect to           ║
    ║              | http://13.231.179.27:8000                  ║
-   ║   _account   | the instance of an AElf wallet, address    ║
+   ║   _account   | instance of AElf wallet, wallet address    ║
    ║              | is                                         ║
    ║              | 2Ue31YTuB5Szy7cnr3SCEGU2gtGi5uMQBYarYUR…   ║
    ║              | 5oGin1sys6H                                ║
