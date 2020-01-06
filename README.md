@@ -554,7 +554,8 @@ Examples:
     ? Enter the required param <code>: /Users/test/contract.dll
     ...
     ```
-   you must input contract method parameters in the prompting way, note that you can input a relative or absolute path of contract file to pass a file to `aelf-command`, `aelf-command` will read the file content and encode as base64 string.
+   * You must input contract method parameters in the prompting way, note that you can input a relative or absolute path of contract file to pass a file to `aelf-command`, `aelf-command` will read the file content and encode as base64 string.
+   * After call `ProposeNewContract`, you need to wait the organization members to approve your propose and you can release your propose by `releaseApprove` and `releaseCodeCheck` step by step
 
 ### event - Deserialize the result return by executing a transaction
 

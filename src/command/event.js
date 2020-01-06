@@ -47,7 +47,7 @@ class EventCommand extends BaseSubCommand {
       } else {
         this.oraInstance.start('Deserialize Transaction Logs...');
         const logs = txResult.Logs;
-        // const logsResult = [];
+        const descriptor = {};
         // eslint-disable-next-line no-restricted-syntax
         for (const [index, log] of Object.entries(logs)) {
           const {
@@ -56,8 +56,12 @@ class EventCommand extends BaseSubCommand {
             NonIndexed: data,
             Indexed = []
           } = log;
-          // eslint-disable-next-line no-await-in-loop
-          const fileDescriptor = await aelf.chain.getContractFileDescriptorSet(contractAddress);
+          let fileDescriptor = descriptor[contractAddress];
+          if (!fileDescriptor) {
+            // eslint-disable-next-line no-await-in-loop
+            fileDescriptor = await aelf.chain.getContractFileDescriptorSet(contractAddress);
+            descriptor[contractAddress] = fileDescriptor;
+          }
           const dataType = AElf.pbjs.Root.fromDescriptor(fileDescriptor).lookupType(dataTypeName);
           const serializedData = [...Indexed];
           if (data) {
