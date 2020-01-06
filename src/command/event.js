@@ -47,7 +47,7 @@ class EventCommand extends BaseSubCommand {
       } else {
         this.oraInstance.start('Deserialize Transaction Logs...');
         const logs = txResult.Logs;
-        // const logsResult = [];
+        const descriptor = {};
         // eslint-disable-next-line no-restricted-syntax
         for (const [index, log] of Object.entries(logs)) {
           const {
@@ -56,19 +56,33 @@ class EventCommand extends BaseSubCommand {
             NonIndexed: data,
             Indexed = []
           } = log;
-          // eslint-disable-next-line no-await-in-loop
-          const fileDescriptor = await aelf.chain.getContractFileDescriptorSet(contractAddress);
+          let fileDescriptor = descriptor[contractAddress];
+          if (!fileDescriptor) {
+            // eslint-disable-next-line no-await-in-loop
+            fileDescriptor = await aelf.chain.getContractFileDescriptorSet(contractAddress);
+            descriptor[contractAddress] = fileDescriptor;
+          }
           const dataType = AElf.pbjs.Root.fromDescriptor(fileDescriptor).lookupType(dataTypeName);
-          let result = dataType.decode(Buffer.from(`${Array.isArray(Indexed) ? Indexed.join('') : ''}${data}`, 'base64'));
-          result = dataType.toObject(result, {
-            enums: String, // enums as string names
-            longs: String, // longs as strings (requires long.js)
-            bytes: String, // bytes as base64 encoded strings
-            defaults: true, // includes default values
-            arrays: true, // populates empty arrays (repeated fields) even if defaults=false
-            objects: true, // populates empty objects (map fields) even if defaults=false
-            oneofs: true // includes virtual oneof fields set to the present field's name
-          });
+          const serializedData = [...Indexed];
+          if (data) {
+            serializedData.push(data);
+          }
+          const result = serializedData.reduce((acc, v) => {
+            let deserialize = dataType.decode(Buffer.from(v, 'base64'));
+            deserialize = dataType.toObject(deserialize, {
+              enums: String, // enums as string names
+              longs: String, // longs as strings (requires long.js)
+              bytes: String, // bytes as base64 encoded strings
+              defaults: false, // includes default values
+              arrays: true, // populates empty arrays (repeated fields) even if defaults=false
+              objects: true, // populates empty objects (map fields) even if defaults=false
+              oneofs: true // includes virtual oneof fields set to the present field's name
+            });
+            return {
+              ...acc,
+              ...deserialize
+            };
+          }, {});
           Object.entries(dataType.fields).forEach(([fieldName, field]) => {
             const fieldValue = result[fieldName];
             if (fieldValue === null || fieldValue === undefined) {
