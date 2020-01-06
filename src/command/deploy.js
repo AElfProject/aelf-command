@@ -2,40 +2,26 @@
  * @file deploy contract
  * @author atom-yang
  */
-const AElf = require('aelf-sdk');
-const fs = require('fs');
+const chalk = require('chalk');
 const BaseSubCommand = require('./baseSubCommand');
 const { deployCommandParameters, deployCommandUsage } = require('../utils/constants');
-const { getWallet } = require('../utils/wallet');
-const { logger } = require('../utils/myLogger');
+
+// eslint-disable-next-line max-len
+const tips = chalk.redBright('Deprecated! Please use ', chalk.yellowBright('`aelf-command send`'), ', check details in aelf-command `README.md`');
 
 class DeployCommand extends BaseSubCommand {
-  constructor(rc, name = 'deploy', description = 'Deploy a smart contract', usage = deployCommandUsage) {
+  constructor(
+    rc,
+    name = 'deploy',
+    description = tips,
+    usage = deployCommandUsage
+  ) {
     super(name, deployCommandParameters, description, [], usage, rc);
   }
 
-  async run(commander, ...args) {
-    const { options, subOptions } = await super.run(commander, ...args);
-    const {
-      endpoint, datadir, account, password
-    } = options;
-    const { category, codePath } = subOptions;
-    try {
-      this.oraInstance.start('Starting to deploy');
-      const aelf = new AElf(new AElf.providers.HttpProvider(endpoint));
-      const wallet = getWallet(datadir, account, password);
-      const code = fs.readFileSync(codePath).toString('base64');
-      const { GenesisContractAddress } = await aelf.chain.getChainStatus();
-      const zeroContract = await aelf.chain.contractAt(GenesisContractAddress, wallet);
-      const result = await zeroContract.DeploySmartContract({
-        category,
-        code
-      });
-      this.oraInstance.succeed(`\n${JSON.stringify(result, null, 2)}`);
-    } catch (e) {
-      this.oraInstance.fail('Failed!');
-      logger.error(e);
-    }
+  async run() {
+    // eslint-disable-next-line max-len
+    console.log(tips);
   }
 }
 

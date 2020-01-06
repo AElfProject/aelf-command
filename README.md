@@ -505,15 +505,56 @@ For more details, check the descriptions of [`aelf-command event`](#event-deseri
 
 ### deploy - Deploy a smart contract
 
-Deploy a smart contract to the chain
+**This command has been deprecated, use `aelf-command send` or `aelf-command proposal` instead**
 
-```bash
-$ aelf-command deploy
-✔ Enter a valid wallet address, if you don't have, create one by aelf-command create … 2Ue31YTuB5Szy7cnr3SCEGU2gtGi5uMQBYarYUR5oGin1sys6H
-✔ Enter the password you typed when creating a wallet … ********
-✔ Enter the category of the contract to be deployed … 0
-? Enter the relative or absolute path of contract code › /Users/home/home
-```
+Examples:
+
+1. Use Genesis Contract to deploy a new smart contract
+    ```shell script
+    $ aelf-command get-chain-status
+    ✔ Succeed
+    {
+      "ChainId": "AELF",
+      "Branches": {
+        "41a8a1ebf037197b7e2f10a67d81f741d46a6af41775bcc4e52ab855c58c4375": 8681551,
+        "ed4012c21a2fbf810db52e9869ef6a3fb0629b36d23c9be2e3692a24703b3112": 8681597,
+        "13476b902ef137ed63a4b52b2902bb2b2fa5dbe7c256fa326c024a73dc63bcb3": 8681610
+      },
+      "NotLinkedBlocks": {},
+      "LongestChainHeight": 8681610,
+      "LongestChainHash": "13476b902ef137ed63a4b52b2902bb2b2fa5dbe7c256fa326c024a73dc63bcb3",
+      "GenesisBlockHash": "cd5ce1bfa0cd97a1dc34f735c57bea2fcb9d88fc8f76bece2592fe7d82d5660c",
+      "GenesisContractAddress": "2gaQh4uxg6tzyH1ADLoDxvHA14FMpzEiMqsQ6sDG5iHT8cmjp8",
+      "LastIrreversibleBlockHash": "4ab84cdfe0723b191eedcf4d2ca86b0f64e57105e61486c21d98d562b14f2ab0",
+      "LastIrreversibleBlockHeight": 8681483,
+      "BestChainHash": "0dbc2176aded950020577552c92c82e66504ea109d4d6588887502251b7e932b",
+      "BestChainHeight": 8681609
+    }
+
+    # use GenesisContractAddress as a parameter of aelf-command send
+    # use contract method `DeploySmartContract` if the chain you are connecting to requires no limit of authority
+    $ aelf-command send 2gaQh4uxg6tzyH1ADLoDxvHA14FMpzEiMqsQ6sDG5iHT8cmjp8 DeploySmartContract
+    ✔ Fetching contract successfully!
+
+    If you need to pass file contents as a parameter, you can enter the relative or absolute path of the file
+
+    Enter the params one by one, type `Enter` to skip optional param:
+    ? Enter the required param <category>: 0
+    ? Enter the required param <code>: /Users/test/contract.dll
+    ...
+
+    # use contract method `ProposeNewContract` if the chain you are connecting to requires create new propose when deploying smart contracts
+    $ aelf-command send 2gaQh4uxg6tzyH1ADLoDxvHA14FMpzEiMqsQ6sDG5iHT8cmjp8 ProposeNewContract
+    ✔ Fetching contract successfully!
+
+    If you need to pass file contents as a parameter, you can enter the relative or absolute path of the file
+
+    Enter the params one by one, type `Enter` to skip optional param:
+    ? Enter the required param <category>: 0
+    ? Enter the required param <code>: /Users/test/contract.dll
+    ...
+    ```
+   you must input contract method parameters in the prompting way, note that you can input a relative or absolute path of contract file to pass a file to `aelf-command`, `aelf-command` will read the file content and encode as base64 string.
 
 ### event - Deserialize the result return by executing a transaction
 
