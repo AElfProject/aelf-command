@@ -164,7 +164,12 @@ function isFilePath(val) {
     return false;
   }
   const filePath = path.resolve(process.cwd(), val);
-  return fs.existsSync(filePath);
+  try {
+    const stat = fs.statSync(filePath);
+    return stat.isFile();
+  } catch (e) {
+    return false;
+  }
 }
 
 async function getTxResult(aelf, txId, times = 0, delay = 3000, timeLimit = 3) {
@@ -232,6 +237,39 @@ function isSpecialParameters(inputType) {
   );
 }
 
+async function getParamValue(type, fieldName) {
+  let prompts = PROTO_TYPE_PROMPT_TYPE[type] || PROTO_TYPE_PROMPT_TYPE.default;
+  const fieldNameWithoutDot = fieldName.replace('.', '');
+  prompts = {
+    ...prompts,
+    name: fieldNameWithoutDot,
+    message: `Enter the required param <${fieldName}>:`
+  };
+  // eslint-disable-next-line no-await-in-loop
+  const promptValue = (await inquirer.prompt(prompts))[fieldNameWithoutDot];
+  // eslint-disable-next-line no-await-in-loop
+  let value = parseJSON(await prompts.transformFunc(promptValue));
+  if (typeof value === 'string' && isFilePath(value)) {
+    const filePath = path.resolve(process.cwd(), value);
+    // eslint-disable-next-line no-await-in-loop
+    const { read } = await inquirer.prompt({
+      type: 'confirm',
+      name: 'read',
+      // eslint-disable-next-line max-len
+      message: `It seems that you have entered a file path, do you want to read the file content and take it as the value of <${fieldName}>`
+    });
+    if (read) {
+      try {
+        fs.accessSync(filePath, fs.constants.R_OK);
+      } catch (err) {
+        throw new Error(`permission denied, no read access to file ${filePath}!`);
+      }
+      value = fs.readFileSync(filePath).toString('base64');
+    }
+  }
+  return value;
+}
+
 async function getParams(method) {
   const fields = Object.entries(method.inputTypeInfo.fields || {});
   let result = {};
@@ -253,33 +291,37 @@ async function getParams(method) {
       // eslint-disable-next-line no-restricted-syntax
       for (const [fieldName, fieldType] of fields) {
         const { type } = fieldType;
-        let prompts = PROTO_TYPE_PROMPT_TYPE[type] || PROTO_TYPE_PROMPT_TYPE.default;
-        prompts = {
-          ...prompts,
-          name: fieldName,
-          message: `Enter the required param <${fieldName}>:`
-        };
-        // eslint-disable-next-line no-await-in-loop
-        const promptValue = (await inquirer.prompt(prompts))[fieldName];
-        // eslint-disable-next-line no-await-in-loop
-        const value = await prompts.transformFunc(promptValue);
-        result[fieldName] = value;
-        if (typeof value === 'string' && isFilePath(value)) {
-          // eslint-disable-next-line no-await-in-loop
-          const { read } = await inquirer.prompt({
-            type: 'confirm',
-            name: 'read',
-            // eslint-disable-next-line max-len
-            message: `It seems that you have entered a file path, do you want to read the file content and take it as the value of <${fieldName}>`
-          });
-          if (read) {
-            const file = fs.readFileSync(
-              path.resolve(process.cwd(), value)
-            ).toString('base64');
-            result[fieldName] = file;
+        let innerType = null;
+        try {
+          innerType = method.inputType.lookupType(type);
+        } catch (e) {}
+        let paramValue;
+        if (innerType) {
+          let innerResult = {};
+          const innerInputTypeInfo = innerType.toJSON();
+          const innerFields = Object.entries(innerInputTypeInfo.fields || {});
+          if (isSpecialParameters(innerFields)) {
+            let prompts = PROTO_TYPE_PROMPT_TYPE.default;
+            prompts = {
+              ...prompts,
+              name: 'value',
+              message: `Enter the required param <${fieldName}.value>:`
+            };
+            // eslint-disable-next-line no-await-in-loop
+            innerResult = (await inquirer.prompt(prompts)).value;
+          } else {
+            // eslint-disable-next-line no-restricted-syntax
+            for (const [innerFieldName, innerFieldType] of innerFields) {
+              // eslint-disable-next-line no-await-in-loop
+              innerResult[innerFieldName] = parseJSON(await getParamValue(innerFieldType.type, `${fieldName}.${innerFieldName}`));
+            }
           }
+          paramValue = innerResult;
+        } else {
+          // eslint-disable-next-line no-await-in-loop
+          paramValue = await getParamValue(type, fieldName);
         }
-        result[fieldName] = parseJSON(result[fieldName]);
+        result[fieldName] = parseJSON(paramValue);
       }
     }
   }

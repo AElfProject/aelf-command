@@ -63,7 +63,7 @@ class EventCommand extends BaseSubCommand {
             descriptor[contractAddress] = fileDescriptor;
           }
           const dataType = AElf.pbjs.Root.fromDescriptor(fileDescriptor).lookupType(dataTypeName);
-          const serializedData = [...Indexed];
+          const serializedData = [...(Indexed || [])];
           if (data) {
             serializedData.push(data);
           }

@@ -150,21 +150,21 @@ Options:
   -h, --help                                               output usage information
 
 Commands:
-  call [contract-address|contract-name] [method] [params]  Call a read-only method on a contract.
-  send [contract-address|contract-name] [method] [params]  Execute a method on a contract.
-  get-blk-height                                           Get the current block height of specified chain
-  get-chain-status                                         Get the current chain status
-  get-blk-info [height|block-hash] [include-txs]           Get a block info
-  get-tx-result [tx-hash]                                  Get a transaction result
-  console                                                  Open a node REPL
-  create [options] [save-to-file]                          Create a new account
-  wallet                                                   Show wallet details which include private key, address, public key and mnemonic
-  load [private-key|mnemonic] [save-to-file]               Load wallet from a private key or mnemonic
-  proposal [organization] [expired-time]                   Send a proposal to an origination with a specific contract method
-  deploy [category] [code-path]                            Deploy a smart contract
-  config <flag> [key] [value]                              Get, set, delete or list aelf-command config
-  event [tx-id]                                            Deserialize the result returned by executing a transaction
-  dapp-server [options]                                    Start a dAPP SOCKET.IO server
+  call [contract-address|contract-name] [method] [params]     Call a read-only method on a contract.
+  send [contract-address|contract-name] [method] [params]     Execute a method on a contract.
+  get-blk-height                                              Get the current block height of specified chain
+  get-chain-status                                            Get the current chain status
+  get-blk-info [height|block-hash] [include-txs]              Get a block info
+  get-tx-result [tx-id]                                       Get a transaction result
+  console                                                     Open a node REPL
+  create [options] [save-to-file]                             Create a new account
+  wallet                                                      Show wallet details which include private key, address, public key and mnemonic
+  load [private-key|mnemonic] [save-to-file]                  Load wallet from a private key or mnemonic
+  proposal [proposal-contract] [organization] [expired-time]  Send a proposal to an origination with a specific contract method
+  deploy [category] [code-path]                               Deprecated! Please use  `aelf-command send` , check details in aelf-command `README.md`
+  config <flag> [key] [value]                                 Get, set, delete or list aelf-command config
+  event [tx-id]                                               Deserialize the result returned by executing a transaction
+  dapp-server [options]                                       Start a dAPP SOCKET.IO server
 ```
 
 in your terminal and get useful information.
@@ -351,11 +351,16 @@ AElf [Info]: Address             : C91b1SF5mMbenHZTfdfbJSkJcK7HMjeiuw...8qYjGsES
 
 ### proposal - Create a proposal
 
-There are some transactions you can't send directly, such as deploying a smart contract, you need to create a proposal to a specific organization which contains BP nodes, and wait for the approve.
+There are three kinds of proposal contracts in AElf for now:
+* `AElf.ContractNames.Parliament`
+* `AElf.ContractNames.Referendum`
+* `AElf.ContractNames.Association`
 
-Actually, you can create proposals on any contract method.
+you can choose one and create a proposal to an organization on any contract method by the proposal contract.
 
 * Get an organization address or create a organization
+
+Get default organization address on contract `AElf.ContractNames.Parliament`
 
 ```bash
 $ aelf-command call AElf.ContractNames.Parliament GetDefaultOrganizationAddress
@@ -367,20 +372,57 @@ Result:
 ✔ Succeed!
 ```
 
-`BkcXRkykRC2etHp9hgFfbw2ec1edx7ERBxYtbC97z3Q2bNCwc` is the organization address.
+`BkcXRkykRC2etHp9hgFfbw2ec1edx7ERBxYtbC97z3Q2bNCwc` is the default organization address.
 
-You can get the default organization address and it has all BP nodes inside, every proposal can only be released when it has got over 2/3 BP nodes approve
+You can get the default organization address and it has all BP nodes inside, every proposal under `AElf.ContractNames.Parliament` can only be released when it has got over 2/3 BP nodes approve
 
-Create an organization
+Create an organization under `AElf.ContractNames.Referendum`
 
 ```bash
-aelf-command send AElf.ContractNames.Parliament CreateOrganization '{"reviewers":["ada","asda"], "releaseThreshold": 660000}'
+$ aelf-command send AElf.ContractNames.Referendum
+✔ Fetching contract successfully!
+? Pick up a contract method: CreateOrganization
+
+If you need to pass file contents as a parameter, you can enter the relative or absolute path of the file
+
+Enter the params one by one, type `Enter` to skip optional param:
+? Enter the required param <tokenSymbol>: ELF
+? Enter the required param <proposalReleaseThreshold.minimalApprovalThreshold>: 666
+? Enter the required param <proposalReleaseThreshold.maximalRejectionThreshold>: 666
+? Enter the required param <proposalReleaseThreshold.maximalAbstentionThreshold>: 666
+? Enter the required param <proposalReleaseThreshold.minimalVoteThreshold>: 666
+? Enter the required param <proposerWhiteList.proposers>: [{"value":"MdoAeyIC0jqeqbWuesMDU/zvuQ+yZj7NJ2adyW26mao="}]
+The params you entered is:
+{
+  "tokenSymbol": "ELF",
+  "proposalReleaseThreshold": {
+    "minimalApprovalThreshold": 666,
+    "maximalRejectionThreshold": 666,
+    "maximalAbstentionThreshold": 666,
+    "minimalVoteThreshold": 666
+  },
+  "proposerWhiteList": {
+    "proposers": [
+      {
+        "value": "MdoAeyIC0jqeqbWuesMDU/zvuQ+yZj7NJ2adyW26mao="
+      }
+    ]
+  }
+}
+✔ Succeed!
+AElf [Info]:
+Result:
+{
+  "TransactionId": "273285c7e8825a0af5291dd5d9295f746f2bb079b30f915422564de7a64fc874"
+}
+✔ Succeed!
 ```
 
 * Create a proposal
 
 ```bash
 $ aelf-command proposal
+? Pick up a contract name to create a proposal: AElf.ContractNames.Parliament
 ? Enter an organization address: BkcXRkykRC2etHp9hgFfbw2ec1edx7ERBxYtbC97z3Q2bNCwc
 ? Select the expired time for this proposal: 2022/09/23 22:06
 ? Enter a contract address or name: 2gaQh4uxg6tzyH1ADLoDxvHA14FMpzEiMqsQ6sDG5iHT8cmjp8
@@ -469,7 +511,7 @@ AElf [Info]: {
 }
 ```
 
-If you want to call a contract method by creating a proposal and released it, the transaction result could be confusing, you can use another `aelf-command` sub-command to get the readable result;
+If you want to call a contract method by creating a proposal and released it, the released transaction result could be confusing, you can use another `aelf-command` sub-command to get the readable result;
 
 Take the example above which has deployed a smart contract by proposal, the contract address is necessary for sending transactions.
 The contract address has been given but need to be decoded. We supply `aelf-command event` to decode the results.
