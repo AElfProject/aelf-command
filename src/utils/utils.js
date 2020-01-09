@@ -296,7 +296,7 @@ async function getParams(method) {
           innerType = method.inputType.lookupType(type);
         } catch (e) {}
         let paramValue;
-        if (innerType) {
+        if (innerType && !isSpecialParameters(innerType)) {
           let innerResult = {};
           const innerInputTypeInfo = innerType.toJSON();
           const innerFields = Object.entries(innerInputTypeInfo.fields || {});
