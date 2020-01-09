@@ -81,6 +81,17 @@ inquirer.registerPrompt('datetime', require('inquirer-datepicker-prompt'));
 
 const proposalCommandParameters = [
   {
+    type: 'list',
+    name: 'proposal-contract',
+    message: 'Pick up a contract name to create a proposal',
+    choices: [
+      'AElf.ContractNames.Parliament',
+      'AElf.ContractNames.Referendum',
+      'AElf.ContractNames.Association'
+    ],
+    suffix: ':'
+  },
+  {
     type: 'input',
     name: 'organization',
     message: 'Enter an organization address',
@@ -100,8 +111,9 @@ const proposalCommandParameters = [
 ];
 
 const proposalCommandUsage = [
-  '<organization> <expired-time>',
-  '<organization>',
+  '<proposal-contract> <organization> <expired-time>',
+  '<proposal-contract> <organization>',
+  '<proposal-contract>',
   ''
 ];
 

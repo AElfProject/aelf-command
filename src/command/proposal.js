@@ -20,8 +20,6 @@ const {
 const { getWallet } = require('../utils/wallet');
 const { logger } = require('../utils/myLogger');
 
-const contractName = 'AElf.ContractNames.Parliament';
-
 const toContractPrompts = [
   {
     type: 'input',
@@ -82,10 +80,15 @@ class ProposalCommand extends BaseSubCommand {
       password
     } = options;
     const {
+      proposalContract,
       organization,
       expiredTime
     } = subOptions;
     try {
+      if (!proposalCommandParameters[0].choices.includes(proposalContract)) {
+        // eslint-disable-next-line max-len
+        throw new Error(`${proposalContract} is not in the list of proposal contracts, choice one of \`AElf.ContractNames.Parliament\`, \`AElf.ContractNames.Referendum\` and \`AElf.ContractNames.Association\``);
+      }
       if (!moment(expiredTime).isValid || moment(expiredTime).isBefore(moment().add(1, 'hours'))) {
         throw new Error(`Expired Time has to be later than ${moment().add(1, 'hours').format('YYYY/MM/DD HH:mm:ss')}`);
       }
@@ -93,7 +96,7 @@ class ProposalCommand extends BaseSubCommand {
       const wallet = getWallet(datadir, account, password);
       const { GenesisContractAddress } = await aelf.chain.getChainStatus();
       const genesisContract = await aelf.chain.contractAt(GenesisContractAddress, wallet);
-      const address = await genesisContract.GetContractAddressByName.call(AElf.utils.sha256(contractName));
+      const address = await genesisContract.GetContractAddressByName.call(AElf.utils.sha256(proposalContract));
       const parliament = await aelf.chain.contractAt(address, wallet);
       let toContractAddress;
       let method;
@@ -143,7 +146,7 @@ class ProposalCommand extends BaseSubCommand {
       this.oraInstance.succeed();
       if (tx.Status === 'PENDING') {
         // eslint-disable-next-line max-len
-        logger.info(`Transaction is still pending, you can check it later by running ${chalk.yellow(`aelf-command get-tx-result ${txId.TransactionId}`)}`);
+        logger.info(`Transaction is still pending, you can get proposal id later by running ${chalk.yellow(`aelf-command event ${txId.TransactionId}`)}`);
       } else {
         logger.info(`Proposal id: ${tx.ReadableReturnValue}.`);
         this.oraInstance.succeed('Succeed!');
