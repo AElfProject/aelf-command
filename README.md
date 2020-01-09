@@ -391,7 +391,7 @@ Enter the params one by one, type `Enter` to skip optional param:
 ? Enter the required param <proposalReleaseThreshold.maximalRejectionThreshold>: 666
 ? Enter the required param <proposalReleaseThreshold.maximalAbstentionThreshold>: 666
 ? Enter the required param <proposalReleaseThreshold.minimalVoteThreshold>: 666
-? Enter the required param <proposerWhiteList.proposers>: [{"value":"MdoAeyIC0jqeqbWuesMDU/zvuQ+yZj7NJ2adyW26mao="}]
+? Enter the required param <proposerWhiteList.proposers>: ["2hxkDg6Pd2d4yU1A16PTZVMMrEDYEPR8oQojMDwWdax5LsBaxX"]
 The params you entered is:
 {
   "tokenSymbol": "ELF",
@@ -403,9 +403,7 @@ The params you entered is:
   },
   "proposerWhiteList": {
     "proposers": [
-      {
-        "value": "MdoAeyIC0jqeqbWuesMDU/zvuQ+yZj7NJ2adyW26mao="
-      }
+      "2hxkDg6Pd2d4yU1A16PTZVMMrEDYEPR8oQojMDwWdax5LsBaxX"
     ]
   }
 }
