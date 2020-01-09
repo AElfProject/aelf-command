@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.35](https://github.com/AElfProject/aelf-command/compare/v0.1.34...v0.1.35) (2020-01-09)
+
+
+### Bug Fixes
+
+* 🐛 add condition for aelf.Address and aelf.Hash ([894db11](https://github.com/AElfProject/aelf-command/commit/894db11))
+
+
+### Features
+
+* 🎸 add new creating proposal contracts ([0d63fd1](https://github.com/AElfProject/aelf-command/commit/0d63fd1))
+
 ### [0.1.34](https://github.com/AElfProject/aelf-command/compare/v0.1.33...v0.1.34) (2020-01-06)
 
 
