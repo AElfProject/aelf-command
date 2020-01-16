@@ -244,10 +244,10 @@ You can specified options above in several ways, and the priority is in the orde
 
       Examples:
 
-      $ aelf-command config get <key>
-      $ aelf-command config set <key> <value>
-      $ aelf-command config delete <key>
-      $ aelf-command config list
+      aelf-command config get <key>
+      aelf-command config set <key> <value>
+      aelf-command config delete <key>
+      aelf-command config list
       ```
 
     * `get`: get the value of given `key` from global `.aelfrc` file
@@ -299,7 +299,7 @@ You can specified options above in several ways, and the priority is in the orde
 
 This command will create a new account.
 
-```shell
+```bash
 $ aelf-command create -h
 Usage: aelf-command create [options] [save-to-file]
 
@@ -550,7 +550,8 @@ For more details, check the descriptions of [`aelf-command event`](#event-deseri
 Examples:
 
 1. Use Genesis Contract to deploy a new smart contract
-    ```shell script
+
+    ```bash
     $ aelf-command get-chain-status
     ✔ Succeed
     {
@@ -594,6 +595,7 @@ Examples:
     ? Enter the required param <code>: /Users/test/contract.dll
     ...
     ```
+
    * You must input contract method parameters in the prompting way, note that you can input a relative or absolute path of contract file to pass a file to `aelf-command`, `aelf-command` will read the file content and encode as base64 string.
    * After call `ProposeNewContract`, you need to wait the organization members to approve your propose and you can release your propose by `releaseApprove` and `releaseCodeCheck` step by step
 
