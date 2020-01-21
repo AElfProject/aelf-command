@@ -296,7 +296,7 @@ async function getParams(method) {
           innerType = method.inputType.lookupType(type);
         } catch (e) {}
         let paramValue;
-        if (innerType && !isSpecialParameters(innerType)) {
+        if (innerType && !isSpecialParameters(innerType) && (type || '').indexOf('google.protobuf.Timestamp') === -1) {
           let innerResult = {};
           const innerInputTypeInfo = innerType.toJSON();
           const innerFields = Object.entries(innerInputTypeInfo.fields || {});
