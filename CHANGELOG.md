@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.36](https://github.com/AElfProject/aelf-command/compare/v0.1.35...v0.1.36) (2020-01-21)
+
+
+### Bug Fixes
+
+* 🐛 input type timestamp is not nested protobuf message ([2c0360f](https://github.com/AElfProject/aelf-command/commit/2c0360f))
+
 ### [0.1.35](https://github.com/AElfProject/aelf-command/compare/v0.1.34...v0.1.35) (2020-01-09)
 
 
