@@ -216,7 +216,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Features
 * 🎸 Beautify with chalk & ora, define 5 levels of log, Beautify the print info
-    
+
 * 🎸 Now it will give u 3 chances when ask for contract name
 
 ### Bug Fixes

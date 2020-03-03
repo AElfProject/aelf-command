@@ -67,7 +67,7 @@ class EventCommand extends BaseSubCommand {
           if (data) {
             serializedData.push(data);
           }
-          const result = serializedData.reduce((acc, v) => {
+          let result = serializedData.reduce((acc, v) => {
             let deserialize = dataType.decode(Buffer.from(v, 'base64'));
             deserialize = dataType.toObject(deserialize, {
               enums: String, // enums as string names
@@ -83,20 +83,8 @@ class EventCommand extends BaseSubCommand {
               ...deserialize
             };
           }, {});
-          Object.entries(dataType.fields).forEach(([fieldName, field]) => {
-            const fieldValue = result[fieldName];
-            if (fieldValue === null || fieldValue === undefined) {
-              return;
-            }
-            if (field.type === '.aelf.Address' && typeof fieldValue !== 'string') {
-              result[fieldName] = Array.isArray(fieldValue)
-                ? fieldValue.map(AElf.pbUtils.getRepForAddress) : AElf.pbUtils.getRepForAddress(fieldValue);
-            }
-            if (field.type === '.aelf.Hash' && typeof fieldValue !== 'string') {
-              result[fieldName] = Array.isArray(fieldValue)
-                ? fieldValue.map(AElf.pbUtils.getRepForHash) : AElf.pbUtils.getRepForHash(fieldValue);
-            }
-          });
+          result = AElf.utils.transform.transform(dataType, result, AElf.utils.transform.OUTPUT_TRANSFORMERS);
+          result = AElf.utils.transform.transformArrayToMap(dataType, result);
           logs[index] = {
             ...log,
             Result: result
