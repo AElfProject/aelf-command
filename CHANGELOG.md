@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.37](https://github.com/AElfProject/aelf-command/compare/v0.1.36...v0.1.37) (2020-03-03)
+
+
+### Bug Fixes
+
+* 🐛 fix repeated fields input ([2a85686](https://github.com/AElfProject/aelf-command/commit/2a85686))
+
+
+### Features
+
+* 🎸 deserialize logs by aelf-sdk ([f31f78b](https://github.com/AElfProject/aelf-command/commit/f31f78b))
+
 ### [0.1.36](https://github.com/AElfProject/aelf-command/compare/v0.1.35...v0.1.36) (2020-01-21)
 
 
