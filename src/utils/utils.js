@@ -290,13 +290,15 @@ async function getParams(method) {
     } else {
       // eslint-disable-next-line no-restricted-syntax
       for (const [fieldName, fieldType] of fields) {
-        const { type } = fieldType;
+        const { type, rule } = fieldType;
         let innerType = null;
         try {
           innerType = method.inputType.lookupType(type);
         } catch (e) {}
         let paramValue;
-        if (innerType && !isSpecialParameters(innerType) && (type || '').indexOf('google.protobuf.Timestamp') === -1) {
+        // todo: use recursion
+        // eslint-disable-next-line max-len
+        if (rule !== 'repeated' && innerType && !isSpecialParameters(innerType) && (type || '').indexOf('google.protobuf.Timestamp') === -1) {
           let innerResult = {};
           const innerInputTypeInfo = innerType.toJSON();
           const innerFields = Object.entries(innerInputTypeInfo.fields || {});

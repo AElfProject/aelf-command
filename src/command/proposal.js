@@ -89,7 +89,7 @@ class ProposalCommand extends BaseSubCommand {
         // eslint-disable-next-line max-len
         throw new Error(`${proposalContract} is not in the list of proposal contracts, choice one of \`AElf.ContractNames.Parliament\`, \`AElf.ContractNames.Referendum\` and \`AElf.ContractNames.Association\``);
       }
-      if (!moment(expiredTime).isValid || moment(expiredTime).isBefore(moment().add(1, 'hours'))) {
+      if (!moment(expiredTime).isValid || moment(expiredTime).isBefore(moment().add(0, 'hours'))) {
         throw new Error(`Expired Time has to be later than ${moment().add(1, 'hours').format('YYYY/MM/DD HH:mm:ss')}`);
       }
       const aelf = new AElf(new AElf.providers.HttpProvider(endpoint));
