@@ -2,6 +2,7 @@
  * @file call read-only method on contract
  * @author atom-yang
  */
+const assert = require('assert');
 const AElf = require('aelf-sdk');
 const moment = require('moment');
 const chalk = require('chalk');
@@ -15,7 +16,8 @@ const {
   getMethod,
   promptTolerateSeveralTimes,
   getTxResult,
-  getParams
+  getParams,
+  deserializeLogs
 } = require('../utils/utils');
 const { getWallet } = require('../utils/wallet');
 const { logger } = require('../utils/myLogger');
@@ -80,6 +82,7 @@ class ProposalCommand extends BaseSubCommand {
       password
     } = options;
     const {
+      descriptionUrl,
       proposalContract,
       organization,
       expiredTime
@@ -138,7 +141,8 @@ class ProposalCommand extends BaseSubCommand {
         expiredTime: {
           seconds: moment(expiredTime).unix(),
           nanos: moment(expiredTime).milliseconds() * 1000
-        }
+        },
+        proposalDescriptionUrl: descriptionUrl
       }));
       logger.info(txId);
       this.oraInstance.start('loading proposal id...');
@@ -148,7 +152,12 @@ class ProposalCommand extends BaseSubCommand {
         // eslint-disable-next-line max-len
         logger.info(`Transaction is still pending, you can get proposal id later by running ${chalk.yellow(`aelf-command event ${txId.TransactionId}`)}`);
       } else {
-        logger.info(`Proposal id: ${tx.ReadableReturnValue}.`);
+        const {
+          Logs = []
+        } = tx;
+        const results = await deserializeLogs(aelf, (Logs || []).filter(v => v.Name === 'ProposalCreated'));
+        assert.strictEqual(results.length, 1, 'No related log');
+        logger.info(`Proposal id: ${results[0].proposalId}.`);
         this.oraInstance.succeed('Succeed!');
       }
     } catch (e) {

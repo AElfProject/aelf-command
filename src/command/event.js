@@ -10,6 +10,9 @@ const {
   eventCommandUsage
 } = require('../utils/constants');
 const {
+  deserializeLogs
+} = require('../utils/utils');
+const {
   logger,
   plainLogger
 } = require('../utils/myLogger');
@@ -42,55 +45,18 @@ class EventCommand extends BaseSubCommand {
       const aelf = new AElf(new AElf.providers.HttpProvider(endpoint));
       const txResult = await aelf.chain.getTxResult(txId);
       // console.log(plainLogger.info(`Transaction ${txId}'s Logs: \n ${JSON.stringify(txResult.Logs, null, 2)}`));
-      if (!txResult.Logs) {
+      if (!txResult.Status || txResult.Status.toUpperCase() !== 'MINED') {
+        console.log(plainLogger.info(`Transaction ${txId} is not mined`));
+      } else if (!txResult.Logs) {
         console.log(plainLogger.info(`Transaction ${txId} returns void`));
       } else {
         this.oraInstance.start('Deserialize Transaction Logs...');
-        const logs = txResult.Logs;
-        const descriptor = {};
-        // eslint-disable-next-line no-restricted-syntax
-        for (const [index, log] of Object.entries(logs)) {
-          const {
-            Address: contractAddress,
-            Name: dataTypeName,
-            NonIndexed: data,
-            Indexed = []
-          } = log;
-          let fileDescriptor = descriptor[contractAddress];
-          if (!fileDescriptor) {
-            // eslint-disable-next-line no-await-in-loop
-            fileDescriptor = await aelf.chain.getContractFileDescriptorSet(contractAddress);
-            descriptor[contractAddress] = fileDescriptor;
-          }
-          const dataType = AElf.pbjs.Root.fromDescriptor(fileDescriptor).lookupType(dataTypeName);
-          const serializedData = [...(Indexed || [])];
-          if (data) {
-            serializedData.push(data);
-          }
-          let result = serializedData.reduce((acc, v) => {
-            let deserialize = dataType.decode(Buffer.from(v, 'base64'));
-            deserialize = dataType.toObject(deserialize, {
-              enums: String, // enums as string names
-              longs: String, // longs as strings (requires long.js)
-              bytes: String, // bytes as base64 encoded strings
-              defaults: false, // includes default values
-              arrays: true, // populates empty arrays (repeated fields) even if defaults=false
-              objects: true, // populates empty objects (map fields) even if defaults=false
-              oneofs: true // includes virtual oneof fields set to the present field's name
-            });
-            return {
-              ...acc,
-              ...deserialize
-            };
-          }, {});
-          result = AElf.utils.transform.transform(dataType, result, AElf.utils.transform.OUTPUT_TRANSFORMERS);
-          result = AElf.utils.transform.transformArrayToMap(dataType, result);
-          logs[index] = {
-            ...log,
-            Result: result
-          };
-          // logsResult.push(result);
-        }
+        let logs = txResult.Logs;
+        const results = deserializeLogs(aelf, logs);
+        logs = logs.map((item, index) => ({
+          ...item,
+          Result: results[index]
+        }));
         this.oraInstance.clear();
         // eslint-disable-next-line max-len
         console.log(`\n${plainLogger.info(`\nThe results returned by \nTransaction: ${txId} is: \n${JSON.stringify(logs, null, 2)}`)}`);

@@ -107,6 +107,12 @@ const proposalCommandParameters = [
       minutes: 5
     }).toDate(),
     suffix: ':'
+  },
+  {
+    type: 'input',
+    name: 'descriptionUrl',
+    message: 'Optional, input an URL for proposal description',
+    suffix: ':'
   }
 ];
 
