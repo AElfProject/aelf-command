@@ -52,7 +52,7 @@ class EventCommand extends BaseSubCommand {
       } else {
         this.oraInstance.start('Deserialize Transaction Logs...');
         let logs = txResult.Logs;
-        const results = deserializeLogs(aelf, logs);
+        const results = await deserializeLogs(aelf, logs);
         logs = logs.map((item, index) => ({
           ...item,
           Result: results[index]

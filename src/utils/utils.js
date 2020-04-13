@@ -344,12 +344,15 @@ async function deserializeLogs(aelf, logs = []) {
       Name: dataTypeName,
       NonIndexed,
       Indexed = []
-    } = getProto[index];
-    const dataType = proto.lookupType(dataTypeName);
+    } = logs[index];
     const serializedData = [...(Indexed || [])];
     if (NonIndexed) {
       serializedData.push(NonIndexed);
     }
+    if (['TransactionFeeCharged', 'ResourceTokenCharged'].includes(dataTypeName)) {
+      return AElf.pbUtils.getFee(serializedData.join(''), dataTypeName);
+    }
+    const dataType = proto.lookupType(dataTypeName);
     let deserializeLogResult = serializedData.reduce((acc, v) => {
       let deserialize = dataType.decode(Buffer.from(v, 'base64'));
       deserialize = dataType.toObject(deserialize, {
