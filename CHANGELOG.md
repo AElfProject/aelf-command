@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.40](https://github.com/AElfProject/aelf-command/compare/v0.1.39...v0.1.40) (2020-04-15)
+
 ### [0.1.39](https://github.com/AElfProject/aelf-command/compare/v0.1.38...v0.1.39) (2020-04-13)
 
 
