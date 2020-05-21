@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.41](https://github.com/AElfProject/aelf-command/compare/v0.1.40...v0.1.41) (2020-05-21)
+
+
+### Bug Fixes
+
+* 🐛 make empty password valid ([078119d](https://github.com/AElfProject/aelf-command/commit/078119d))
+
 ### [0.1.40](https://github.com/AElfProject/aelf-command/compare/v0.1.39...v0.1.40) (2020-04-15)
 
 ### [0.1.39](https://github.com/AElfProject/aelf-command/compare/v0.1.38...v0.1.39) (2020-04-13)
