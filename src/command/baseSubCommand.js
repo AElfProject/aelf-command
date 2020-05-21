@@ -89,7 +89,6 @@ class BaseSubCommand {
 
   handleUniOptionsError(error) {
     const { errors = [] } = error;
-    // todo: chalk
     logger.error(errors.reduce((acc, i) => `${acc}${i.message}\n`, ''));
     process.exit(1);
   }

@@ -23,7 +23,7 @@ function getWallet(commandRoot, address, password) {
     const { privateKey } = AElf.wallet.keyStore.unlockKeystore(keyStore, password);
     return AElf.wallet.getWalletByPrivateKey(privateKey);
   } catch (e) {
-    throw new Error('Make sure you entered the correct password');
+    throw new Error(e.message || 'Make sure you entered the correct password');
   }
 }
 

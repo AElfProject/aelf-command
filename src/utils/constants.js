@@ -256,7 +256,10 @@ const commonGlobalOptionValidatorDesc = {
   password: {
     type: 'string',
     required: false,
-    message: 'set password in global config file or passed by -p <password>'
+    message: 'set password in global config file or passed by -p <password>',
+    validator(rule, value) {
+      return !!value || value === '';
+    }
   },
   endpoint: {
     type: 'string',
