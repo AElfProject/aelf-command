@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.42](https://github.com/AElfProject/aelf-command/compare/v0.1.41...v0.1.42) (2020-06-03)
+
+
+### Bug Fixes
+
+* 🐛 remove validator for required: false ([9547398](https://github.com/AElfProject/aelf-command/commit/9547398))
+
 ### [0.1.41](https://github.com/AElfProject/aelf-command/compare/v0.1.40...v0.1.41) (2020-05-21)
 
 
