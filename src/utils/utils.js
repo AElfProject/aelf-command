@@ -349,9 +349,6 @@ async function deserializeLogs(aelf, logs = []) {
     if (NonIndexed) {
       serializedData.push(NonIndexed);
     }
-    if (['TransactionFeeCharged', 'ResourceTokenCharged'].includes(dataTypeName)) {
-      return AElf.pbUtils.getFee(serializedData.join(''), dataTypeName);
-    }
     const dataType = proto.lookupType(dataTypeName);
     let deserializeLogResult = serializedData.reduce((acc, v) => {
       let deserialize = dataType.decode(Buffer.from(v, 'base64'));

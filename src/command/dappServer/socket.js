@@ -209,6 +209,9 @@ class Socket {
           case 'invokeRead':
             result = await this.handleInvoke(data, action === 'invokeRead');
             break;
+          case 'getContractMethods':
+            result = await this.handleMethodList(data);
+            break;
           case 'disconnect':
             result = await this.handleDisconnect(data);
             break;
@@ -226,6 +229,7 @@ class Socket {
         this.send(client, result, action, appId);
       } catch (e) {
         logger.error('error happened');
+        logger.error(e);
         result = this.responseFormat(id, {}, e.errors ? e.errors : e);
         if (action !== 'connect') {
           result.result = this.serializeResult(appId, result.result);
@@ -351,19 +355,32 @@ class Socket {
     throw new Error('Not support encrypt method or not enough params');
   }
 
+  async handleMethodList(message) {
+    const params = await this.deserializeParams(message);
+    const {
+      endpoint = this.defaultEndpoint,
+      address
+    } = params;
+    this.aelf.setProvider(new AElf.providers.HttpProvider(endpoint || this.defaultEndpoint));
+    const contract = await this.aelf.chain.contractAt(address, this.wallet);
+    return Object.keys(contract)
+      .filter(v => /^[A-Z]/.test(v)).sort();
+  }
+
   async handleApi(message) {
     const params = await this.deserializeParams(message);
     const {
       endpoint = this.defaultEndpoint,
       apiPath,
-      arguments: apiArgs
+      arguments: apiArgs,
+      methodName
     } = params;
     logger.info(`Querying api ${apiPath}...`);
     if (!CHAIN_APIS[apiPath]) {
       throw new Error(`Not support api ${apiPath}`);
     }
     this.aelf.setProvider(new AElf.providers.HttpProvider(endpoint || this.defaultEndpoint));
-    const result = await this.aelf.chain[CHAIN_APIS[apiPath]](apiArgs.map(v => v.value));
+    const result = await this.aelf.chain[methodName](...apiArgs.map(v => v.value));
     return result;
   }
 
