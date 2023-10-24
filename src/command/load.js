@@ -32,13 +32,19 @@ class LoadCommand extends BaseSubCommand {
   async run(commander, ...args) {
     const { options, subOptions } = await super.run(commander, ...args);
     const { datadir } = options;
-    const { privateKey, saveToFile } = subOptions;
+    const { privateKey, saveToFile, createdWithNewVersionSdk: createdNew } = subOptions;
     try {
       let wallet = null;
       logger.info('Your wallet info is :');
       if (privateKey.trim().split(' ').length > 1) {
-        wallet = AElf.wallet.getWalletByMnemonic(privateKey.trim());
-        logger.info(`Mnemonic            : ${wallet.mnemonic}`);
+        if (createdNew) {
+          wallet = AElf.wallet.getWalletByMnemonic(privateKey.trim());
+          logger.info(`Mnemonic            : ${wallet.mnemonic}`);
+        } else {
+          // old version sdk
+          this.oraInstance.fail('Please install older versions of aelf-command before v1.0.0!');
+          return;
+        }
       } else {
         wallet = AElf.wallet.getWalletByPrivateKey(privateKey.trim());
       }

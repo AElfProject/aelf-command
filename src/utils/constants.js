@@ -193,7 +193,7 @@ const loadCommandParameters = [
     name: 'private-key',
     extraName: ['mnemonic'],
     message: 'Enter a private key or mnemonic',
-    suffix: ':'
+    suffix: ':',
   },
   {
     type: 'confirm',
@@ -204,14 +204,26 @@ const loadCommandParameters = [
     message: 'Save account info into a file',
     active: 'yes',
     inactive: 'no',
-    suffix: '?'
-  }
+    suffix: '?',
+  },
+  {
+    type: 'confirm',
+    name: 'created-with-new-version-sdk',
+    required: false,
+    default: true,
+    initial: true,
+    message: 'Created with new version sdk',
+    active: 'yes',
+    inactive: 'no',
+    suffix: '?',
+  },
 ];
 
 const loadCommandUsage = [
+  '<private-key|mnemonic> <save-to-file> <created-with-new-version-sdk>',
   '<private-key|mnemonic> <save-to-file>',
   '<private-key|mnemonic>',
-  ''
+  '',
 ];
 
 const deployCommandParameters = [
