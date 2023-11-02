@@ -195,6 +195,21 @@ const loadCommandParameters = [
     message: 'Enter a private key or mnemonic',
     suffix: ':',
   },
+  // list cannot use validate
+  {
+    type: 'confirm',
+    message: 'Mnemonic created by aelf-command less than v1.0.0?',
+    name: 'created-by-old',
+    required: false,
+    default: true,
+    initial: true,
+    active: 'yes',
+    inactive: 'no',
+    suffix: '?',
+    when(answers) {
+      return answers['private-key'].trim().split(' ').length > 1;
+    },
+  },
   {
     type: 'confirm',
     name: 'save-to-file',
@@ -206,21 +221,10 @@ const loadCommandParameters = [
     inactive: 'no',
     suffix: '?',
   },
-  {
-    type: 'confirm',
-    name: 'created-with-new-version-sdk',
-    required: false,
-    default: true,
-    initial: true,
-    message: 'Created with new version sdk',
-    active: 'yes',
-    inactive: 'no',
-    suffix: '?',
-  },
 ];
 
 const loadCommandUsage = [
-  '<private-key|mnemonic> <save-to-file> <created-with-new-version-sdk>',
+  '<private-key|mnemonic> <created-by-old> <save-to-file>',
   '<private-key|mnemonic> <save-to-file>',
   '<private-key|mnemonic>',
   '',
