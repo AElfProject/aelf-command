@@ -195,7 +195,7 @@ const loadCommandParameters = [
     message: 'Enter a private key or mnemonic',
     suffix: ':',
   },
-  // list cannot use validate
+  // confirm and list cannot use validate
   {
     type: 'confirm',
     message: 'Mnemonic created by aelf-command less than v1.0.0?',
