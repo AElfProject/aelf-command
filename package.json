@@ -37,6 +37,7 @@
   },
   "engineStrict": true,
   "dependencies": {
+    "@aelfqueen/protobufjs": "^6.8.9",
     "aelf-sdk": "^3.2.34",
     "async-validator": "^3.0.3",
     "boxen": "^4.1.0",
