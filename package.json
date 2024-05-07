@@ -1,6 +1,6 @@
 {
   "name": "aelf-command",
-  "version": "0.1.43",
+  "version": "0.1.44",
   "description": "A CLI tools for AElf",
   "main": "src/index.js",
   "scripts": {
@@ -37,6 +37,7 @@
   },
   "engineStrict": true,
   "dependencies": {
+    "@aelfqueen/protobufjs": "^6.8.9",
     "aelf-sdk": "^3.2.34",
     "async-validator": "^3.0.3",
     "boxen": "^4.1.0",
