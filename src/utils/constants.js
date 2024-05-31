@@ -20,7 +20,7 @@ const callCommandParameters = [
     name: 'contract-address',
     extraName: ['contract-name'],
     message: 'Enter contract name (System contracts only) or the address of contract',
-    suffix: ':',
+    suffix: ':'
   },
   {
     type: 'search-list',
@@ -28,7 +28,7 @@ const callCommandParameters = [
     message: 'Pick up a contract method',
     pageSize: 10,
     choices: [],
-    suffix: ':',
+    suffix: ':'
   },
   {
     type: 'input',
@@ -38,7 +38,7 @@ const callCommandParameters = [
     filter: (val = '') => {
       let result = null;
       let value = val;
-      if (val.startsWith("'") && val.endsWith("'")) {
+      if (val.startsWith('\'') && val.endsWith('\'')) {
         value = val.slice(1, val.length - 1);
       }
       try {
@@ -47,8 +47,8 @@ const callCommandParameters = [
         result = value;
       }
       return JSON.stringify(result);
-    },
-  },
+    }
+  }
 ];
 
 const blkInfoCommandParameters = [
