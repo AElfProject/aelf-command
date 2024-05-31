@@ -23,7 +23,7 @@ const callCommandParameters = [
     suffix: ':'
   },
   {
-    type: 'list',
+    type: 'search-list',
     name: 'method',
     message: 'Pick up a contract method',
     pageSize: 10,
@@ -78,6 +78,7 @@ const blkInfoCommandUsage = [
 ];
 
 inquirer.registerPrompt('datetime', require('inquirer-datepicker-prompt'));
+inquirer.registerPrompt('search-list', require('inquirer-search-list'));
 
 const proposalCommandParameters = [
   {
