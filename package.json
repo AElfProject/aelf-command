@@ -1,6 +1,6 @@
 {
   "name": "aelf-command",
-  "version": "0.1.44-alpha.0",
+  "version": "0.1.47-alpha.0",
   "description": "A CLI tools for AElf",
   "main": "src/index.js",
   "type": "module",
@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/AElfProject/aelf-command#readme",
   "devEngines": {
-    "node": "10.x || 11.x || 12.x"
+    "node": ">=18.18.0"
   },
   "files": [
     "bin",
@@ -34,7 +34,7 @@
     "yarn.lock"
   ],
   "engines": {
-    "node": ">=10.5.0"
+    "node": ">=18.18.0"
   },
   "engineStrict": true,
   "dependencies": {
@@ -47,6 +47,7 @@
     "columnify": "^1.6.0",
     "commander": "^12.1.0",
     "elliptic": "^6.5.5",
+    "global": "^4.4.0",
     "inquirer": "^9.2.22",
     "inquirer-date-prompt": "^3.0.0",
     "mkdirp": "^3.0.1",
