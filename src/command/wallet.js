@@ -2,10 +2,10 @@
  * @file show wallet info
  * @author atom-yang
  */
-const BaseSubCommand = require('./baseSubCommand');
-const { commonGlobalOptionValidatorDesc } = require('../utils/constants');
-const { getWallet } = require('../utils/wallet');
-const { logger } = require('../utils/myLogger');
+import BaseSubCommand from './baseSubCommand.js';
+import { commonGlobalOptionValidatorDesc } from '../utils/constants.js';
+import { getWallet } from '../utils/wallet.js';
+import { logger } from '../utils/myLogger.js';
 
 const walletCommandValidatorDesc = {
   ...commonGlobalOptionValidatorDesc,
@@ -38,9 +38,7 @@ class WalletCommand extends BaseSubCommand {
 
   async run(commander, ...args) {
     const { options } = await super.run(commander, ...args);
-    const {
-      datadir, account, password
-    } = options;
+    const { datadir, account, password } = options;
     try {
       const wallet = getWallet(datadir, account, password);
       if (wallet.mnemonic) {
@@ -58,4 +56,4 @@ class WalletCommand extends BaseSubCommand {
   }
 }
 
-module.exports = WalletCommand;
+export default WalletCommand;

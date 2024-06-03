@@ -2,7 +2,7 @@
  * @file message signed and verified
  * @author atom-yang
  */
-const elliptic = require('elliptic');
+import elliptic from 'elliptic';
 
 const defaultEncryptAlgorithm = 'secp256k1';
 const defaultEc = elliptic.ec(defaultEncryptAlgorithm);
@@ -53,11 +53,7 @@ class Sign {
    */
   sign(msg) {
     const signedMsg = this.keyPair.sign(msg);
-    return [
-      signedMsg.r.toString(16, 64),
-      signedMsg.s.toString(16, 64),
-      `0${signedMsg.recoveryParam.toString()}`
-    ].join('');
+    return [signedMsg.r.toString(16, 64), signedMsg.s.toString(16, 64), `0${signedMsg.recoveryParam.toString()}`].join('');
   }
 
   /**
@@ -88,4 +84,4 @@ class Sign {
   }
 }
 
-module.exports = Sign;
+export default Sign;

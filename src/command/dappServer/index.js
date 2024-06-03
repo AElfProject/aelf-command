@@ -2,11 +2,11 @@
  * @file start a dapp server
  * @author atom-yang
  */
-const AElf = require('aelf-sdk');
-const BaseSubCommand = require('../baseSubCommand');
-const { getWallet } = require('../../utils/wallet');
-const { logger } = require('../../utils/myLogger');
-const Socket = require('./socket');
+import AElf from 'aelf-sdk';
+import BaseSubCommand from '../baseSubCommand.js';
+import { getWallet } from '../../utils/wallet.js';
+import { logger } from '../../utils/myLogger.js';
+import Socket from './socket.js';
 
 const commandOptions = [
   {
@@ -16,33 +16,16 @@ const commandOptions = [
   }
 ];
 
-const commandUsage = [
-  '-port port',
-  ''
-];
+const commandUsage = ['-port port', ''];
 
 class DeployCommand extends BaseSubCommand {
-  constructor(
-    rc
-  ) {
-    super(
-      'dapp-server',
-      [],
-      'Start a dAPP SOCKET.IO server',
-      commandOptions,
-      commandUsage,
-      rc
-    );
+  constructor(rc) {
+    super('dapp-server', [], 'Start a dAPP SOCKET.IO server', commandOptions, commandUsage, rc);
   }
 
   async run(commander, ...args) {
     const { options, localOptions } = await super.run(commander, ...args);
-    const {
-      endpoint,
-      datadir,
-      account,
-      password
-    } = options;
+    const { endpoint, datadir, account, password } = options;
     const { port = 35443 } = localOptions;
     try {
       const aelf = new AElf(new AElf.providers.HttpProvider(endpoint));
@@ -63,4 +46,4 @@ class DeployCommand extends BaseSubCommand {
   }
 }
 
-module.exports = DeployCommand;
+export default DeployCommand;

@@ -2,11 +2,12 @@
  * @file get block info
  * @author atom-yang
  */
-const AElf = require('aelf-sdk');
-const Schema = require('async-validator/dist-node/index').default;
-const BaseSubCommand = require('./baseSubCommand');
-const { commonGlobalOptionValidatorDesc, blkInfoCommandParameters, blkInfoCommandUsage } = require('../utils/constants');
-const { logger } = require('../utils/myLogger');
+import AElf from 'aelf-sdk';
+import asyncValidator from 'async-validator';
+const Schema = asyncValidator.default;
+import BaseSubCommand from './baseSubCommand.js';
+import { commonGlobalOptionValidatorDesc, blkInfoCommandParameters, blkInfoCommandUsage } from '../utils/constants.js';
+import { logger } from '../utils/myLogger.js';
 
 class GetBlkInfoCommand extends BaseSubCommand {
   constructor(rc) {
@@ -66,4 +67,4 @@ class GetBlkInfoCommand extends BaseSubCommand {
   }
 }
 
-module.exports = GetBlkInfoCommand;
+export default GetBlkInfoCommand;

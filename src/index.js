@@ -2,18 +2,17 @@
  * @file command index
  * @author atom-yang
  */
-const commander = require('commander');
-const chalk = require('chalk');
-const updateNotifier = require('update-notifier');
-const check = require('check-node-version');
-const { execSync } = require('child_process');
-const commands = require('./command/index');
-const RC = require('./rc/index');
-const pkg = require('../package.json');
-const { logger } = require('./utils/myLogger');
-const {
-  userHomeDir
-} = require('./utils/userHomeDir');
+import { Command } from 'commander';
+const commander = new Command();
+import chalk from 'chalk';
+import updateNotifier from 'update-notifier';
+import check from 'check-node-version';
+import { execSync } from 'child_process';
+import commands from './command/index.js';
+import RC from './rc/index.js';
+import pkg from '../package.json' assert { type: 'json' };
+import { logger } from './utils/myLogger.js';
+import { userHomeDir } from './utils/userHomeDir.js';
 
 const minVersion = '10.9.0';
 
@@ -73,4 +72,4 @@ function run() {
   });
 }
 
-module.exports.run = run;
+export { run };

@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-const { logger } = require('../src/utils/myLogger');
+import { logger } from '../src/utils/myLogger.js';
+import { run } from '../src/index.js';
 
 process.noDeprecation = true;
 process.on('uncaughtException', err => {
@@ -7,4 +8,4 @@ process.on('uncaughtException', err => {
   process.exit(1);
 });
 
-require('../src/index.js').run();
+run();

@@ -2,12 +2,12 @@
  * @file create command
  * @author atom-yang
  */
-const AElf = require('aelf-sdk');
-const chalk = require('chalk');
-const BaseSubCommand = require('./baseSubCommand');
-const { commonGlobalOptionValidatorDesc, createCommandParameters, createCommandUsage } = require('../utils/constants');
-const { saveKeyStore } = require('../utils/wallet');
-const { logger } = require('../utils/myLogger');
+import AElf from 'aelf-sdk';
+import chalk from 'chalk';
+import BaseSubCommand from './baseSubCommand.js';
+import { commonGlobalOptionValidatorDesc, createCommandParameters, createCommandUsage } from '../utils/constants.js';
+import { saveKeyStore } from '../utils/wallet.js';
+import { logger } from '../utils/myLogger.js';
 
 const createCommandValidatorDesc = {
   ...commonGlobalOptionValidatorDesc,
@@ -62,4 +62,4 @@ class CreateCommand extends BaseSubCommand {
   }
 }
 
-module.exports = CreateCommand;
+export default CreateCommand;

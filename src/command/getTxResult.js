@@ -2,11 +2,12 @@
  * @file get block height
  * @author atom-yang
  */
-const AElf = require('aelf-sdk');
-const Schema = require('async-validator/dist-node/index').default;
-const BaseSubCommand = require('./baseSubCommand');
-const { commonGlobalOptionValidatorDesc, txResultCommandParameters, txResultCommandUsage } = require('../utils/constants');
-const { logger } = require('../utils/myLogger');
+import AElf from 'aelf-sdk';
+import asyncValidator from 'async-validator';
+const Schema = asyncValidator.default;
+import BaseSubCommand from './baseSubCommand.js';
+import { commonGlobalOptionValidatorDesc, txResultCommandParameters, txResultCommandUsage } from '../utils/constants.js';
+import { logger } from '../utils/myLogger.js';
 
 class GetTxResultCommand extends BaseSubCommand {
   constructor(rc) {
@@ -56,4 +57,4 @@ class GetTxResultCommand extends BaseSubCommand {
   }
 }
 
-module.exports = GetTxResultCommand;
+export default GetTxResultCommand;

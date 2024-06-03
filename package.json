@@ -1,8 +1,9 @@
 {
   "name": "aelf-command",
-  "version": "0.1.43",
+  "version": "0.1.44-alpha.0",
   "description": "A CLI tools for AElf",
   "main": "src/index.js",
+  "type": "module",
   "scripts": {
     "commit": "git-cz",
     "lint": "eslint src",
@@ -47,7 +48,7 @@
     "commander": "^12.1.0",
     "elliptic": "^6.5.5",
     "inquirer": "^9.2.22",
-    "inquirer-datepicker-prompt": "^0.4.3",
+    "inquirer-date-prompt": "^3.0.0",
     "mkdirp": "^3.0.1",
     "moment": "^2.30.1",
     "ora": "^8.0.1",

@@ -2,11 +2,11 @@
  * @file load wallet from command argv
  * @author atom-yang
  */
-const AElf = require('aelf-sdk');
-const BaseSubCommand = require('./baseSubCommand');
-const { commonGlobalOptionValidatorDesc, loadCommandParameters, loadCommandUsage } = require('../utils/constants');
-const { saveKeyStore } = require('../utils/wallet');
-const { logger } = require('../utils/myLogger');
+import AElf from 'aelf-sdk';
+import BaseSubCommand from './baseSubCommand.js';
+import { commonGlobalOptionValidatorDesc, loadCommandParameters, loadCommandUsage } from '../utils/constants.js';
+import { saveKeyStore } from '../utils/wallet.js';
+import { logger } from '../utils/myLogger.js';
 
 const loadCommandValidatorDesc = {
   ...commonGlobalOptionValidatorDesc,
@@ -59,4 +59,4 @@ class LoadCommand extends BaseSubCommand {
   }
 }
 
-module.exports = LoadCommand;
+export default LoadCommand;

@@ -1,4 +1,4 @@
-const Logger = require('./Logger');
+import Logger from './Logger.js';
 
 const logger = new Logger({
   name: 'AElf',
@@ -10,4 +10,4 @@ const plainLogger = new Logger({
   log: false
 });
 
-module.exports = { logger, plainLogger };
+export { logger, plainLogger };

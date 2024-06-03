@@ -2,13 +2,13 @@
  * @file console command
  * @author atom-yang
  */
-const repl = require('repl');
-const AElf = require('aelf-sdk');
-const columnify = require('columnify');
-const boxen = require('boxen');
-const BaseSubCommand = require('./baseSubCommand');
-const { getWallet } = require('../utils/wallet');
-const { logger } = require('../utils/myLogger');
+import repl from 'repl';
+import AElf from 'aelf-sdk';
+import columnify from 'columnify';
+import boxen from 'boxen';
+import BaseSubCommand from './baseSubCommand.js';
+import { getWallet } from '../utils/wallet.js';
+import { logger } from '../utils/myLogger.js';
 
 class ConsoleCommand extends BaseSubCommand {
   constructor(rc, name = 'console', description = 'Open a node REPL') {
@@ -17,9 +17,7 @@ class ConsoleCommand extends BaseSubCommand {
 
   async run(commander, ...args) {
     const { options } = await super.run(commander, ...args);
-    const {
-      datadir, account, password, endpoint
-    } = options;
+    const { datadir, account, password, endpoint } = options;
     try {
       const aelf = new AElf(new AElf.providers.HttpProvider(endpoint));
       const wallet = getWallet(datadir, account, password);
@@ -68,4 +66,4 @@ class ConsoleCommand extends BaseSubCommand {
   }
 }
 
-module.exports = ConsoleCommand;
+export default ConsoleCommand;

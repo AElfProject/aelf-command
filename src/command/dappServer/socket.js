@@ -2,23 +2,16 @@
  * @file socket server
  * @author atom-yang
  */
-const Server = require('socket.io');
-const AElf = require('aelf-sdk');
-const Schema = require('async-validator/dist-node/index').default;
-const Sign = require('./sign');
-const Encrypt = require('./encrypt');
-const { logger } = require('../../utils/myLogger');
-const {
-  randomId
-} = require('../../utils/utils');
-const {
-  serializeMessage,
-  deserializeMessage,
-  checkTimestamp
-} = require('./utils');
-const {
-  CHAIN_APIS
-} = require('./constants');
+import { Server } from 'socket.io';
+import AElf from 'aelf-sdk';
+import asyncValidator from 'async-validator';
+const Schema = asyncValidator.default;
+import Sign from './sign.js';
+import Encrypt from './encrypt.js';
+import { logger } from '../../utils/myLogger.js';
+import { randomId } from '../../utils/utils.js';
+import { serializeMessage, deserializeMessage, checkTimestamp } from './utils.js';
+import { CHAIN_APIS } from './constants.js';
 
 const signRequestRules = {
   id: {
@@ -122,7 +115,6 @@ const connectEncryptRules = {
     }
   }
 };
-
 const signRequestValidator = new Schema(signRequestRules);
 const encryptRequestValidator = new Schema(encryptRequestRules);
 const connectSignValidator = new Schema(connectSignRules);
@@ -130,13 +122,7 @@ const connectEncryptValidator = new Schema(connectEncryptRules);
 
 class Socket {
   constructor(options) {
-    const {
-      port,
-      endpoint,
-      aelf,
-      wallet,
-      address
-    } = options;
+    const { port, endpoint, aelf, wallet, address } = options;
     this.aelf = aelf;
     this.defaultEndpoint = endpoint;
     this.wallet = wallet;
@@ -189,11 +175,7 @@ class Socket {
     client.on('bridge', async data => {
       logger.info('Message received');
       let result = {};
-      const {
-        action,
-        id,
-        appId
-      } = data;
+      const { action, id, appId } = data;
       try {
         switch (action) {
           case 'connect':
@@ -240,19 +222,13 @@ class Socket {
   }
 
   async deserializeParams(request) {
-    const {
-      appId,
-      params
-    } = request;
+    const { appId, params } = request;
     if (!this.clientConfig[appId]) {
       throw new Error(`AppId ${appId} has not connected`);
     }
     if (this.clientConfig[appId].encryptWay === 'sign') {
       await signRequestValidator.validate(request);
-      const {
-        signature,
-        originalParams
-      } = params;
+      const { signature, originalParams } = params;
       const isValid = this.clientConfig[appId].encrypt.verify(Buffer.from(originalParams, 'base64'), signature);
       if (!isValid) {
         throw new Error('Signature is not valid');
@@ -264,10 +240,7 @@ class Socket {
       throw new Error('Timestamp is not valid');
     }
     await encryptRequestValidator.validate(request);
-    const {
-      iv,
-      encryptedParams
-    } = params;
+    const { iv, encryptedParams } = params;
     const originalParams = this.clientConfig[appId].encrypt.decrypt(encryptedParams, iv);
     const deserializeParams = deserializeMessage(originalParams);
     if (checkTimestamp(deserializeParams.timestamp)) {
@@ -293,19 +266,11 @@ class Socket {
   }
 
   async handleConnect(message) {
-    const {
-      appId,
-      params
-    } = message;
-    const {
-      encryptAlgorithm,
-      publicKey
-    } = params;
+    const { appId, params } = message;
+    const { encryptAlgorithm, publicKey } = params;
     if (params.cipher) {
       await connectEncryptValidator.validate(message);
-      const {
-        cipher
-      } = params;
+      const { cipher } = params;
       const random = randomId();
       const encrypt = new Encrypt(encryptAlgorithm, publicKey, random, cipher);
       this.clientConfig = {
@@ -323,10 +288,7 @@ class Socket {
     }
     if (params.signature) {
       await connectSignValidator.validate(message);
-      const {
-        timestamp,
-        signature
-      } = params;
+      const { timestamp, signature } = params;
       const result = Sign.verify(encryptAlgorithm, publicKey, Buffer.from(String(timestamp)), signature);
       if (!result) {
         throw new Error('Not a valid signature');
@@ -357,24 +319,17 @@ class Socket {
 
   async handleMethodList(message) {
     const params = await this.deserializeParams(message);
-    const {
-      endpoint = this.defaultEndpoint,
-      address
-    } = params;
+    const { endpoint = this.defaultEndpoint, address } = params;
     this.aelf.setProvider(new AElf.providers.HttpProvider(endpoint || this.defaultEndpoint));
     const contract = await this.aelf.chain.contractAt(address, this.wallet);
     return Object.keys(contract)
-      .filter(v => /^[A-Z]/.test(v)).sort();
+      .filter(v => /^[A-Z]/.test(v))
+      .sort();
   }
 
   async handleApi(message) {
     const params = await this.deserializeParams(message);
-    const {
-      endpoint = this.defaultEndpoint,
-      apiPath,
-      arguments: apiArgs,
-      methodName
-    } = params;
+    const { endpoint = this.defaultEndpoint, apiPath, arguments: apiArgs, methodName } = params;
     logger.info(`Querying api ${apiPath}...`);
     if (!CHAIN_APIS[apiPath]) {
       throw new Error(`Not support api ${apiPath}`);
@@ -408,12 +363,7 @@ class Socket {
 
   async handleInvoke(message, isReadOnly = false) {
     const params = await this.deserializeParams(message);
-    const {
-      endpoint = this.defaultEndpoint,
-      contractAddress,
-      contractMethod,
-      arguments: contractArgs
-    } = params;
+    const { endpoint = this.defaultEndpoint, contractAddress, contractMethod, arguments: contractArgs } = params;
     logger.info(`${isReadOnly ? 'Calling' : 'Sending'} contract ${contractAddress} method ${contractMethod}...`);
     this.aelf.setProvider(new AElf.providers.HttpProvider(endpoint || this.defaultEndpoint));
     const contract = await this.aelf.chain.contractAt(contractAddress, this.wallet);
@@ -437,4 +387,4 @@ class Socket {
   }
 }
 
-module.exports = Socket;
+export default Socket;

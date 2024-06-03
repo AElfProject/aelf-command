@@ -2,21 +2,21 @@
  * @file call read-only method on contract
  * @author atom-yang
  */
-const AElf = require('aelf-sdk');
-const inquirer = require('inquirer');
-const chalk = require('chalk');
-const BaseSubCommand = require('./baseSubCommand');
-const { callCommandUsages, callCommandParameters } = require('../utils/constants');
-const {
+import AElf from 'aelf-sdk';
+import inquirer from 'inquirer';
+import chalk from 'chalk';
+import BaseSubCommand from './baseSubCommand.js';
+import { callCommandUsages, callCommandParameters } from '../utils/constants.js';
+import {
   getContractMethods,
   getContractInstance,
   getMethod,
   promptTolerateSeveralTimes,
   getParams,
   parseJSON
-} = require('../utils/utils');
-const { getWallet } = require('../utils/wallet');
-const { logger } = require('../utils/myLogger');
+} from '../utils/utils.js';
+import { getWallet } from '../utils/wallet.js';
+import { logger } from '../utils/myLogger.js';
 
 class CallCommand extends BaseSubCommand {
   constructor(
@@ -25,7 +25,7 @@ class CallCommand extends BaseSubCommand {
     description = 'Call a read-only method on a contract.',
     parameters = callCommandParameters,
     usage = callCommandUsages,
-    options = [],
+    options = []
   ) {
     super(name, parameters, description, options, usage, rc);
   }
@@ -47,9 +47,7 @@ class CallCommand extends BaseSubCommand {
     this.setCustomPrompts(true);
     const { options, subOptions } = await super.run(commander, ...args);
     const subOptionsLength = Object.keys(subOptions).length;
-    const {
-      endpoint, datadir, account, password
-    } = options;
+    const { endpoint, datadir, account, password } = options;
     const aelf = new AElf(new AElf.providers.HttpProvider(endpoint));
     try {
       let { contractAddress, method, params } = subOptions;
@@ -60,12 +58,15 @@ class CallCommand extends BaseSubCommand {
           switch (prompt.name) {
             case 'contract-address':
               // eslint-disable-next-line no-await-in-loop
-              contractAddress = await promptTolerateSeveralTimes({
-                times: 3,
-                prompt,
-                processAfterPrompt: this.processAddressAfterPrompt.bind(this, aelf, wallet),
-                pattern: /^((?!null).)*$/
-              }, this.oraInstance);
+              contractAddress = await promptTolerateSeveralTimes(
+                {
+                  times: 3,
+                  prompt,
+                  processAfterPrompt: this.processAddressAfterPrompt.bind(this, aelf, wallet),
+                  pattern: /^((?!null).)*$/
+                },
+                this.oraInstance
+              );
               break;
             case 'method':
               // eslint-disable-next-line no-await-in-loop
@@ -73,10 +74,12 @@ class CallCommand extends BaseSubCommand {
               // eslint-disable-next-line no-await-in-loop
               method = getMethod(
                 // eslint-disable-next-line no-await-in-loop
-                (await inquirer.prompt({
-                  ...prompt,
-                  choices: getContractMethods(contractAddress)
-                })).method,
+                (
+                  await inquirer.prompt({
+                    ...prompt,
+                    choices: getContractMethods(contractAddress)
+                  })
+                ).method,
                 contractAddress
               );
               break;
@@ -89,9 +92,7 @@ class CallCommand extends BaseSubCommand {
               params = await getParams(method);
               params = typeof params === 'string' ? params : BaseSubCommand.normalizeConfig(params);
               if (Object.keys(params || {}).length > 0) {
-                console.log(
-                  chalk.hex('#3753d3')(`The params you entered is:\n${JSON.stringify(params, null, 2)}`)
-                );
+                console.log(chalk.hex('#3753d3')(`The params you entered is:\n${JSON.stringify(params, null, 2)}`));
               }
               break;
             default:
@@ -102,8 +103,7 @@ class CallCommand extends BaseSubCommand {
       contractAddress = await getContractInstance(contractAddress, aelf, wallet, this.oraInstance);
       params = parseJSON(params);
       method = getMethod(method, contractAddress);
-      if (method.inputTypeInfo
-        && (Object.keys(method.inputTypeInfo.fields).length === 0 || !method.inputTypeInfo.fields)) {
+      if (method.inputTypeInfo && (Object.keys(method.inputTypeInfo.fields).length === 0 || !method.inputTypeInfo.fields)) {
         params = '';
       }
       const result = await this.callMethod(method, params);
@@ -116,4 +116,4 @@ class CallCommand extends BaseSubCommand {
   }
 }
 
-module.exports = CallCommand;
+export default CallCommand;

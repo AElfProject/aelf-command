@@ -2,10 +2,10 @@
  * @file fs operator
  * @author atom-yang
  */
-const fs = require('fs');
-const os = require('os');
+import fs from 'fs';
+import os from 'os';
 
-const { promisify } = require('./utils');
+import { promisify } from './utils.js';
 
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
@@ -40,4 +40,4 @@ async function writeFilePreservingEol(path, data) {
   await writeFile(path, result);
 }
 
-module.exports.writeFilePreservingEol = writeFilePreservingEol;
+export { writeFilePreservingEol };

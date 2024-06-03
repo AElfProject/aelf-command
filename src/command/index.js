@@ -1,25 +1,38 @@
-/**
- * @file gather sub commands config
- * @author atom-yang
- */
+import CallCommand from './call.js';
+import SendCommand from './send.js';
+import GetBlkHeightCommand from './getBlkHeight.js';
+import GetBlkInfoCommand from './getBlkInfo.js';
+import GetTxResultCommand from './getTxResult.js';
+import ConsoleCommand from './console.js';
+import CreateCommand from './create.js';
+import LoadCommand from './load.js';
+import ProposalCommand from './proposal.js';
+import DeployCommand from './deploy.js';
+import ConfigCommand from './config.js';
+import GetChainStatus from './getChainStatus.js';
+import WalletCommand from './wallet.js';
+import EventCommand from './event.js';
+import DappServerCommand from './dappServer/index.js';
 
-const CallCommand = require('./call');
-const SendCommand = require('./send');
-const GetBlkHeightCommand = require('./getBlkHeight');
-const GetBlkInfoCommand = require('./getBlkInfo');
-const GetTxResultCommand = require('./getTxResult');
-const ConsoleCommand = require('./console');
-const CreateCommand = require('./create');
-const LoadCommand = require('./load');
-const ProposalCommand = require('./proposal');
-const DeployCommand = require('./deploy');
-const ConfigCommand = require('./config');
-const GetChainStatus = require('./getChainStatus');
-const WalletCommand = require('./wallet');
-const EventCommand = require('./event');
-const DappServerCommand = require('./dappServer/index');
+export {
+  CallCommand,
+  SendCommand,
+  GetBlkHeightCommand,
+  GetChainStatus,
+  GetBlkInfoCommand,
+  GetTxResultCommand,
+  ConsoleCommand,
+  CreateCommand,
+  WalletCommand,
+  LoadCommand,
+  ProposalCommand,
+  DeployCommand,
+  ConfigCommand,
+  EventCommand,
+  DappServerCommand
+};
 
-module.exports = {
+export default {
   CallCommand,
   SendCommand,
   GetBlkHeightCommand,

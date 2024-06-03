@@ -2,10 +2,10 @@
  * @file command config operations
  * @author atom-yang
  */
-const path = require('path');
-const fs = require('fs');
-const mkdirp = require('mkdirp');
-const { userHomeDir } = require('../utils/userHomeDir');
+import path from 'path';
+import fs from 'fs';
+import { mkdirpSync } from 'mkdirp';
+import { userHomeDir } from '../utils/userHomeDir.js';
 
 const REGISTRY_DEFAULT_OPTIONS = {
   endpoint: '',
@@ -26,7 +26,7 @@ class Registry {
   constructor() {
     this.globalConfigLoc = path.resolve(userHomeDir, 'aelf/.aelfrc');
     if (!fs.existsSync(path.resolve(userHomeDir, 'aelf'))) {
-      mkdirp.sync(path.resolve(userHomeDir, 'aelf'));
+      mkdirpSync(path.resolve(userHomeDir, 'aelf'));
     }
     this.aelfConfig = {};
     this.init();
@@ -124,4 +124,4 @@ class Registry {
   }
 }
 
-module.exports = Registry;
+export default Registry;

@@ -3,9 +3,7 @@
  * @author atom-yang
  * @link https://asecuritysite.com/encryption/HKDF
  */
-const {
-  createHmac
-} = require('crypto');
+import { createHmac } from 'crypto';
 
 class HKDF {
   /**
@@ -48,4 +46,4 @@ HKDF.hashList = {
   sha512: 64
 };
 
-module.exports = HKDF;
+export default HKDF;

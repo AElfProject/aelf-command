@@ -2,22 +2,14 @@
  * @file get block height
  * @author atom-yang
  */
-const AElf = require('aelf-sdk');
-const BaseSubCommand = require('./baseSubCommand');
-const { commonGlobalOptionValidatorDesc } = require('../utils/constants');
-const { logger } = require('../utils/myLogger');
+import AElf from 'aelf-sdk';
+import BaseSubCommand from './baseSubCommand.js';
+import { commonGlobalOptionValidatorDesc } from '../utils/constants.js';
+import { logger } from '../utils/myLogger.js';
 
 class GetBlkHeightCommand extends BaseSubCommand {
   constructor(rc) {
-    super(
-      'get-blk-height',
-      [],
-      'Get the current block height of specified chain',
-      [],
-      [''],
-      rc,
-      commonGlobalOptionValidatorDesc
-    );
+    super('get-blk-height', [], 'Get the current block height of specified chain', [], [''], rc, commonGlobalOptionValidatorDesc);
   }
 
   async run(commander, ...args) {
@@ -35,4 +27,4 @@ class GetBlkHeightCommand extends BaseSubCommand {
   }
 }
 
-module.exports = GetBlkHeightCommand;
+export default GetBlkHeightCommand;

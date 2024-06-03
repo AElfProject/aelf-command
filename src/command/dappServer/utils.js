@@ -3,7 +3,7 @@
  * @author atom-yang
  */
 
-module.exports.serializeMessage = data => {
+const serializeMessage = data => {
   let result = JSON.stringify(data);
   if (data === null || data === undefined) {
     result = '';
@@ -11,7 +11,7 @@ module.exports.serializeMessage = data => {
   return Buffer.from(encodeURIComponent(result)).toString('base64');
 };
 
-module.exports.deserializeMessage = str => {
+const deserializeMessage = str => {
   let result = decodeURIComponent(Buffer.from(str, 'base64').toString());
   try {
     result = JSON.parse(result);
@@ -19,7 +19,7 @@ module.exports.deserializeMessage = str => {
   return result;
 };
 
-module.exports.checkTimestamp = (time, timeBuffer = 4 * 60) => {
+const checkTimestamp = (time, timeBuffer = 4 * 60) => {
   const checkTime = parseInt(time, 10);
   if (!checkTime) {
     return false;
@@ -28,3 +28,5 @@ module.exports.checkTimestamp = (time, timeBuffer = 4 * 60) => {
   const diff = now - checkTime;
   return diff >= 0 && diff <= timeBuffer;
 };
+
+export { serializeMessage, deserializeMessage, checkTimestamp };
