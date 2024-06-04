@@ -2,7 +2,6 @@
  * @file utils
  * @author atom-yang
  */
-<<<<<<< HEAD
 import AElf from 'aelf-sdk';
 import moment from 'moment';
 import chalk from 'chalk';
@@ -12,18 +11,6 @@ import fs from 'fs';
 import _camelCase from 'camelcase';
 import inquirer from 'inquirer';
 import { plainLogger } from './myLogger.js';
-=======
-const AElf = require('aelf-sdk');
-const moment = require('moment');
-const chalk = require('chalk');
-const path = require('path');
-const uuid = require('uuid/v4');
-const fs = require('fs');
-const _camelCase = require('camelcase');
-const inquirer = require('inquirer');
-const protobuf = require('@aelfqueen/protobufjs');
-const { plainLogger } = require('./myLogger');
->>>>>>> 129cbd39f69dd3b7c8a9530c9dd35df34d78eaab
 
 function promisify(fn, firstData) {
   return (...args) =>
