@@ -40,7 +40,7 @@ const callCommandParameters = [
     filter: (val = '') => {
       let result = null;
       let value = val;
-      if (val.startsWith("'") && val.endsWith("'")) {
+      if (val.startsWith('\'') && val.endsWith('\'')) {
         value = val.slice(1, val.length - 1);
       }
       try {
