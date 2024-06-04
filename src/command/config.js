@@ -2,10 +2,11 @@
  * @file get block height
  * @author atom-yang
  */
-const Schema = require('async-validator/dist-node/index').default;
-const BaseSubCommand = require('./baseSubCommand');
-const { configCommandParameters, configCommandUsage, commonGlobalOptionValidatorDesc } = require('../utils/constants');
-const { logger } = require('../utils/myLogger');
+import asyncValidator from 'async-validator';
+const Schema = asyncValidator.default;
+import BaseSubCommand from './baseSubCommand.js';
+import { configCommandParameters, configCommandUsage, commonGlobalOptionValidatorDesc } from '../utils/constants.js';
+import { logger } from '../utils/myLogger.js';
 
 const configCommandValidatorDesc = {
   ...commonGlobalOptionValidatorDesc,
@@ -107,4 +108,4 @@ class ConfigCommand extends BaseSubCommand {
   }
 }
 
-module.exports = ConfigCommand;
+export default ConfigCommand;

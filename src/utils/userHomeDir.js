@@ -2,8 +2,10 @@
  * @file find user home dir
  * @author atom-yang
  */
-const path = require('path');
-const home = require('os').homedir();
+import path from 'path';
+import { homedir } from 'os';
+
+const home = homedir();
 
 function getUid() {
   if (process.platform !== 'win32' && process.getuid) {
@@ -33,10 +35,4 @@ if (isWindows()) {
   userHomeDir = path.resolve(home, './.local/share');
 }
 
-module.exports = {
-  userHomeDir,
-  home,
-  isFakeRoot,
-  isRootUser,
-  ROOT_USER
-};
+export { userHomeDir, home, isFakeRoot, isRootUser, ROOT_USER };

@@ -2,7 +2,7 @@
  * @file call read-only method on contract
  * @author atom-yang
  */
-const CallCommand = require('./call');
+import CallCommand from './call.js';
 
 class SendCommand extends CallCommand {
   constructor(rc) {
@@ -17,4 +17,4 @@ class SendCommand extends CallCommand {
   }
 }
 
-module.exports = SendCommand;
+export default SendCommand;

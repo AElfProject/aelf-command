@@ -12,9 +12,7 @@
   "plugins": [
     "import"
   ],
-  "extends": [
-    "eslint-config-airbnb-base"
-  ],
+  "extends": ["eslint-config-airbnb-base", "prettier"],
   "globals": {},
   "rules": {
     "no-console": ["warn"],

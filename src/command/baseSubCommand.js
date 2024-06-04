@@ -2,14 +2,15 @@
  * @file base sub command
  * @author atom-yang
  */
-const Schema = require('async-validator/dist-node/index').default;
-const inquirer = require('inquirer');
-const ora = require('ora');
-const { logger } = require('../utils/myLogger');
-const { camelCase } = require('../utils/utils');
-const { globalOptionsPrompts, strictGlobalOptionValidatorDesc } = require('../utils/constants');
+import asyncValidator from 'async-validator';
+const Schema = asyncValidator.default;
+import inquirer from 'inquirer';
+import ora from 'ora';
+import { logger } from '../utils/myLogger.js';
+import { camelCase } from '../utils/utils.js';
+import { globalOptionsPrompts, strictGlobalOptionValidatorDesc } from '../utils/constants.js';
 
-Schema.warning = () => {};
+// Schema.warning = () => {}; // TypeError: Cannot add property warning, object is not extensible
 
 const defaultOraOptions = {
   text: 'AElf loading...'
@@ -191,4 +192,4 @@ class BaseSubCommand {
   }
 }
 
-module.exports = BaseSubCommand;
+export default BaseSubCommand;

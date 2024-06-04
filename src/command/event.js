@@ -2,21 +2,11 @@
  * @file Deserialize transactions result Logs
  * @author atom-yang
  */
-const AElf = require('aelf-sdk');
-const BaseSubCommand = require('./baseSubCommand');
-const {
-  commonGlobalOptionValidatorDesc,
-  eventCommandParameters,
-  eventCommandUsage
-} = require('../utils/constants');
-const {
-  deserializeLogs
-} = require('../utils/utils');
-const {
-  logger,
-  plainLogger
-} = require('../utils/myLogger');
-
+import AElf from 'aelf-sdk';
+import BaseSubCommand from './baseSubCommand.js';
+import { commonGlobalOptionValidatorDesc, eventCommandParameters, eventCommandUsage } from '../utils/constants.js';
+import { deserializeLogs } from '../utils/utils.js';
+import { logger, plainLogger } from '../utils/myLogger.js';
 class EventCommand extends BaseSubCommand {
   constructor(rc) {
     super(
@@ -31,17 +21,10 @@ class EventCommand extends BaseSubCommand {
   }
 
   async run(commander, ...args) {
-    const {
-      options,
-      subOptions
-    } = await super.run(commander, ...args);
-    const {
-      endpoint
-    } = options;
+    const { options, subOptions } = await super.run(commander, ...args);
+    const { endpoint } = options;
     try {
-      const {
-        txId
-      } = subOptions;
+      const { txId } = subOptions;
       const aelf = new AElf(new AElf.providers.HttpProvider(endpoint));
       const txResult = await aelf.chain.getTxResult(txId);
       // console.log(plainLogger.info(`Transaction ${txId}'s Logs: \n ${JSON.stringify(txResult.Logs, null, 2)}`));
@@ -59,7 +42,9 @@ class EventCommand extends BaseSubCommand {
         }));
         this.oraInstance.clear();
         // eslint-disable-next-line max-len
-        console.log(`\n${plainLogger.info(`\nThe results returned by \nTransaction: ${txId} is: \n${JSON.stringify(logs, null, 2)}`)}`);
+        console.log(
+          `\n${plainLogger.info(`\nThe results returned by \nTransaction: ${txId} is: \n${JSON.stringify(logs, null, 2)}`)}`
+        );
         this.oraInstance.succeed('Succeed!');
       }
     } catch (e) {
@@ -69,4 +54,4 @@ class EventCommand extends BaseSubCommand {
   }
 }
 
-module.exports = EventCommand;
+export default EventCommand;

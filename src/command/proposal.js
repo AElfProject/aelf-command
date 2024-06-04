@@ -2,14 +2,14 @@
  * @file call read-only method on contract
  * @author atom-yang
  */
-const assert = require('assert');
-const AElf = require('aelf-sdk');
-const moment = require('moment');
-const chalk = require('chalk');
-const inquirer = require('inquirer');
-const BaseSubCommand = require('./baseSubCommand');
-const { proposalCommandUsage, proposalCommandParameters } = require('../utils/constants');
-const {
+import assert from 'assert';
+import AElf from 'aelf-sdk';
+import moment from 'moment';
+import chalk from 'chalk';
+import inquirer from 'inquirer';
+import BaseSubCommand from './baseSubCommand.js';
+import { proposalCommandUsage, proposalCommandParameters } from '../utils/constants.js';
+import {
   isAElfContract,
   getContractMethods,
   getContractInstance,
@@ -18,9 +18,9 @@ const {
   getTxResult,
   getParams,
   deserializeLogs
-} = require('../utils/utils');
-const { getWallet } = require('../utils/wallet');
-const { logger } = require('../utils/myLogger');
+} from '../utils/utils.js';
+import { getWallet } from '../utils/wallet.js';
+import { logger } from '../utils/myLogger.js';
 
 const toContractPrompts = [
   {
@@ -61,7 +61,7 @@ class ProposalCommand extends BaseSubCommand {
     description = 'Send a proposal to an origination with a specific contract method',
     parameters = proposalCommandParameters,
     usage = proposalCommandUsage,
-    options = [],
+    options = []
   ) {
     super(name, parameters, description, options, usage, rc);
   }
@@ -75,22 +75,14 @@ class ProposalCommand extends BaseSubCommand {
 
   async run(commander, ...args) {
     const { options, subOptions } = await super.run(commander, ...args);
-    const {
-      endpoint,
-      datadir,
-      account,
-      password
-    } = options;
-    const {
-      descriptionUrl,
-      proposalContract,
-      organization,
-      expiredTime
-    } = subOptions;
+    const { endpoint, datadir, account, password } = options;
+    const { descriptionUrl, proposalContract, organization, expiredTime } = subOptions;
     try {
       if (!proposalCommandParameters[0].choices.includes(proposalContract)) {
         // eslint-disable-next-line max-len
-        throw new Error(`${proposalContract} is not in the list of proposal contracts, choice one of \`AElf.ContractNames.Parliament\`, \`AElf.ContractNames.Referendum\` and \`AElf.ContractNames.Association\``);
+        throw new Error(
+          `${proposalContract} is not in the list of proposal contracts, choice one of \`AElf.ContractNames.Parliament\`, \`AElf.ContractNames.Referendum\` and \`AElf.ContractNames.Association\``
+        );
       }
       if (!moment(expiredTime).isValid || moment(expiredTime).isBefore(moment().add(0, 'hours'))) {
         throw new Error(`Expired Time has to be later than ${moment().add(1, 'hours').format('YYYY/MM/DD HH:mm:ss')}`);
@@ -109,21 +101,26 @@ class ProposalCommand extends BaseSubCommand {
         switch (prompt.name) {
           case 'contract-address':
             // eslint-disable-next-line no-await-in-loop
-            toContractAddress = await promptTolerateSeveralTimes({
-              times: 3,
-              prompt,
-              processAfterPrompt: this.processAddressAfterPrompt.bind(this, aelf, wallet),
-              pattern: /^((?!null).)*$/
-            }, this.oraInstance);
+            toContractAddress = await promptTolerateSeveralTimes(
+              {
+                times: 3,
+                prompt,
+                processAfterPrompt: this.processAddressAfterPrompt.bind(this, aelf, wallet),
+                pattern: /^((?!null).)*$/
+              },
+              this.oraInstance
+            );
             break;
           case 'method':
             // eslint-disable-next-line no-await-in-loop
             toContractAddress = await getContractInstance(toContractAddress, aelf, wallet, this.oraInstance);
             // eslint-disable-next-line no-await-in-loop
-            methodName = (await inquirer.prompt({
-              ...prompt,
-              choices: getContractMethods(toContractAddress)
-            })).method;
+            methodName = (
+              await inquirer.prompt({
+                ...prompt,
+                choices: getContractMethods(toContractAddress)
+              })
+            ).method;
             method = getMethod(methodName, toContractAddress);
             break;
           default:
@@ -133,29 +130,36 @@ class ProposalCommand extends BaseSubCommand {
       let params = await getParams(method);
       params = typeof params === 'string' ? params : BaseSubCommand.normalizeConfig(params);
       const result = method.packInput(params);
-      const txId = await parliament.CreateProposal(BaseSubCommand.normalizeConfig({
-        contractMethodName: methodName,
-        toAddress: this.toContractAddress,
-        params: result,
-        organizationAddress: organization,
-        expiredTime: {
-          seconds: moment(expiredTime).unix(),
-          nanos: moment(expiredTime).milliseconds() * 1000
-        },
-        proposalDescriptionUrl: descriptionUrl
-      }));
+      const txId = await parliament.CreateProposal(
+        BaseSubCommand.normalizeConfig({
+          contractMethodName: methodName,
+          toAddress: this.toContractAddress,
+          params: result,
+          organizationAddress: organization,
+          expiredTime: {
+            seconds: moment(expiredTime).unix(),
+            nanos: moment(expiredTime).milliseconds() * 1000
+          },
+          proposalDescriptionUrl: descriptionUrl
+        })
+      );
       logger.info(txId);
       this.oraInstance.start('loading proposal id...');
       const tx = await getTxResult(aelf, txId.TransactionId);
       this.oraInstance.succeed();
       if (tx.Status === 'PENDING') {
         // eslint-disable-next-line max-len
-        logger.info(`Transaction is still pending, you can get proposal id later by running ${chalk.yellow(`aelf-command event ${txId.TransactionId}`)}`);
+        logger.info(
+          `Transaction is still pending, you can get proposal id later by running ${chalk.yellow(
+            `aelf-command event ${txId.TransactionId}`
+          )}`
+        );
       } else {
-        const {
-          Logs = []
-        } = tx;
-        const results = await deserializeLogs(aelf, (Logs || []).filter(v => v.Name === 'ProposalCreated'));
+        const { Logs = [] } = tx;
+        const results = await deserializeLogs(
+          aelf,
+          (Logs || []).filter(v => v.Name === 'ProposalCreated')
+        );
         assert.strictEqual(results.length, 1, 'No related log');
         logger.info(`Proposal id: ${results[0].proposalId}.`);
         this.oraInstance.succeed('Succeed!');
@@ -167,4 +171,4 @@ class ProposalCommand extends BaseSubCommand {
   }
 }
 
-module.exports = ProposalCommand;
+export default ProposalCommand;

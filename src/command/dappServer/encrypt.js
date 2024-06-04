@@ -2,12 +2,10 @@
  * @file encrypt channel
  * @author atom-yang
  */
-const Crypto = require('crypto');
-const elliptic = require('elliptic');
-const {
-  randomId
-} = require('../../utils/utils');
-const HKDF = require('./HKDF');
+import Crypto from 'crypto';
+import elliptic from 'elliptic';
+import { randomId } from '../../utils/utils.js';
+import HKDF from './HKDF.js';
 
 const defaultEncryptAlgorithm = 'curve25519';
 const defaultCipher = 'aes-256-cbc';
@@ -54,10 +52,7 @@ class Encrypt {
    */
   decrypt(encrypted, iv) {
     const decipher = Crypto.createDecipheriv(this.cipher, this.derivedKey, Buffer.from(iv, 'hex'));
-    const decrypted = Buffer.concat([
-      decipher.update(Buffer.from(encrypted, 'base64')),
-      decipher.final()
-    ]).toString('base64');
+    const decrypted = Buffer.concat([decipher.update(Buffer.from(encrypted, 'base64')), decipher.final()]).toString('base64');
     return decrypted;
   }
 
@@ -69,4 +64,4 @@ class Encrypt {
   }
 }
 
-module.exports = Encrypt;
+export default Encrypt;

@@ -15,6 +15,4 @@ const CHAIN_APIS = {
   '/api/blockChain/merklePathByTransactionId': 'getMerklePathByTxId'
 };
 
-module.exports = {
-  CHAIN_APIS
-};
+export { CHAIN_APIS };

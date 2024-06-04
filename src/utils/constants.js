@@ -2,10 +2,12 @@
  * @file constants
  * @author atom-yang
  */
-const path = require('path');
-const moment = require('moment');
-const inquirer = require('inquirer');
-const { logger } = require('./myLogger');
+import path from 'path';
+import moment from 'moment';
+import inquirer from 'inquirer';
+import { logger } from './myLogger.js';
+import DatePrompt from 'inquirer-date-prompt';
+import SearchList from 'inquirer-search-list';
 
 const callCommandUsages = [
   '<contractName|contractAddress> <method> <params>',
@@ -71,25 +73,17 @@ const blkInfoCommandParameters = [
   }
 ];
 
-const blkInfoCommandUsage = [
-  '<height|block-hash> <include-txs>',
-  '<height|block-hash>',
-  ''
-];
+const blkInfoCommandUsage = ['<height|block-hash> <include-txs>', '<height|block-hash>', ''];
 
-inquirer.registerPrompt('datetime', require('inquirer-datepicker-prompt'));
-inquirer.registerPrompt('search-list', require('inquirer-search-list'));
+inquirer.registerPrompt('datetime', DatePrompt);
+inquirer.registerPrompt('search-list', SearchList);
 
 const proposalCommandParameters = [
   {
     type: 'list',
     name: 'proposal-contract',
     message: 'Pick up a contract name to create a proposal',
-    choices: [
-      'AElf.ContractNames.Parliament',
-      'AElf.ContractNames.Referendum',
-      'AElf.ContractNames.Association'
-    ],
+    choices: ['AElf.ContractNames.Parliament', 'AElf.ContractNames.Referendum', 'AElf.ContractNames.Association'],
     suffix: ':'
   },
   {
@@ -99,14 +93,16 @@ const proposalCommandParameters = [
     suffix: ':'
   },
   {
-    type: 'datetime',
+    type: 'date',
     name: 'expired-time',
     message: 'Select the expired time for this proposal',
     format: ['yyyy', '/', 'mm', '/', 'dd', ' ', 'HH', ':', 'MM'],
-    initial: moment().add({
-      hours: 1,
-      minutes: 5
-    }).toDate(),
+    initial: moment()
+      .add({
+        hours: 1,
+        minutes: 5
+      })
+      .toDate(),
     suffix: ':'
   },
   {
@@ -133,10 +129,7 @@ const txResultCommandParameters = [
   }
 ];
 
-const txResultCommandUsage = [
-  '<tx-id>',
-  ''
-];
+const txResultCommandUsage = ['<tx-id>', ''];
 
 const createCommandParameters = [
   {
@@ -151,11 +144,7 @@ const createCommandParameters = [
   }
 ];
 
-const createCommandUsage = [
-  '<save-to-file> -c, cipher',
-  '-c, cipher',
-  ''
-];
+const createCommandUsage = ['<save-to-file> -c, cipher', '-c, cipher', ''];
 
 const configCommandParameters = [
   {
@@ -181,12 +170,7 @@ const configCommandParameters = [
   }
 ];
 
-const configCommandUsage = [
-  'get <key>',
-  'set <key> <value>',
-  'delete <key>',
-  'list'
-];
+const configCommandUsage = ['get <key>', 'set <key> <value>', 'delete <key>', 'list'];
 
 const loadCommandParameters = [
   {
@@ -249,11 +233,7 @@ const deployCommandParameters = [
   }
 ];
 
-const deployCommandUsage = [
-  '<category> <code-path>',
-  '<category>',
-  ''
-];
+const deployCommandUsage = ['<category> <code-path>', '<category>', ''];
 
 const eventCommandParameters = [
   {
@@ -264,10 +244,7 @@ const eventCommandParameters = [
   }
 ];
 
-const eventCommandUsage = [
-  '<tx-id>',
-  ''
-];
+const eventCommandUsage = ['<tx-id>', ''];
 
 const commonGlobalOptionValidatorDesc = {
   password: {
@@ -322,7 +299,7 @@ const globalOptionsPrompts = [
   {
     type: 'input',
     name: 'account',
-    message: 'Enter a valid wallet address, if you don\'t have, create one by aelf-command create',
+    message: "Enter a valid wallet address, if you don't have, create one by aelf-command create",
     suffix: ':'
   },
   {
@@ -358,7 +335,7 @@ const passwordPrompts = [
   }
 ];
 
-module.exports = {
+export {
   callCommandUsages,
   callCommandParameters,
   commonGlobalOptionValidatorDesc,

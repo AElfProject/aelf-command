@@ -1,4 +1,4 @@
-const chalk = require('chalk');
+import chalk from 'chalk';
 
 // - Trace: The unimportant detail about how the process run. You may hardly use it.
 // - Debug: A debug message for processing information to help during troubleshooting.
@@ -70,4 +70,4 @@ levels.forEach(item => {
   };
 });
 
-module.exports = Logger;
+export default Logger;

@@ -2,42 +2,42 @@
  * @file utils
  * @author atom-yang
  */
-const AElf = require('aelf-sdk');
-const moment = require('moment');
-const chalk = require('chalk');
-const path = require('path');
-const uuid = require('uuid/v4');
-const fs = require('fs');
-const _camelCase = require('camelcase');
-const inquirer = require('inquirer');
-const protobuf = require('@aelfqueen/protobufjs');
-const { plainLogger } = require('./myLogger');
+import AElf from 'aelf-sdk';
+import moment from 'moment';
+import chalk from 'chalk';
+import path from 'path';
+import { v4 as uuid } from 'uuid';
+import fs from 'fs';
+import _camelCase from 'camelcase';
+import inquirer from 'inquirer';
+import { plainLogger } from './myLogger.js';
 
 function promisify(fn, firstData) {
-  return (...args) => new Promise(((resolve, reject) => {
-    args.push((err, ...result) => {
-      let res = result;
-      let error = err;
+  return (...args) =>
+    new Promise((resolve, reject) => {
+      args.push((err, ...result) => {
+        let res = result;
+        let error = err;
 
-      if (result.length <= 1) {
-        // eslint-disable-next-line prefer-destructuring
-        res = result[0];
-      }
+        if (result.length <= 1) {
+          // eslint-disable-next-line prefer-destructuring
+          res = result[0];
+        }
 
-      if (firstData) {
-        res = error;
-        error = null;
-      }
+        if (firstData) {
+          res = error;
+          error = null;
+        }
 
-      if (error) {
-        reject(error);
-      } else {
-        resolve(res);
-      }
+        if (error) {
+          reject(error);
+        } else {
+          resolve(res);
+        }
+      });
+
+      fn.call(null, ...args);
     });
-
-    fn.call(null, ...args);
-  }));
 }
 
 function camelCase(str) {
@@ -70,15 +70,11 @@ function getContractMethods(contract = {}) {
     process.exit(1);
   }
   return Object.keys(contract)
-    .filter(v => /^[A-Z]/.test(v)).sort();
+    .filter(v => /^[A-Z]/.test(v))
+    .sort();
 }
 
-async function getContractInstance(
-  contractAddress,
-  aelf,
-  wallet,
-  oraInstance
-) {
+async function getContractInstance(contractAddress, aelf, wallet, oraInstance) {
   if (typeof contractAddress !== 'string') {
     return contractAddress;
   }
@@ -122,15 +118,7 @@ function getMethod(method, contract) {
  * @param {Object} oraInstance the instance of ora library
  * @return {Object} the correct input value, if no correct was inputted, it will throw an error then exit the process
  */
-async function promptTolerateSeveralTimes(
-  {
-    processAfterPrompt = () => {},
-    pattern,
-    times = 3,
-    prompt = [],
-  },
-  oraInstance
-) {
+async function promptTolerateSeveralTimes({ processAfterPrompt = () => {}, pattern, times = 3, prompt = [] }, oraInstance) {
   if (pattern && !isRegExp(pattern)) {
     throw new Error("param 'pattern' must be a regular expression!");
   }
@@ -212,10 +200,12 @@ const PROTO_TYPE_PROMPT_TYPE = {
   '.google.protobuf.Timestamp': {
     type: 'datetime',
     format: ['yyyy', '/', 'mm', '/', 'dd', ' ', 'HH', ':', 'MM'],
-    initial: moment().add({
-      hours: 1,
-      minutes: 5
-    }).toDate(),
+    initial: moment()
+      .add({
+        hours: 1,
+        minutes: 5
+      })
+      .toDate(),
     transformFunc(time) {
       return {
         seconds: moment(time).unix(),
@@ -231,10 +221,10 @@ const PROTO_TYPE_PROMPT_TYPE = {
 
 function isSpecialParameters(inputType) {
   return (
-    inputType.fieldsArray
-    && inputType.fieldsArray.length === 1
-    && ['Hash', 'Address'].includes(inputType.name)
-    && inputType.fieldsArray[0].type === 'bytes'
+    inputType.fieldsArray &&
+    inputType.fieldsArray.length === 1 &&
+    ['Hash', 'Address'].includes(inputType.name) &&
+    inputType.fieldsArray[0].type === 'bytes'
   );
 }
 
@@ -276,7 +266,11 @@ async function getParams(method) {
   let result = {};
   if (fields.length > 0) {
     // eslint-disable-next-line max-len
-    console.log(chalk.yellow('\nIf you need to pass file contents as a parameter, you can enter the relative or absolute path of the file\n'));
+    console.log(
+      chalk.yellow(
+        '\nIf you need to pass file contents as a parameter, you can enter the relative or absolute path of the file\n'
+      )
+    );
     console.log('Enter the params one by one, type `Enter` to skip optional param:');
     if (isSpecialParameters(method.inputType)) {
       let prompts = PROTO_TYPE_PROMPT_TYPE.default;
@@ -299,7 +293,12 @@ async function getParams(method) {
         let paramValue;
         // todo: use recursion
         // eslint-disable-next-line max-len
-        if (rule !== 'repeated' && innerType && !isSpecialParameters(innerType) && (type || '').indexOf('google.protobuf.Timestamp') === -1) {
+        if (
+          rule !== 'repeated' &&
+          innerType &&
+          !isSpecialParameters(innerType) &&
+          (type || '').indexOf('google.protobuf.Timestamp') === -1
+        ) {
           let innerResult = {};
           const innerInputTypeInfo = innerType.toJSON();
           const innerFields = Object.entries(innerInputTypeInfo.fields || {});
@@ -396,7 +395,7 @@ async function deserializeLogs(aelf, logs = []) {
   return results;
 }
 
-module.exports = {
+export {
   promisify,
   camelCase,
   getContractMethods,
