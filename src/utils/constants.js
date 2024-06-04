@@ -7,6 +7,7 @@ import moment from 'moment';
 import inquirer from 'inquirer';
 import { logger } from './myLogger.js';
 import DatePrompt from 'inquirer-date-prompt';
+import SearchList from 'inquirer-search-list';
 
 const callCommandUsages = [
   '<contractName|contractAddress> <method> <params>',
@@ -24,7 +25,7 @@ const callCommandParameters = [
     suffix: ':'
   },
   {
-    type: 'list',
+    type: 'search-list',
     name: 'method',
     message: 'Pick up a contract method',
     pageSize: 10,
@@ -75,6 +76,7 @@ const blkInfoCommandParameters = [
 const blkInfoCommandUsage = ['<height|block-hash> <include-txs>', '<height|block-hash>', ''];
 
 inquirer.registerPrompt('datetime', DatePrompt);
+inquirer.registerPrompt('search-list', SearchList);
 
 const proposalCommandParameters = [
   {
