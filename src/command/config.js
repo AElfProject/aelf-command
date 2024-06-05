@@ -2,8 +2,7 @@
  * @file get block height
  * @author atom-yang
  */
-import asyncValidator from 'async-validator';
-const Schema = asyncValidator.default;
+import Schema from 'async-validator';
 import BaseSubCommand from './baseSubCommand.js';
 import { configCommandParameters, configCommandUsage, commonGlobalOptionValidatorDesc } from '../utils/constants.js';
 import { logger } from '../utils/myLogger.js';

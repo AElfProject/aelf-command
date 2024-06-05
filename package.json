@@ -8,7 +8,8 @@
     "commit": "git-cz",
     "lint": "eslint src",
     "release": "standard-version",
-    "test": "npx cross-env NODE_ENV=test jest"
+    "test": "jest --config=jest.config.js",
+    "test:watch": "jest --config=jest.config.js --watch"
   },
   "preferGlobal": true,
   "repository": {
@@ -38,8 +39,12 @@
   },
   "engineStrict": true,
   "dependencies": {
+    "@babel/core": "^7.24.6",
+    "@babel/plugin-syntax-import-attributes": "^7.24.6",
+    "@babel/preset-env": "^7.24.6",
     "aelf-sdk": "^3.4.12",
     "async-validator": "^4.2.5",
+    "babel-plugin-transform-import-meta": "^2.2.1",
     "boxen": "^7.1.1",
     "camelcase": "^8.0.0",
     "chalk": "^5.3.0",
@@ -50,14 +55,14 @@
     "global": "^4.4.0",
     "inquirer": "^9.2.22",
     "inquirer-date-prompt": "^3.0.0",
+    "inquirer-search-list": "^1.2.6",
     "mkdirp": "^3.0.1",
     "moment": "^2.30.1",
     "ora": "^8.0.1",
     "prompts": "^2.4.2",
     "socket.io": "^4.7.5",
     "update-notifier": "^7.0.0",
-    "uuid": "^9.0.1",
-    "inquirer-search-list": "^1.2.6"
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "commitizen": "^4.3.0",
@@ -98,6 +103,9 @@
     "collectCoverageFrom": [
       "src/**/*.js"
     ],
+    "transform": {
+      "^.+\\.js$": "babel-jest"
+    },
     "testEnvironment": "node"
   }
 }

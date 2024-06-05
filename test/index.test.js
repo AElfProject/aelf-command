@@ -1,9 +1,6 @@
-/**
- * @file test commands
- * @author atom-yang
- */
-const path = require('path');
-const aelfCommand = require('../src/index');
+import path from 'path';
+import { run as aelfCommandRun } from '../src/index';
+
 
 const commandBin = path.resolve(__dirname, '../bin/aelf-command.js');
 
@@ -12,11 +9,11 @@ process.env.NODE_ENV = 'test';
 function execCommand(cmd, args) {
   process.env.mockArgs = [process.argv[0], commandBin, cmd, ...args];
   console.log(process.env.mockArgs);
-  return aelfCommand.run();
+  return aelfCommandRun();
 }
 
 describe('test index', () => {
   test('test', async () => {
-    execCommand('get-chain-status', []);
-  }, 30000)
+    await execCommand('get-chain-status', []);
+  }, 30000);
 });

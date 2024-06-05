@@ -4,8 +4,7 @@
  */
 import { Server } from 'socket.io';
 import AElf from 'aelf-sdk';
-import asyncValidator from 'async-validator';
-const Schema = asyncValidator.default;
+import Schema from 'async-validator';
 import Sign from './sign.js';
 import Encrypt from './encrypt.js';
 import { logger } from '../../utils/myLogger.js';

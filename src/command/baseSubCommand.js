@@ -2,8 +2,7 @@
  * @file base sub command
  * @author atom-yang
  */
-import asyncValidator from 'async-validator';
-const Schema = asyncValidator.default;
+import Schema from 'async-validator';
 import inquirer from 'inquirer';
 import ora from 'ora';
 import { logger } from '../utils/myLogger.js';
