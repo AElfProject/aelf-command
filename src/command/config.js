@@ -2,7 +2,9 @@
  * @file get block height
  * @author atom-yang
  */
-import Schema from 'async-validator';
+import { interopImportCJSDefault } from "node-cjs-interop";
+import asyncValidator from 'async-validator';
+const Schema = interopImportCJSDefault(asyncValidator);
 import BaseSubCommand from './baseSubCommand.js';
 import { configCommandParameters, configCommandUsage, commonGlobalOptionValidatorDesc } from '../utils/constants.js';
 import { logger } from '../utils/myLogger.js';

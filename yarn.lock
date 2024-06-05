@@ -5531,6 +5531,11 @@ neo-async@^2.6.2:
   resolved "https://registry.npmjs.org/neo-async/-/neo-async-2.6.2.tgz#b4aafb93e3aeb2d8174ca53cf163ab7d7308305f"
   integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
 
+node-cjs-interop@^0.1.6:
+  version "0.1.6"
+  resolved "https://registry.npmjs.org/node-cjs-interop/-/node-cjs-interop-0.1.6.tgz#35839d0e1d66df06ca2b8a62284de50faa7353da"
+  integrity sha512-apLUa7jj1jRPi8ufDXFE61DtUYOQCfe4m4oj6RPCucJ41mALHLKSLkNInyThjoT302jjKdT6O6L6eQL4f4/CTw==
+
 node-int64@^0.4.0:
   version "0.4.0"
   resolved "https://registry.npmjs.org/node-int64/-/node-int64-0.4.0.tgz#87a9065cdb355d3182d8f94ce11188b825c68a3b"
