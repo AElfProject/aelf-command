@@ -2,8 +2,10 @@
  * @file base sub command
  * @author atom-yang
  */
+import { interopImportCJSDefault } from "node-cjs-interop";
 import asyncValidator from 'async-validator';
-const Schema = asyncValidator.default;
+const Schema = interopImportCJSDefault(asyncValidator);
+// const Schema = asyncValidator.default;
 import inquirer from 'inquirer';
 import ora from 'ora';
 import { logger } from '../utils/myLogger.js';

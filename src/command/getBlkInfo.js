@@ -3,8 +3,10 @@
  * @author atom-yang
  */
 import AElf from 'aelf-sdk';
+import { interopImportCJSDefault } from "node-cjs-interop";
 import asyncValidator from 'async-validator';
-const Schema = asyncValidator.default;
+const Schema = interopImportCJSDefault(asyncValidator);
+// const Schema = asyncValidator.default;
 import BaseSubCommand from './baseSubCommand.js';
 import { commonGlobalOptionValidatorDesc, blkInfoCommandParameters, blkInfoCommandUsage } from '../utils/constants.js';
 import { logger } from '../utils/myLogger.js';
