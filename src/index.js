@@ -3,7 +3,6 @@
  * @author atom-yang
  */
 import { Command } from 'commander';
-const commander = new Command();
 import chalk from 'chalk';
 import updateNotifier from 'update-notifier';
 import check from 'check-node-version';
@@ -16,7 +15,18 @@ import { userHomeDir } from './utils/userHomeDir.js';
 
 const minVersion = '10.9.0';
 
-function init() {
+function init(options) {
+  const commander = new Command();
+  // Configuration for test
+  if (options?.exitOverride) {
+    // throws a JavaScript error instead of the original process exit
+    commander.exitOverride();
+  }
+  if (options?.suppressOutput) {
+    commander.configureOutput({
+      writeOut: (str) => process.stdout.write(`[OUT] ${str}`),
+    });
+  }
   commander.version(pkg.version, '-v, --version');
   commander.usage('[command] [options]');
   commander.option('-e, --endpoint <URI>', 'The URI of an AElf node. Eg: http://127.0.0.1:8000');
@@ -38,17 +48,12 @@ function init() {
     logger.info(execSync('aelf-command -h').toString());
   });
   const isTest = process.env.NODE_ENV === 'test';
-  const args = isTest ? process.env.mockArgs.split(',') : process.argv;
-  commander.parse(args);
-  if (commander.args.length === 0) commander.help();
-
   if (!isTest) {
     const notifier = updateNotifier({
       pkg,
       distTag: 'latest',
       updateCheckInterval: 1000 * 60 * 60 * 1 // one hours
     });
-
     if (notifier.update) {
       notifier.notify({
         message: `Update available ${chalk.dim(pkg.version)} ${chalk.reset('→')} ${chalk.green(notifier.update.latest)}
@@ -56,16 +61,18 @@ function init() {
       });
     }
   }
+  return commander;
 }
 
-function run() {
+function run(args, options) {
   check({ node: `>= ${minVersion}` }, (error, results) => {
     if (error) {
       logger.error(error);
       return;
     }
     if (results.isSatisfied) {
-      init();
+      const isTest = process.env.NODE_ENV === 'test';
+      init({ exitOverride: options?.exitOverride, suppressOutput: options?.suppressOutput }).parse(args, isTest ? { from: "user" } : undefined);
     } else {
       logger.error('Your Node.js version is needed to >= %s', minVersion);
     }
