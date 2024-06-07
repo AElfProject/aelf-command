@@ -50,14 +50,14 @@
     "global": "^4.4.0",
     "inquirer": "^9.2.22",
     "inquirer-date-prompt": "^3.0.0",
+    "inquirer-search-list": "^1.2.6",
     "mkdirp": "^3.0.1",
     "moment": "^2.30.1",
     "ora": "^8.0.1",
     "prompts": "^2.4.2",
     "socket.io": "^4.7.5",
     "update-notifier": "^7.0.0",
-    "uuid": "^9.0.1",
-    "inquirer-search-list": "^1.2.6"
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "commitizen": "^4.3.0",
