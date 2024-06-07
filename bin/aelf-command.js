@@ -7,5 +7,4 @@ process.on('uncaughtException', err => {
   logger.fatal(err.message || err);
   process.exit(1);
 });
-
-run();
+run(process.argv);

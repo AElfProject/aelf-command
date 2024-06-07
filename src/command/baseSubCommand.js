@@ -5,7 +5,6 @@
 import { interopImportCJSDefault } from "node-cjs-interop";
 import asyncValidator from 'async-validator';
 const Schema = interopImportCJSDefault(asyncValidator);
-
 import inquirer from 'inquirer';
 import ora from 'ora';
 import { logger } from '../utils/myLogger.js';
