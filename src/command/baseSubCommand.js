@@ -96,9 +96,10 @@ class BaseSubCommand {
 
   static getUniConfig(commander) {
     const result = {};
-    ['password', 'endpoint', 'account', 'datadir'].forEach(v => {
-      if (commander[v]) {
-        result[v] = commander[v];
+    ['password','endpoint','account','datadir'].forEach(v => {
+      const options = commander.opts();
+      if (options[v]) {
+        result[v] = options[v];
       }
     });
     return result;
