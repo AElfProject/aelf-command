@@ -4,8 +4,9 @@
  */
 import { Server } from 'socket.io';
 import AElf from 'aelf-sdk';
+import { interopImportCJSDefault } from "node-cjs-interop";
 import asyncValidator from 'async-validator';
-const Schema = asyncValidator.default;
+const Schema = interopImportCJSDefault(asyncValidator);
 import Sign from './sign.js';
 import Encrypt from './encrypt.js';
 import { logger } from '../../utils/myLogger.js';
