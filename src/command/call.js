@@ -53,11 +53,9 @@ class CallCommand extends BaseSubCommand {
       let { contractAddress, method, params } = subOptions;
       const wallet = getWallet(datadir, account, password);
       if (subOptionsLength < this.parameters.length) {
-        // eslint-disable-next-line no-restricted-syntax
         for (const prompt of this.parameters.slice(subOptionsLength)) {
           switch (prompt.name) {
             case 'contract-address':
-              // eslint-disable-next-line no-await-in-loop
               contractAddress = await promptTolerateSeveralTimes(
                 {
                   times: 3,
@@ -69,11 +67,9 @@ class CallCommand extends BaseSubCommand {
               );
               break;
             case 'method':
-              // eslint-disable-next-line no-await-in-loop
               contractAddress = await getContractInstance(contractAddress, aelf, wallet, this.oraInstance);
-              // eslint-disable-next-line no-await-in-loop
+
               method = getMethod(
-                // eslint-disable-next-line no-await-in-loop
                 (
                   await inquirer.prompt({
                     ...prompt,
@@ -84,11 +80,10 @@ class CallCommand extends BaseSubCommand {
               );
               break;
             case 'params':
-              // eslint-disable-next-line no-await-in-loop
               contractAddress = await getContractInstance(contractAddress, aelf, wallet, this.oraInstance);
-              // eslint-disable-next-line no-await-in-loop
+
               method = getMethod(method, contractAddress);
-              // eslint-disable-next-line no-await-in-loop
+
               params = await getParams(method);
               params = typeof params === 'string' ? params : BaseSubCommand.normalizeConfig(params);
               if (Object.keys(params || {}).length > 0) {

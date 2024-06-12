@@ -2,7 +2,7 @@
  * @file get block height
  * @author atom-yang
  */
-import { interopImportCJSDefault } from "node-cjs-interop";
+import { interopImportCJSDefault } from 'node-cjs-interop';
 import asyncValidator from 'async-validator';
 const Schema = interopImportCJSDefault(asyncValidator);
 

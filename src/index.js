@@ -22,7 +22,7 @@ function init() {
   commander.option('-e, --endpoint <URI>', 'The URI of an AElf node. Eg: http://127.0.0.1:8000');
   commander.option('-a, --account <account>', 'The address of AElf wallet');
   commander.option('-p, --password <password>', 'The password of encrypted keyStore');
-  // eslint-disable-next-line max-len
+
   commander.option(
     '-d, --datadir <directory>',
     `The directory that contains the AElf related files. Default to be ${userHomeDir}/aelf`

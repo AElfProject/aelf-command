@@ -4,7 +4,7 @@
  */
 import { Server } from 'socket.io';
 import AElf from 'aelf-sdk';
-import { interopImportCJSDefault } from "node-cjs-interop";
+import { interopImportCJSDefault } from 'node-cjs-interop';
 import asyncValidator from 'async-validator';
 const Schema = interopImportCJSDefault(asyncValidator);
 import Sign from './sign.js';
