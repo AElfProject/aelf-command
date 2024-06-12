@@ -40,7 +40,7 @@ const callCommandParameters = [
     filter: (val = '') => {
       let result = null;
       let value = val;
-      if (val.startsWith('\'') && val.endsWith('\'')) {
+      if (val.startsWith("'") && val.endsWith("'")) {
         value = val.slice(1, val.length - 1);
       }
       try {
@@ -178,7 +178,7 @@ const loadCommandParameters = [
     name: 'private-key',
     extraName: ['mnemonic'],
     message: 'Enter a private key or mnemonic',
-    suffix: ':',
+    suffix: ':'
   },
   // confirm and list cannot use validate
   {
@@ -193,7 +193,7 @@ const loadCommandParameters = [
     suffix: '?',
     when(answers) {
       return answers['private-key'].trim().split(' ').length > 1;
-    },
+    }
   },
   {
     type: 'confirm',
@@ -204,15 +204,15 @@ const loadCommandParameters = [
     message: 'Save account info into a file',
     active: 'yes',
     inactive: 'no',
-    suffix: '?',
-  },
+    suffix: '?'
+  }
 ];
 
 const loadCommandUsage = [
   '<private-key|mnemonic> <created-by-old> <save-to-file>',
   '<private-key|mnemonic> <save-to-file>',
   '<private-key|mnemonic>',
-  '',
+  ''
 ];
 
 const deployCommandParameters = [

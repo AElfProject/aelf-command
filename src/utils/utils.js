@@ -20,7 +20,6 @@ function promisify(fn, firstData) {
         let error = err;
 
         if (result.length <= 1) {
-          // eslint-disable-next-line prefer-destructuring
           res = result[0];
         }
 
@@ -129,9 +128,8 @@ async function promptTolerateSeveralTimes({ processAfterPrompt = () => {}, patte
   let answerInput;
   while (askTimes < times) {
     try {
-      // eslint-disable-next-line no-await-in-loop
       answerInput = await inquirer.prompt(prompt);
-      // eslint-disable-next-line no-await-in-loop
+
       answerInput = await processAfterPrompt(answerInput);
       if (!pattern || pattern.test(answerInput)) {
         break;
@@ -236,13 +234,13 @@ async function getParamValue(type, fieldName) {
     name: fieldNameWithoutDot,
     message: `Enter the required param <${fieldName}>:`
   };
-  // eslint-disable-next-line no-await-in-loop
+
   const promptValue = (await inquirer.prompt(prompts))[fieldNameWithoutDot];
-  // eslint-disable-next-line no-await-in-loop
+
   let value = parseJSON(await prompts.transformFunc(promptValue));
   if (typeof value === 'string' && isFilePath(value)) {
     const filePath = path.resolve(process.cwd(), value);
-    // eslint-disable-next-line no-await-in-loop
+
     const { read } = await inquirer.prompt({
       type: 'confirm',
       name: 'read',
@@ -265,7 +263,6 @@ async function getParams(method) {
   const fields = Object.entries(method.inputTypeInfo.fields || {});
   let result = {};
   if (fields.length > 0) {
-    // eslint-disable-next-line max-len
     console.log(
       chalk.yellow(
         '\nIf you need to pass file contents as a parameter, you can enter the relative or absolute path of the file\n'
@@ -279,11 +276,10 @@ async function getParams(method) {
         name: 'value',
         message: 'Enter the required param <value>:'
       };
-      // eslint-disable-next-line no-await-in-loop
+
       const promptValue = (await inquirer.prompt(prompts)).value;
       result = parseJSON(promptValue);
     } else {
-      // eslint-disable-next-line no-restricted-syntax
       for (const [fieldName, fieldType] of fields) {
         const { type, rule } = fieldType;
         let innerType = null;
@@ -292,7 +288,7 @@ async function getParams(method) {
         } catch (e) {}
         let paramValue;
         // todo: use recursion
-        // eslint-disable-next-line max-len
+
         if (
           rule !== 'repeated' &&
           innerType &&
@@ -309,18 +305,15 @@ async function getParams(method) {
               name: 'value',
               message: `Enter the required param <${fieldName}.value>:`
             };
-            // eslint-disable-next-line no-await-in-loop
+
             innerResult = (await inquirer.prompt(prompts)).value;
           } else {
-            // eslint-disable-next-line no-restricted-syntax
             for (const [innerFieldName, innerFieldType] of innerFields) {
-              // eslint-disable-next-line no-await-in-loop
               innerResult[innerFieldName] = parseJSON(await getParamValue(innerFieldType.type, `${fieldName}.${innerFieldName}`));
             }
           }
           paramValue = innerResult;
         } else {
-          // eslint-disable-next-line no-await-in-loop
           paramValue = await getParamValue(type, fieldName);
         }
         result[fieldName] = parseJSON(paramValue);
@@ -351,14 +344,14 @@ function getDeserializeLogResult(serializedData, dataType) {
       defaults: false, // includes default values
       arrays: true, // populates empty arrays (repeated fields) even if defaults=false
       objects: true, // populates empty objects (map fields) even if defaults=false
-      oneofs: true, // includes virtual oneof fields set to the present field's name
+      oneofs: true // includes virtual oneof fields set to the present field's name
     });
     return {
       ...acc,
-      ...deserialize,
+      ...deserialize
     };
   }, {});
-  // eslint-disable-next-line max-len
+
   deserializeLogResult = AElf.utils.transform.transform(dataType, deserializeLogResult, AElf.utils.transform.OUTPUT_TRANSFORMERS);
   deserializeLogResult = AElf.utils.transform.transformArrayToMap(dataType, deserializeLogResult);
   return deserializeLogResult;
