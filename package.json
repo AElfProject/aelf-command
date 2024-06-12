@@ -8,7 +8,9 @@
     "commit": "git-cz",
     "lint": "eslint src",
     "release": "standard-version",
-    "test": "npx cross-env NODE_ENV=test jest"
+    "test": "npx cross-env NODE_ENV=test jest",
+    "prepare": "husky",
+    "lint-staged": "lint-staged"
   },
   "preferGlobal": true,
   "repository": {
@@ -47,7 +49,6 @@
     "columnify": "^1.6.0",
     "commander": "^12.1.0",
     "elliptic": "^6.5.5",
-    "global": "^4.4.0",
     "inquirer": "^9.2.22",
     "inquirer-date-prompt": "^3.0.0",
     "inquirer-search-list": "^1.2.6",
@@ -64,9 +65,12 @@
     "@babel/eslint-plugin": "^7.24.7",
     "@babel/plugin-syntax-import-assertions": "^7.24.7",
     "@babel/preset-env": "^7.24.7",
+    "@commitlint/cli": "^19.3.0",
+    "@commitlint/config-conventional": "^19.2.2",
     "@eslint/compat": "^1.0.3",
     "@eslint/eslintrc": "^3.1.0",
     "commitizen": "^4.3.0",
+    "commitlint": "^19.3.0",
     "cross-env": "^7.0.3",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^9.3.0",
@@ -81,11 +85,6 @@
     "node-cjs-interop": "^0.1.6",
     "prettier": "^3.3.2",
     "standard-version": "^9.5.0"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint"
-    }
   },
   "keywords": [
     "AElf",
