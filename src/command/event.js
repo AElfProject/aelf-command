@@ -41,7 +41,7 @@ class EventCommand extends BaseSubCommand {
           Result: results[index]
         }));
         this.oraInstance.clear();
-        // eslint-disable-next-line max-len
+
         console.log(
           `\n${plainLogger.info(`\nThe results returned by \nTransaction: ${txId} is: \n${JSON.stringify(logs, null, 2)}`)}`
         );
