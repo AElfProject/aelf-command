@@ -24,7 +24,7 @@ function init(options) {
   }
   if (options?.suppressOutput) {
     commander.configureOutput({
-      writeOut: (str) => process.stdout.write(`[OUT] ${str}`),
+      writeOut: str => process.stdout.write(`[OUT] ${str}`)
     });
   }
   commander.version(pkg.version, '-v, --version');
@@ -32,7 +32,7 @@ function init(options) {
   commander.option('-e, --endpoint <URI>', 'The URI of an AElf node. Eg: http://127.0.0.1:8000');
   commander.option('-a, --account <account>', 'The address of AElf wallet');
   commander.option('-p, --password <password>', 'The password of encrypted keyStore');
-  // eslint-disable-next-line max-len
+
   commander.option(
     '-d, --datadir <directory>',
     `The directory that contains the AElf related files. Default to be ${userHomeDir}/aelf`
@@ -72,7 +72,10 @@ function run(args, options) {
     }
     if (results.isSatisfied) {
       const isTest = process.env.NODE_ENV === 'test';
-      init({ exitOverride: options?.exitOverride, suppressOutput: options?.suppressOutput }).parse(args, isTest ? { from: "user" } : undefined);
+      init({ exitOverride: options?.exitOverride, suppressOutput: options?.suppressOutput }).parse(
+        args,
+        isTest ? { from: 'user' } : undefined
+      );
     } else {
       logger.error('Your Node.js version is needed to >= %s', minVersion);
     }

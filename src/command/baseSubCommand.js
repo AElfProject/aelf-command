@@ -2,7 +2,7 @@
  * @file base sub command
  * @author atom-yang
  */
-import { interopImportCJSDefault } from "node-cjs-interop";
+import { interopImportCJSDefault } from 'node-cjs-interop';
 import asyncValidator from 'async-validator';
 const Schema = interopImportCJSDefault(asyncValidator);
 import inquirer from 'inquirer';
@@ -61,7 +61,7 @@ class BaseSubCommand {
 
   init(commander) {
     let command = commander.command(`${this.commandName} ${this.getParameters()}`).description(this.description);
-    // eslint-disable-next-line no-restricted-syntax
+
     for (const { flag, description } of this.options) {
       command = command.option(flag, description);
     }
@@ -97,7 +97,7 @@ class BaseSubCommand {
 
   static getUniConfig(commander) {
     const result = {};
-    ['password','endpoint','account','datadir'].forEach(v => {
+    ['password', 'endpoint', 'account', 'datadir'].forEach(v => {
       const options = commander.opts();
       if (options[v]) {
         result[v] = options[v];
@@ -150,7 +150,7 @@ class BaseSubCommand {
       ...rc,
       ...uniOptions
     });
-    // eslint-disable-next-line max-len
+
     const globalPrompts = globalOptionsPrompts.filter(
       prompt => this.validatorDesc[prompt.name].required && !options[prompt.name]
     );

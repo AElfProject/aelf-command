@@ -30,7 +30,7 @@ class DeployCommand extends BaseSubCommand {
     try {
       const aelf = new AElf(new AElf.providers.HttpProvider(endpoint));
       const wallet = getWallet(datadir, account, password);
-      // eslint-disable-next-line no-unused-vars
+
       const socket = new Socket({
         port,
         endpoint,

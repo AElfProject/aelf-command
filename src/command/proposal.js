@@ -79,8 +79,8 @@ class ProposalCommand extends BaseSubCommand {
     const { descriptionUrl, proposalContract, organization, expiredTime } = subOptions;
     try {
       if (!proposalCommandParameters[0].choices.includes(proposalContract)) {
-        // eslint-disable-next-line max-len
         throw new Error(
+          // eslint-disable-next-line max-len
           `${proposalContract} is not in the list of proposal contracts, choice one of \`AElf.ContractNames.Parliament\`, \`AElf.ContractNames.Referendum\` and \`AElf.ContractNames.Association\``
         );
       }
@@ -96,11 +96,10 @@ class ProposalCommand extends BaseSubCommand {
       let toContractAddress;
       let method;
       let methodName;
-      // eslint-disable-next-line no-restricted-syntax
+
       for (const prompt of toContractPrompts) {
         switch (prompt.name) {
           case 'contract-address':
-            // eslint-disable-next-line no-await-in-loop
             toContractAddress = await promptTolerateSeveralTimes(
               {
                 times: 3,
@@ -112,9 +111,8 @@ class ProposalCommand extends BaseSubCommand {
             );
             break;
           case 'method':
-            // eslint-disable-next-line no-await-in-loop
             toContractAddress = await getContractInstance(toContractAddress, aelf, wallet, this.oraInstance);
-            // eslint-disable-next-line no-await-in-loop
+
             methodName = (
               await inquirer.prompt({
                 ...prompt,
@@ -148,7 +146,6 @@ class ProposalCommand extends BaseSubCommand {
       const tx = await getTxResult(aelf, txId.TransactionId);
       this.oraInstance.succeed();
       if (tx.Status === 'PENDING') {
-        // eslint-disable-next-line max-len
         logger.info(
           `Transaction is still pending, you can get proposal id later by running ${chalk.yellow(
             `aelf-command event ${txId.TransactionId}`

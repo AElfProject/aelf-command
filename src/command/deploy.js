@@ -6,7 +6,6 @@ import chalk from 'chalk';
 import BaseSubCommand from './baseSubCommand.js';
 import { deployCommandParameters, deployCommandUsage } from '../utils/constants.js';
 
-// eslint-disable-next-line max-len
 const tips = chalk.redBright(
   'Deprecated! Please use ',
   chalk.yellowBright('`aelf-command send`'),
@@ -19,7 +18,6 @@ class DeployCommand extends BaseSubCommand {
   }
 
   async run() {
-    // eslint-disable-next-line max-len
     console.log(tips);
   }
 }

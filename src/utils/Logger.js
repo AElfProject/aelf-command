@@ -52,7 +52,7 @@ levels.forEach(item => {
   const fnName = level.toLocaleLowerCase();
   Logger.prototype[fnName] = function fn(firstParam, ...rest) {
     // if (typeof params === 'obejct') params = JSON.stringify(params);
-    // eslint-disable-next-line prefer-template
+
     let prefix = `${this.symbol ? this.symbol + ' ' : ''}${this.name ? this.name + ' ' : ''}[${level}]: `;
     if (typeof firstParam === 'object' && firstParam !== null) {
       prefix += '\n';
