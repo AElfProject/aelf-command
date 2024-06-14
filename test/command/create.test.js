@@ -80,27 +80,4 @@ describe('CreateCommand', () => {
     expect(oraInstance.fail).toHaveBeenCalledWith('Failed!');
     expect(logger.error).toHaveBeenCalled();
   });
-
-  //   it('should succeed without saving to file', async () => {
-  //     BaseSubCommand.mockImplementation(() => ({
-  //       oraInstance,
-  //       run: jest.fn().mockResolvedValue({
-  //         localOptions: { cipher: 'aes-128-ctr' },
-  //         options: { datadir: 'testDir' },
-  //         subOptions: { saveToFile: false }
-  //       })
-  //     }));
-  //     const mockWallet = {
-  //       mnemonic: 'test mnemonic',
-  //       privateKey: 'test privateKey',
-  //       keyPair: { getPublic: () => ({ encode: () => 'test publicKey' }) },
-  //       address: 'test address'
-  //     };
-  //     AElf.wallet.createNewWallet.mockReturnValue(mockWallet);
-
-  //     await createCommand.run();
-
-  //     expect(AElf.wallet.createNewWallet).toHaveBeenCalled();
-  //     expect(oraInstance.succeed).toHaveBeenCalledWith('Succeed!');
-  //   });
 });

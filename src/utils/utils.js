@@ -11,6 +11,7 @@ import fs from 'fs';
 import _camelCase from 'camelcase';
 import inquirer from 'inquirer';
 import { plainLogger } from './myLogger.js';
+import * as protobuf from '@aelfqueen/protobufjs';
 
 function promisify(fn, firstData) {
   return (...args) =>

@@ -49,7 +49,7 @@ class GetBlkInfoCommand extends BaseSubCommand {
       subOptions
     );
     const aelf = new AElf(new AElf.providers.HttpProvider(options.endpoint));
-    const { height, includeTxs = false } = subOptions;
+    const { height, includeTxs } = subOptions;
     try {
       this.oraInstance.start();
       let blockInfo;

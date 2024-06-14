@@ -101,45 +101,4 @@ describe('ConfigCommand', () => {
     await configCommand.run(commander, 'delete', 'endpoint');
     expect(mockOraInstance.succeed).toHaveBeenCalledWith('Succeed!');
   });
-
-  //   it('should run with flag "list"', async () => {
-  //     const subOptions = { flag: 'list' };
-  //     jest.spyOn(configCommand, 'validateParameters').mockResolvedValue();
-  //     configCommand.rc.getFileConfigs.mockReturnValue({ key1: 'value1' });
-
-  //     await configCommand.run({} /* commander */, subOptions);
-
-  //     expect(configCommand.rc.getFileConfigs).toHaveBeenCalled();
-  //     expect(console.log).toHaveBeenCalledWith('\nkey1=value1\n');
-  //   });
-
-  //   it('should run with flag "delete"', async () => {
-  //     const subOptions = { flag: 'delete', key: 'testKey' };
-  //     jest.spyOn(configCommand, 'validateParameters').mockResolvedValue();
-
-  //     await configCommand.run({} /* commander */, subOptions);
-
-  //     expect(configCommand.rc.deleteConfig).toHaveBeenCalledWith('testKey');
-  //     expect(mockOraInstance.succeed).toHaveBeenCalledWith('Succeed!');
-  //   });
-
-  //   it('should handle invalid flag', async () => {
-  //     const subOptions = { flag: 'invalid' };
-  //     jest.spyOn(configCommand, 'validateParameters').mockResolvedValue();
-
-  //     await expect(configCommand.run({} /* commander */, subOptions)).rejects.toThrow(
-  //       'invalid is not a valid flag, must one of set, get, list, delete'
-  //     );
-  //   });
-
-  //   it('should handle validation error', async () => {
-  //     const subOptions = { flag: 'get', key: 'testKey' };
-  //     const error = new Error('Validation failed');
-  //     jest.spyOn(configCommand, 'validateParameters').mockRejectedValue(error);
-
-  //     await configCommand.run({} /* commander */, subOptions);
-
-  //     expect(mockOraInstance.fail).toHaveBeenCalledWith('Failed!');
-  //     expect(logger.error).toHaveBeenCalledWith(error);
-  //   });
 });
