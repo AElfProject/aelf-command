@@ -35,7 +35,6 @@ describe('DeployCommand', () => {
   });
 
   test('should log deprecation message when run is called', async () => {
-    // chalk.redBright.mockReturnValue = text => `redBright(${text})`;
     const expectedTips = `redBright(Deprecated! Please use yellowBright(\`aelf-command send\`), check details in aelf-command \`README.md\`)`;
     const commander = new Command();
     commander.option('-e, --endpoint <URI>', 'The URI of an AElf node. Eg: http://127.0.0.1:8000');

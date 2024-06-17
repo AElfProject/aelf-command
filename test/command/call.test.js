@@ -115,7 +115,6 @@ describe('CallCommand', () => {
         suffix: ':'
       }
     ]);
-    // inquirer.prompt = questions => Promise.resolve({ fakeProp: 'ELF' });
     const commander = new Command();
     commander.option('-e, --endpoint <URI>', 'The URI of an AElf node. Eg: http://127.0.0.1:8000');
     commander.option('-a, --account <account>', 'The address of AElf wallet');
