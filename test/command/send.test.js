@@ -19,7 +19,7 @@ describe('SendCommand', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
-  it('should send the transaction and succeed', async () => {
+  test('should send the transaction and succeed', async () => {
     const wallet = AElf.wallet.getWalletByPrivateKey('9a2c6023e8b2221f4b02f4ccc5128392c1bd968ae45a42fa62848d793fff148f');
     const endPoint = 'https://tdvw-test-node.aelf.io/';
     const aelf = new AElf(new AElf.providers.HttpProvider(endPoint));

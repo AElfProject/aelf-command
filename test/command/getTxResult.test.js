@@ -29,7 +29,7 @@ describe('GetTxResultCommand', () => {
     jest.clearAllMocks();
   });
 
-  it('should get transaction result and succeed', async () => {
+  test('should get transaction result and succeed', async () => {
     const txId = 'ef17ac2078c2b31a702b9edc754bfa56f1c37931f52f9dd8e2b9dc65769966b1';
     const commander = new Command();
     commander.option('-e, --endpoint <URI>', 'The URI of an AElf node. Eg: http://127.0.0.1:8000');
@@ -43,7 +43,7 @@ describe('GetTxResultCommand', () => {
     await getTxResultCommand.run(commander, txId);
     expect(oraInstanceMock.succeed).toHaveBeenCalled();
   }, 20000);
-  it('should log error and fail on validation error', async () => {
+  test('should log error and fail on validation error', async () => {
     jest.spyOn(process, 'exit').mockImplementation(() => {});
     const commander = new Command();
     commander.option('-e, --endpoint <URI>', 'The URI of an AElf node. Eg: http://127.0.0.1:8000');

@@ -31,7 +31,7 @@ describe('ConsoleCommand', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
-  it('should run the console command successfully', async () => {
+  test('should run the console command successfully', async () => {
     const commander = new Command();
     commander.option('-e, --endpoint <URI>', 'The URI of an AElf node. Eg: http://127.0.0.1:8000');
     commander.option('-a, --account <account>', 'The address of AElf wallet');
@@ -47,7 +47,7 @@ describe('ConsoleCommand', () => {
     expect(oraInstance.succeed).toHaveBeenCalledWith('Succeed!');
     expect(logger.info).toHaveBeenCalledTimes(2);
   }, 20000);
-  it('should handle errors correctly', async () => {
+  test('should handle errors correctly', async () => {
     const commander = new Command();
     commander.option('-e, --endpoint <URI>', 'The URI of an AElf node. Eg: http://127.0.0.1:8000');
     commander.option('-a, --account <account>', 'The address of AElf wallet');

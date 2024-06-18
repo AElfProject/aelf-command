@@ -29,7 +29,7 @@ describe('CreateCommand', () => {
     jest.clearAllMocks();
   });
 
-  it('should create a new wallet and log info', async () => {
+  test('should create a new wallet and log info', async () => {
     const commander = new Command();
     commander.option('-e, --endpoint <URI>', 'The URI of an AElf node. Eg: http://127.0.0.1:8000');
     commander.option('-a, --account <account>', 'The address of AElf wallet');
@@ -46,7 +46,7 @@ describe('CreateCommand', () => {
     expect(saveKeyStore).toHaveBeenCalled();
   });
 
-  it('should succeed without saving to file', async () => {
+  test('should succeed without saving to file', async () => {
     const commander = new Command();
     commander.option('-e, --endpoint <URI>', 'The URI of an AElf node. Eg: http://127.0.0.1:8000');
     commander.option('-a, --account <account>', 'The address of AElf wallet');
@@ -63,7 +63,7 @@ describe('CreateCommand', () => {
     expect(oraInstance.succeed).toHaveBeenCalledWith('Succeed!');
   });
 
-  it('should handle saveKeyStore error', async () => {
+  test('should handle saveKeyStore error', async () => {
     const commander = new Command();
     commander.option('-e, --endpoint <URI>', 'The URI of an AElf node. Eg: http://127.0.0.1:8000');
     commander.option('-a, --account <account>', 'The address of AElf wallet');

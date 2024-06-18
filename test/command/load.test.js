@@ -33,7 +33,7 @@ describe('LoadCommand', () => {
     jest.clearAllMocks();
   });
 
-  it('should load wallet from private key and succeed', async () => {
+  test('should load wallet from private key and succeed', async () => {
     const commander = new Command();
     commander.option('-e, --endpoint <URI>', 'The URI of an AElf node. Eg: http://127.0.0.1:8000');
     commander.option('-a, --account <account>', 'The address of AElf wallet');
@@ -56,7 +56,7 @@ describe('LoadCommand', () => {
     expect(logger.info).toHaveBeenCalledWith('Address             : GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk');
     expect(saveKeyStore).toHaveBeenCalled();
   }, 20000);
-  it('should load wallet from Mnemonic and succeed', async () => {
+  test('should load wallet from Mnemonic and succeed', async () => {
     const commander = new Command();
     commander.option('-e, --endpoint <URI>', 'The URI of an AElf node. Eg: http://127.0.0.1:8000');
     commander.option('-a, --account <account>', 'The address of AElf wallet');
@@ -80,7 +80,7 @@ describe('LoadCommand', () => {
     );
     expect(logger.info).toHaveBeenCalledWith('Address             : SbWhnq3XU8yeiUTYJmZBSgt7ekgszRXHxh8qNqkFj9g6d3bWh');
   }, 20000);
-  it('should load wallet from privateKey and succeed without saving to file', async () => {
+  test('should load wallet from privateKey and succeed without saving to file', async () => {
     const commander = new Command();
     commander.option('-e, --endpoint <URI>', 'The URI of an AElf node. Eg: http://127.0.0.1:8000');
     commander.option('-a, --account <account>', 'The address of AElf wallet');
@@ -102,7 +102,7 @@ describe('LoadCommand', () => {
     expect(oraInstanceMock.succeed).toHaveBeenCalledWith('Succeed!');
   }, 20000);
 
-  it('should log error and fail on validation error', async () => {
+  test('should log error and fail on validation error', async () => {
     const commander = new Command();
     commander.option('-e, --endpoint <URI>', 'The URI of an AElf node. Eg: http://127.0.0.1:8000');
     commander.option('-a, --account <account>', 'The address of AElf wallet');
@@ -118,7 +118,7 @@ describe('LoadCommand', () => {
     await loadCommand.run(commander, privateKey, false, true);
     expect(oraInstanceMock.fail).toHaveBeenCalled();
   }, 20000);
-  it('should fail when trying to use old version SDK', async () => {
+  test('should fail when trying to use old version SDK', async () => {
     const commander = new Command();
     commander.option('-e, --endpoint <URI>', 'The URI of an AElf node. Eg: http://127.0.0.1:8000');
     commander.option('-a, --account <account>', 'The address of AElf wallet');

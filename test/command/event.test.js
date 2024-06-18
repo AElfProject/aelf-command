@@ -30,7 +30,7 @@ describe('EventCommand', () => {
     jest.clearAllMocks();
   });
 
-  it('should deserialize logs and succeed', async () => {
+  test('should deserialize logs and succeed', async () => {
     const txId = 'ef17ac2078c2b31a702b9edc754bfa56f1c37931f52f9dd8e2b9dc65769966b1';
     const commander = new Command();
     commander.option('-e, --endpoint <URI>', 'The URI of an AElf node. Eg: http://127.0.0.1:8000');
@@ -66,7 +66,7 @@ describe('EventCommand', () => {
     expect(oraInstanceMock.fail).not.toHaveBeenCalled();
   }, 20000);
 
-  it('should log "not mined" if transaction status is not mined', async () => {
+  test('should log "not mined" if transaction status is not mined', async () => {
     const txId = '3553df418c6ec9a159560440f13a6ae29f786392574737036cf63786321c8a40';
     const commander = new Command();
     commander.option('-e, --endpoint <URI>', 'The URI of an AElf node. Eg: http://127.0.0.1:8000');
@@ -82,7 +82,7 @@ describe('EventCommand', () => {
     expect(oraInstanceMock.fail).not.toHaveBeenCalled();
   }, 20000);
 
-  it('should log error and fail on exception', async () => {
+  test('should log error and fail on exception', async () => {
     const txId = 'test';
     const commander = new Command();
     commander.option('-e, --endpoint <URI>', 'The URI of an AElf node. Eg: http://127.0.0.1:8000');

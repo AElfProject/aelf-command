@@ -32,7 +32,7 @@ describe('WalletCommand', () => {
     jest.clearAllMocks();
   });
 
-  it('should show wallet details', async () => {
+  test('should show wallet details', async () => {
     const commander = new Command();
     commander.option('-e, --endpoint <URI>', 'The URI of an AElf node. Eg: http://127.0.0.1:8000');
     commander.option('-a, --account <account>', 'The address of AElf wallet');
@@ -55,7 +55,7 @@ describe('WalletCommand', () => {
     );
     expect(logger.info).toHaveBeenCalledWith('Address             : GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk');
   }, 20000);
-  it('should handle errors and fail', async () => {
+  test('should handle errors and fail', async () => {
     jest.spyOn(require('../../src/utils/wallet'), 'getWallet').mockReturnValue(new Error('test error'));
     const commander = new Command();
     commander.option('-e, --endpoint <URI>', 'The URI of an AElf node. Eg: http://127.0.0.1:8000');

@@ -49,7 +49,7 @@ describe('ConfigCommand', () => {
     await configCommand.validateParameters(rule, parameters);
     expect(configCommand.handleUniOptionsError).toHaveBeenCalled();
   });
-  it('should handle list correctly', () => {
+  test('should handle list correctly', () => {
     const content = {
       key1: 'value1',
       key2: '',
@@ -58,7 +58,7 @@ describe('ConfigCommand', () => {
     const result = configCommand.handleList(content);
     expect(result).toBe('key1=value1\nkey3=value3\n');
   });
-  it('should run with flag "get"', async () => {
+  test('should run with flag "get"', async () => {
     configCommand.rc.getConfigs.mockReturnValue({
       endpoint: endPoint,
       datadir: dataDir
@@ -69,7 +69,7 @@ describe('ConfigCommand', () => {
     expect(logger.info).toHaveBeenCalledWith(endPoint);
   });
 
-  it('should run with flag "set"', async () => {
+  test('should run with flag "set"', async () => {
     configCommand.rc.getConfigs.mockReturnValue({
       endpoint: endPoint,
       datadir: dataDir
@@ -80,7 +80,7 @@ describe('ConfigCommand', () => {
     expect(mockOraInstance.succeed).toHaveBeenCalledWith('Succeed!');
   });
 
-  it('should run with flag "list"', async () => {
+  test('should run with flag "list"', async () => {
     configCommand.rc.getConfigs.mockReturnValue({
       endpoint: endPoint,
       datadir: dataDir
@@ -91,7 +91,7 @@ describe('ConfigCommand', () => {
     expect(configCommand.rc.getFileConfigs).toHaveBeenCalled();
   });
 
-  it('should run with flag "delete"', async () => {
+  test('should run with flag "delete"', async () => {
     configCommand.rc.getConfigs.mockReturnValue({
       endpoint: endPoint,
       datadir: dataDir

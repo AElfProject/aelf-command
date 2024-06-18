@@ -104,7 +104,7 @@ describe('ProposalCommand run', () => {
     jest.clearAllMocks();
   });
 
-  it('should run and create a proposal successfully', async () => {
+  test('should run and create a proposal successfully', async () => {
     const commander = new Command();
     commander.option('-e, --endpoint <URI>', 'The URI of an AElf node. Eg: http://127.0.0.1:8000');
     commander.option('-a, --account <account>', 'The address of AElf wallet');
@@ -154,7 +154,7 @@ describe('ProposalCommand run', () => {
     expect(logger.info).toHaveBeenCalledWith({ TransactionId: 'mockTxId' });
     expect(logger.info).toHaveBeenCalledWith('Proposal id: mockProposal.');
   }, 20000);
-  it('should run and show pending info', async () => {
+  test('should run and show pending info', async () => {
     const commander = new Command();
     commander.option('-e, --endpoint <URI>', 'The URI of an AElf node. Eg: http://127.0.0.1:8000');
     commander.option('-a, --account <account>', 'The address of AElf wallet');
@@ -206,7 +206,7 @@ describe('ProposalCommand run', () => {
     );
   }, 20000);
 
-  it('should handle failure to create proposal', async () => {
+  test('should handle failure to create proposal', async () => {
     const commander = new Command();
     commander.option('-e, --endpoint <URI>', 'The URI of an AElf node. Eg: http://127.0.0.1:8000');
     commander.option('-a, --account <account>', 'The address of AElf wallet');
@@ -227,7 +227,7 @@ describe('ProposalCommand run', () => {
     expect(oraInstanceMock.fail).toHaveBeenCalledWith('Failed!');
     expect(logger.fatal).toHaveBeenCalled();
   });
-  it('should throw error for invalid proposalContract', async () => {
+  test('should throw error for invalid proposalContract', async () => {
     const commander = new Command();
     commander.option('-e, --endpoint <URI>', 'The URI of an AElf node. Eg: http://127.0.0.1:8000');
     commander.option('-a, --account <account>', 'The address of AElf wallet');

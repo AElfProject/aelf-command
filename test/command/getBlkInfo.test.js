@@ -31,7 +31,7 @@ describe('GetBlkInfoCommand', () => {
     jest.clearAllMocks();
   });
 
-  it('should get block info by height and succeed', async () => {
+  test('should get block info by height and succeed', async () => {
     const commander = new Command();
     commander.option('-e, --endpoint <URI>', 'The URI of an AElf node. Eg: http://127.0.0.1:8000');
     commander.option('-a, --account <account>', 'The address of AElf wallet');
@@ -70,7 +70,7 @@ describe('GetBlkInfoCommand', () => {
       }
     });
   }, 20000);
-  it('should get block info by hash and succeed', async () => {
+  test('should get block info by hash and succeed', async () => {
     const commander = new Command();
     commander.option('-e, --endpoint <URI>', 'The URI of an AElf node. Eg: http://127.0.0.1:8000');
     commander.option('-a, --account <account>', 'The address of AElf wallet');
@@ -109,7 +109,7 @@ describe('GetBlkInfoCommand', () => {
       }
     });
   }, 20000);
-  it('should log error and fail on exception', async () => {
+  test('should log error and fail on exception', async () => {
     jest.spyOn(process, 'exit').mockImplementation(() => {});
     const commander = new Command();
     commander.option('-e, --endpoint <URI>', 'The URI of an AElf node. Eg: http://127.0.0.1:8000');
