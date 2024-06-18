@@ -64,6 +64,7 @@ class ProposalCommand extends BaseSubCommand {
     options = []
   ) {
     super(name, parameters, description, options, usage, rc);
+    this.aelfMock = {};
   }
 
   async processAddressAfterPrompt(aelf, wallet, answerInput) {
@@ -87,7 +88,9 @@ class ProposalCommand extends BaseSubCommand {
       if (!moment(expiredTime).isValid || moment(expiredTime).isBefore(moment().add(0, 'hours'))) {
         throw new Error(`Expired Time has to be later than ${moment().add(1, 'hours').format('YYYY/MM/DD HH:mm:ss')}`);
       }
-      const aelf = new AElf(new AElf.providers.HttpProvider(endpoint));
+      let aelf = new AElf(new AElf.providers.HttpProvider(endpoint));
+      // for test mock
+      aelf = { ...aelf, ...this.aelfMock };
       const wallet = getWallet(datadir, account, password);
       const { GenesisContractAddress } = await aelf.chain.getChainStatus();
       const genesisContract = await aelf.chain.contractAt(GenesisContractAddress, wallet);

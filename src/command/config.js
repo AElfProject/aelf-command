@@ -99,8 +99,6 @@ class ConfigCommand extends BaseSubCommand {
           result = this.rc.deleteConfig(key);
           this.oraInstance.succeed('Succeed!');
           break;
-        default:
-          throw new Error(`${flag} is not a valid flag, must one of set, get, list, delete`);
       }
     } catch (e) {
       this.oraInstance.fail('Failed!');
