@@ -251,10 +251,11 @@ class Socket {
   }
 
   serializeResult(appId, result) {
-    if (!this.clientConfig[appId]) {
-      throw new Error(`AppId ${appId} has not connected`);
-    }
-    if (this.clientConfig[appId].encryptWay === 'sign') {
+    // delete next line as function deserializeParams already has the logic
+    // if (!this.clientConfig[appId]) {
+    //   throw new Error(`AppId ${appId} has not connected`);
+    // }
+    if (this.clientConfig[appId]?.encryptWay === 'sign') {
       const originalResult = serializeMessage(result);
       const signature = this.clientConfig[appId].encrypt.sign(Buffer.from(originalResult, 'base64'));
       return {
@@ -263,7 +264,7 @@ class Socket {
       };
     }
     const originalResult = serializeMessage(result);
-    return this.clientConfig[appId].encrypt.encrypt(originalResult);
+    return this.clientConfig[appId]?.encrypt.encrypt(originalResult);
   }
 
   async handleConnect(message) {
@@ -362,7 +363,7 @@ class Socket {
     };
   }
 
-  async handleInvoke(message, isReadOnly = false) {
+  async handleInvoke(message, isReadOnly) {
     const params = await this.deserializeParams(message);
     const { endpoint = this.defaultEndpoint, contractAddress, contractMethod, arguments: contractArgs } = params;
     logger.info(`${isReadOnly ? 'Calling' : 'Sending'} contract ${contractAddress} method ${contractMethod}...`);
