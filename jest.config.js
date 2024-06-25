@@ -143,10 +143,12 @@ export default {
   // testLocationInResults: false,
 
   // The glob patterns Jest uses to detect test files
-  // testMatch: [
-  //   "**/__tests__/**/*.[jt]s?(x)",
-  //   "**/?(*.)+(spec|test).[tj]s?(x)"
-  // ],
+  testMatch: [
+    '**/test/command/dappServer/socket-sign.test.js',
+    '**/test/**/*.[jt]s?(x)'
+    // "**/?(*.)+(spec|test).[tj]s?(x)"
+  ],
+  testTimeout: 5000,
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
   // testPathIgnorePatterns: [
@@ -176,7 +178,7 @@ export default {
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   transformIgnorePatterns: [
     // "/node_modules/(?!chalk|update-notifier|configstore|xdg-basedir|unique-string|crypto-random-string|semver-diff|latest-version|package-json|got|@sindresorhus|p-cancelable|@szmarczak/http-timer|cacheable-request|normalize-url|responselike|lowercase-keys|mimic-response|form-data-encoder)"
-  ],
+  ]
 
   // An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them
   // unmockedModulePathPatterns: undefined,
