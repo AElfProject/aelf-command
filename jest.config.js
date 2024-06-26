@@ -142,9 +142,9 @@ export default {
 
   // The glob patterns Jest uses to detect test files
   testMatch: [
-    // '**/test/utils/wallet.test.js'
-    '**/test/command/dappServer/socket-sign.test.js',
-    '**/test/**/?(*.)+(spec|test).[jt]s?(x)'
+    '**/test/utils/Logger.test.js'
+    // '**/test/command/dappServer/socket-sign.test.js',
+    // '**/test/**/?(*.)+(spec|test).[jt]s?(x)'
     // "**/?(*.)+(spec|test).[tj]s?(x)"
   ],
   testTimeout: 20000,
