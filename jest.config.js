@@ -33,12 +33,7 @@ export default {
   coveragePathIgnorePatterns: ['/node_modules/', '/src/utils/constants.js', '/src/command/index.js'],
 
   // A list of reporter names that Jest uses when writing coverage reports
-  // coverageReporters: [
-  //   "json",
-  //   "text",
-  //   "lcov",
-  //   "clover"
-  // ],
+  coverageReporters: ['text', 'json-summary'],
 
   // An object that configures minimum threshold enforcement for coverage results
   // coverageThreshold: null,
