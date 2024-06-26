@@ -3,6 +3,7 @@ import path from 'path';
 import EventCommand from '../../src/command/event.js';
 import { logger, plainLogger } from '../../src/utils/myLogger';
 import { userHomeDir } from '../../src/utils/userHomeDir.js';
+import { endpoint as endPoint, account, password, dataDir } from '../constants.js';
 
 jest.mock('../../src/utils/myLogger');
 
@@ -10,10 +11,6 @@ describe('EventCommand', () => {
   let eventCommand;
   let oraInstanceMock;
   const sampleRc = { getConfigs: jest.fn() };
-  const endPoint = 'https://tdvw-test-node.aelf.io/';
-  const account = 'GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk';
-  const password = '1234*Qwer';
-  const dataDir = path.resolve(__dirname, '../datadir/aelf');
 
   beforeEach(() => {
     oraInstanceMock = {
@@ -64,7 +61,7 @@ describe('EventCommand', () => {
       `\nThe results returned by \nTransaction: ${txId} is: \n${JSON.stringify(logs, null, 2)}`
     );
     expect(oraInstanceMock.fail).not.toHaveBeenCalled();
-  }, 20000);
+  });
 
   test('should log "not mined" if transaction status is not mined', async () => {
     const txId = '3553df418c6ec9a159560440f13a6ae29f786392574737036cf63786321c8a40';
@@ -80,7 +77,7 @@ describe('EventCommand', () => {
     await eventCommand.run(commander, txId);
     expect(plainLogger.info).toHaveBeenCalledWith(`Transaction ${txId} is not mined`);
     expect(oraInstanceMock.fail).not.toHaveBeenCalled();
-  }, 20000);
+  });
 
   test('should log error and fail on exception', async () => {
     const txId = 'test';
@@ -95,5 +92,5 @@ describe('EventCommand', () => {
     commander.parse([process.argv[0], '', 'event', '-e', endPoint, '-a', account, '-p', password, '-d', dataDir]);
     await eventCommand.run(commander, txId);
     expect(oraInstanceMock.fail).toHaveBeenCalledWith('Failed!');
-  }, 20000);
+  });
 });

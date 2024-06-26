@@ -30,17 +30,10 @@ export default {
   coverageDirectory: 'coverage',
 
   // An array of regexp pattern strings used to skip coverage collection
-  // coveragePathIgnorePatterns: [
-  //   "/node_modules/"
-  // ],
+  coveragePathIgnorePatterns: ['/node_modules/', '/src/utils/constants.js', '/src/command/index.js'],
 
   // A list of reporter names that Jest uses when writing coverage reports
-  // coverageReporters: [
-  //   "json",
-  //   "text",
-  //   "lcov",
-  //   "clover"
-  // ],
+  coverageReporters: ['text', 'json-summary'],
 
   // An object that configures minimum threshold enforcement for coverage results
   // coverageThreshold: null,
@@ -143,10 +136,13 @@ export default {
   // testLocationInResults: false,
 
   // The glob patterns Jest uses to detect test files
-  // testMatch: [
-  //   "**/__tests__/**/*.[jt]s?(x)",
-  //   "**/?(*.)+(spec|test).[tj]s?(x)"
-  // ],
+  testMatch: [
+    // '**/test/utils/Logger.test.js'
+    '**/test/command/dappServer/socket-sign.test.js',
+    '**/test/**/?(*.)+(spec|test).[jt]s?(x)'
+    // "**/?(*.)+(spec|test).[tj]s?(x)"
+  ],
+  testTimeout: 20000,
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
   // testPathIgnorePatterns: [
@@ -176,7 +172,7 @@ export default {
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   transformIgnorePatterns: [
     // "/node_modules/(?!chalk|update-notifier|configstore|xdg-basedir|unique-string|crypto-random-string|semver-diff|latest-version|package-json|got|@sindresorhus|p-cancelable|@szmarczak/http-timer|cacheable-request|normalize-url|responselike|lowercase-keys|mimic-response|form-data-encoder)"
-  ],
+  ]
 
   // An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them
   // unmockedModulePathPatterns: undefined,

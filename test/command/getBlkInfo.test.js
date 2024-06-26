@@ -4,6 +4,7 @@ import path from 'path';
 import GetBlkInfoCommand from '../../src/command/getBlkInfo.js';
 import { userHomeDir } from '../../src/utils/userHomeDir.js';
 import { logger } from '../../src/utils/myLogger';
+import { endpoint as endPoint, account, password, dataDir } from '../constants.js';
 
 jest.mock('../../src/utils/myLogger');
 
@@ -11,10 +12,6 @@ describe('GetBlkInfoCommand', () => {
   let getBlkInfoCommand;
   let oraInstanceMock;
   const sampleRc = { getConfigs: jest.fn() };
-  const endPoint = 'https://tdvw-test-node.aelf.io/';
-  const account = 'GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk';
-  const password = '1234*Qwer';
-  const dataDir = path.resolve(__dirname, '../datadir/aelf');
 
   beforeEach(() => {
     oraInstanceMock = {
@@ -69,7 +66,7 @@ describe('GetBlkInfoCommand', () => {
         Time: '2022-06-02T11:28:40.5094851Z'
       }
     });
-  }, 20000);
+  });
   test('should get block info by hash and succeed', async () => {
     const commander = new Command();
     commander.option('-e, --endpoint <URI>', 'The URI of an AElf node. Eg: http://127.0.0.1:8000');
@@ -108,7 +105,7 @@ describe('GetBlkInfoCommand', () => {
         Time: '2022-06-02T11:28:40.5094851Z'
       }
     });
-  }, 20000);
+  });
   test('should log error and fail on exception', async () => {
     jest.spyOn(process, 'exit').mockImplementation(() => {});
     const commander = new Command();

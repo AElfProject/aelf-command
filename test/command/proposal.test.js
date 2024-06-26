@@ -10,6 +10,7 @@ import { userHomeDir } from '../../src/utils/userHomeDir.js';
 import { logger } from '../../src/utils/myLogger';
 import * as utils from '../../src/utils/utils.js';
 import { getWallet } from '../../src/utils/wallet.js';
+import { endpoint as endPoint, account, password, dataDir } from '../constants.js';
 
 jest.mock('../../src/utils/myLogger');
 jest.mock('inquirer');
@@ -27,10 +28,6 @@ describe('ProposalCommand processAddressAfterPrompt', () => {
   let proposalCommand;
   let oraInstanceMock;
   const sampleRc = { getConfigs: jest.fn() };
-  const endPoint = 'https://tdvw-test-node.aelf.io/';
-  const account = 'GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk';
-  const password = '1234*Qwer';
-  const dataDir = path.resolve(__dirname, '../datadir/aelf');
   beforeEach(() => {
     oraInstanceMock = {
       start: jest.fn(),
@@ -53,16 +50,12 @@ describe('ProposalCommand processAddressAfterPrompt', () => {
     };
     const result = await proposalCommand.processAddressAfterPrompt(aelf, wallet, answerInput);
     expect(result.address).toBe(contractAddress);
-  }, 20000);
+  });
 });
 describe('ProposalCommand run', () => {
   let proposalCommand;
   let oraInstanceMock;
   const sampleRc = { getConfigs: jest.fn() };
-  const endPoint = 'https://tdvw-test-node.aelf.io/';
-  const account = 'GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk';
-  const password = '1234*Qwer';
-  const dataDir = path.resolve(__dirname, '../datadir/aelf');
   let mockParliamentContract, mockGenesisContract;
   beforeEach(() => {
     oraInstanceMock = {
@@ -153,7 +146,7 @@ describe('ProposalCommand run', () => {
     expect(oraInstanceMock.succeed).toHaveBeenCalled();
     expect(logger.info).toHaveBeenCalledWith({ TransactionId: 'mockTxId' });
     expect(logger.info).toHaveBeenCalledWith('Proposal id: mockProposal.');
-  }, 20000);
+  });
   test('should run and show pending info', async () => {
     const commander = new Command();
     commander.option('-e, --endpoint <URI>', 'The URI of an AElf node. Eg: http://127.0.0.1:8000');
@@ -204,7 +197,7 @@ describe('ProposalCommand run', () => {
     expect(logger.info).toHaveBeenCalledWith(
       'Transaction is still pending, you can get proposal id later by running yellow(aelf-command event mockTxId)'
     );
-  }, 20000);
+  });
 
   test('should handle failure to create proposal', async () => {
     const commander = new Command();

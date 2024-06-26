@@ -1,19 +1,16 @@
-/* eslint-disable max-len */
 import { Command } from 'commander';
-import path from 'path';
-import GetTxResultCommand from '../../src/command/wallet.js';
-import { userHomeDir } from '../../src/utils/userHomeDir.js';
-import { logger } from '../../src/utils/myLogger.js';
-import { getWallet } from '../../src/utils/wallet.js';
-import { endpoint as endPoint, account, password, dataDir } from '../constants.js';
+import { userHomeDir } from '../../../src/utils/userHomeDir.js';
+import DeployCommand from '../../../src/command/dappServer/index';
+import Socket from '../../../src/command/dappServer/socket';
+import { logger } from '../../../src/utils/myLogger';
+import { endpoint as endPoint, account, password, dataDir } from '../../constants.js';
 
-jest.mock('../../src/utils/myLogger');
-
-describe('WalletCommand', () => {
-  let walletCommand;
+jest.mock('../../../src/command/dappServer/socket');
+jest.mock('../../../src/utils/myLogger');
+describe('DeployCommand', () => {
+  let deployCommand;
   let oraInstanceMock;
   const sampleRc = { getConfigs: jest.fn() };
-
   beforeEach(() => {
     oraInstanceMock = {
       start: jest.fn(),
@@ -21,15 +18,13 @@ describe('WalletCommand', () => {
       succeed: jest.fn(),
       fail: jest.fn()
     };
-    walletCommand = new GetTxResultCommand(sampleRc);
-    walletCommand.oraInstance = oraInstanceMock;
+    deployCommand = new DeployCommand(sampleRc);
+    deployCommand.oraInstance = oraInstanceMock;
   });
-
   afterEach(() => {
     jest.clearAllMocks();
   });
-
-  test('should show wallet details', async () => {
+  test('should run and start the server successfully', async () => {
     const commander = new Command();
     commander.option('-e, --endpoint <URI>', 'The URI of an AElf node. Eg: http://127.0.0.1:8000');
     commander.option('-a, --account <account>', 'The address of AElf wallet');
@@ -39,21 +34,13 @@ describe('WalletCommand', () => {
       `The directory that contains the AElf related files. Default to be ${userHomeDir}/aelf`
     );
     commander.parse([process.argv[0], '', 'wallet', '-e', endPoint, '-a', account, '-p', password, '-d', dataDir]);
-    await walletCommand.run(commander);
-    expect(oraInstanceMock.succeed).toHaveBeenCalledWith('Succeed!');
-    expect(logger.info).toHaveBeenCalledWith(
-      'Mnemonic            : impact fork bulk museum swap design draw arctic load option ticket across'
-    );
-    expect(logger.info).toHaveBeenCalledWith(
-      'Private Key         : 9a2c6023e8b2221f4b02f4ccc5128392c1bd968ae45a42fa62848d793fff148f'
-    );
-    expect(logger.info).toHaveBeenCalledWith(
-      'Public Key          : 04703bbe95e986c9d901f28edd60975a7a6c3b2dce41dfec2e7983d293c600e8249642a3da379c4194a6d62bd89afe6753e81acfc2b6bbf3b40736ee0949102071'
-    );
-    expect(logger.info).toHaveBeenCalledWith('Address             : GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk');
+    await deployCommand.run(commander);
+    expect(logger.info).toHaveBeenCalledWith('DApp server is listening on port 35443');
   });
-  test('should handle errors and fail', async () => {
-    jest.spyOn(require('../../src/utils/wallet'), 'getWallet').mockReturnValue(new Error('test error'));
+  test('should handle errors during server startup', async () => {
+    Socket.mockImplementation(_ => {
+      throw new Error('socket error');
+    });
     const commander = new Command();
     commander.option('-e, --endpoint <URI>', 'The URI of an AElf node. Eg: http://127.0.0.1:8000');
     commander.option('-a, --account <account>', 'The address of AElf wallet');
@@ -63,7 +50,7 @@ describe('WalletCommand', () => {
       `The directory that contains the AElf related files. Default to be ${userHomeDir}/aelf`
     );
     commander.parse([process.argv[0], '', 'wallet', '-e', endPoint, '-a', account, '-p', password, '-d', dataDir]);
-    await walletCommand.run(commander);
+    await deployCommand.run(commander);
     expect(oraInstanceMock.fail).toHaveBeenCalledWith('Failed!');
     expect(logger.error).toHaveBeenCalled();
   });

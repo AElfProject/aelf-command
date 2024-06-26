@@ -5,6 +5,7 @@ import { Command } from 'commander';
 import ConsoleCommand from '../../src/command/console.js';
 import { userHomeDir } from '../../src/utils/userHomeDir.js';
 import { logger } from '../../src/utils/myLogger';
+import { endpoint as endPoint, account, password, dataDir } from '../constants.js';
 
 jest.mock('boxen');
 jest.mock('repl');
@@ -16,10 +17,6 @@ describe('ConsoleCommand', () => {
   const sampleRc = {
     getConfigs: jest.fn()
   };
-  const endPoint = 'https://tdvw-test-node.aelf.io/';
-  const account = 'GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk';
-  const password = '1234*Qwer';
-  const dataDir = path.resolve(__dirname, '../datadir/aelf');
   beforeEach(() => {
     oraInstance = {
       succeed: jest.fn(),
@@ -46,7 +43,7 @@ describe('ConsoleCommand', () => {
     await consoleCommand.run(commander);
     expect(oraInstance.succeed).toHaveBeenCalledWith('Succeed!');
     expect(logger.info).toHaveBeenCalledTimes(2);
-  }, 20000);
+  });
   test('should handle errors correctly', async () => {
     const commander = new Command();
     commander.option('-e, --endpoint <URI>', 'The URI of an AElf node. Eg: http://127.0.0.1:8000');
@@ -63,5 +60,5 @@ describe('ConsoleCommand', () => {
     await consoleCommand.run(commander);
     expect(oraInstance.fail).toHaveBeenCalledWith('Failed!');
     expect(logger.error).toHaveBeenCalled();
-  }, 20000);
+  });
 });

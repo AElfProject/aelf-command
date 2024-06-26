@@ -138,6 +138,7 @@ async function promptTolerateSeveralTimes({ processAfterPrompt = () => {}, patte
       askTimes++;
     } catch (e) {
       oraInstance.fail('Failed');
+      break;
     }
   }
   if (askTimes >= times && answerInput === null) {
@@ -289,7 +290,6 @@ async function getParams(method) {
         } catch (e) {}
         let paramValue;
         // todo: use recursion
-
         if (
           rule !== 'repeated' &&
           innerType &&
@@ -366,7 +366,7 @@ async function deserializeLogs(aelf, logs = []) {
   let results = await Promise.all(logs.map(v => getProto(aelf, v.Address)));
   results = results.map((proto, index) => {
     const { Name, NonIndexed, Indexed = [] } = logs[index];
-    const serializedData = [...(Indexed || [])];
+    const serializedData = [...Indexed];
     if (NonIndexed) {
       serializedData.push(NonIndexed);
     }

@@ -2,6 +2,7 @@ import { Command } from 'commander';
 import path from 'path';
 import GetChainStatusCommand from '../../src/command/getChainStatus.js';
 import { userHomeDir } from '../../src/utils/userHomeDir.js';
+import { endpoint as endPoint, account, password, dataDir } from '../constants.js';
 
 jest.mock('../../src/utils/myLogger');
 
@@ -9,10 +10,6 @@ describe('GetChainStatusCommand', () => {
   let getChainStatusCommand;
   let oraInstanceMock;
   const sampleRc = { getConfigs: jest.fn() };
-  const endPoint = 'https://tdvw-test-node.aelf.io/';
-  const account = 'GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk';
-  const password = '1234*Qwer';
-  const dataDir = path.resolve(__dirname, '../datadir/aelf');
 
   beforeEach(() => {
     oraInstanceMock = {
@@ -41,7 +38,7 @@ describe('GetChainStatusCommand', () => {
     commander.parse([process.argv[0], '', 'get-chain-status', '-e', endPoint, '-a', account, '-p', password, '-d', dataDir]);
     await getChainStatusCommand.run(commander);
     expect(oraInstanceMock.succeed).toHaveBeenCalled();
-  }, 20000);
+  });
   test('should log error and fail on exception', async () => {
     jest.spyOn(process, 'exit').mockImplementation(() => {});
     const commander = new Command();
@@ -58,5 +55,5 @@ describe('GetChainStatusCommand', () => {
     });
     await getChainStatusCommand.run(commander);
     expect(oraInstanceMock.fail).toHaveBeenCalled();
-  }, 20000);
+  });
 });
