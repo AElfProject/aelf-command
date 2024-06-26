@@ -41,7 +41,7 @@ describe('GetBlkHeightCommand', () => {
     commander.parse([process.argv[0], '', 'get-blk-height', '-e', endPoint, '-a', account, '-p', password, '-d', dataDir]);
     await getBlkHeightCommand.run(commander);
     expect(oraInstanceMock.succeed).toHaveBeenCalled();
-  }, 20000);
+  });
   test('should log error and fail on exception', async () => {
     const commander = new Command();
     commander.option('-e, --endpoint <URI>', 'The URI of an AElf node. Eg: http://127.0.0.1:8000');

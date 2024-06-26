@@ -55,7 +55,7 @@ describe('LoadCommand', () => {
     );
     expect(logger.info).toHaveBeenCalledWith('Address             : GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk');
     expect(saveKeyStore).toHaveBeenCalled();
-  }, 20000);
+  });
   test('should load wallet from Mnemonic and succeed', async () => {
     const commander = new Command();
     commander.option('-e, --endpoint <URI>', 'The URI of an AElf node. Eg: http://127.0.0.1:8000');
@@ -79,7 +79,7 @@ describe('LoadCommand', () => {
       'Public Key          : 04449094b89d0445c920434ea09d87ba8d9bf95d8a3971ee03572a1f666ef2241cc3ada03d47736c005d28bbef8468042e77a084ea11b8aca395ac7686335f4712'
     );
     expect(logger.info).toHaveBeenCalledWith('Address             : SbWhnq3XU8yeiUTYJmZBSgt7ekgszRXHxh8qNqkFj9g6d3bWh');
-  }, 20000);
+  });
   test('should load wallet from privateKey and succeed without saving to file', async () => {
     const commander = new Command();
     commander.option('-e, --endpoint <URI>', 'The URI of an AElf node. Eg: http://127.0.0.1:8000');
@@ -100,7 +100,7 @@ describe('LoadCommand', () => {
     );
     expect(logger.info).toHaveBeenCalledWith('Address             : GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk');
     expect(oraInstanceMock.succeed).toHaveBeenCalledWith('Succeed!');
-  }, 20000);
+  });
 
   test('should log error and fail on validation error', async () => {
     const commander = new Command();
@@ -117,7 +117,7 @@ describe('LoadCommand', () => {
     });
     await loadCommand.run(commander, privateKey, false, true);
     expect(oraInstanceMock.fail).toHaveBeenCalled();
-  }, 20000);
+  });
   test('should fail when trying to use old version SDK', async () => {
     const commander = new Command();
     commander.option('-e, --endpoint <URI>', 'The URI of an AElf node. Eg: http://127.0.0.1:8000');
@@ -130,5 +130,5 @@ describe('LoadCommand', () => {
     commander.parse([process.argv[0], '', 'load', '-e', endPoint, '-a', account, '-p', password, '-d', dataDir]);
     await loadCommand.run(commander, 'xxx xxx', true, false);
     expect(oraInstanceMock.fail).toHaveBeenCalledWith('Please install older versions of aelf-command before v1.0.0!');
-  }, 20000);
+  });
 });

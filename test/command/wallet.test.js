@@ -54,7 +54,7 @@ describe('WalletCommand', () => {
       'Public Key          : 04703bbe95e986c9d901f28edd60975a7a6c3b2dce41dfec2e7983d293c600e8249642a3da379c4194a6d62bd89afe6753e81acfc2b6bbf3b40736ee0949102071'
     );
     expect(logger.info).toHaveBeenCalledWith('Address             : GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk');
-  }, 20000);
+  });
   test('should handle errors and fail', async () => {
     jest.spyOn(require('../../src/utils/wallet'), 'getWallet').mockReturnValue(new Error('test error'));
     const commander = new Command();
@@ -69,5 +69,5 @@ describe('WalletCommand', () => {
     await walletCommand.run(commander);
     expect(oraInstanceMock.fail).toHaveBeenCalledWith('Failed!');
     expect(logger.error).toHaveBeenCalled();
-  }, 20000);
+  });
 });

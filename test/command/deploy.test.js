@@ -47,5 +47,5 @@ describe('DeployCommand', () => {
     commander.parse([process.argv[0], '', 'console', '-e', endPoint, '-a', account, '-p', password, '-d', dataDir]);
     await deployCommand.run(commander);
     expect(consoleSpy).toHaveBeenCalledWith(expectedTips);
-  }, 20000);
+  });
 });

@@ -41,7 +41,7 @@ describe('GetChainStatusCommand', () => {
     commander.parse([process.argv[0], '', 'get-chain-status', '-e', endPoint, '-a', account, '-p', password, '-d', dataDir]);
     await getChainStatusCommand.run(commander);
     expect(oraInstanceMock.succeed).toHaveBeenCalled();
-  }, 20000);
+  });
   test('should log error and fail on exception', async () => {
     jest.spyOn(process, 'exit').mockImplementation(() => {});
     const commander = new Command();
@@ -58,5 +58,5 @@ describe('GetChainStatusCommand', () => {
     });
     await getChainStatusCommand.run(commander);
     expect(oraInstanceMock.fail).toHaveBeenCalled();
-  }, 20000);
+  });
 });

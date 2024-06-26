@@ -16,7 +16,6 @@ describe('File System Operators', () => {
   });
 
   describe('writeFilePreservingEol', () => {
-    // cannot test /r/n because it depends on Windows
     test('should write data with preserved EOL', async () => {
       const path = '/path/to/existing/file.txt';
       const existingData = 'Line 1\nLine 2\nLine 3\n';

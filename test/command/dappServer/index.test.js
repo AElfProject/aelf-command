@@ -36,7 +36,7 @@ describe('DeployCommand', () => {
     commander.parse([process.argv[0], '', 'wallet', '-e', endPoint, '-a', account, '-p', password, '-d', dataDir]);
     await deployCommand.run(commander);
     expect(logger.info).toHaveBeenCalledWith('DApp server is listening on port 35443');
-  }, 20000);
+  });
   test('should handle errors during server startup', async () => {
     Socket.mockImplementation(_ => {
       throw new Error('socket error');
@@ -53,5 +53,5 @@ describe('DeployCommand', () => {
     await deployCommand.run(commander);
     expect(oraInstanceMock.fail).toHaveBeenCalledWith('Failed!');
     expect(logger.error).toHaveBeenCalled();
-  }, 20000);
+  });
 });

@@ -69,7 +69,7 @@ describe('GetBlkInfoCommand', () => {
         Time: '2022-06-02T11:28:40.5094851Z'
       }
     });
-  }, 20000);
+  });
   test('should get block info by hash and succeed', async () => {
     const commander = new Command();
     commander.option('-e, --endpoint <URI>', 'The URI of an AElf node. Eg: http://127.0.0.1:8000');
@@ -108,7 +108,7 @@ describe('GetBlkInfoCommand', () => {
         Time: '2022-06-02T11:28:40.5094851Z'
       }
     });
-  }, 20000);
+  });
   test('should log error and fail on exception', async () => {
     jest.spyOn(process, 'exit').mockImplementation(() => {});
     const commander = new Command();

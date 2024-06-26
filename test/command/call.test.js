@@ -48,12 +48,12 @@ describe('CallCommand', () => {
     const result = await callCommand.callMethod(method, params);
     expect(mockOraInstance.start).toHaveBeenCalledWith('Calling method...');
     expect(mockOraInstance.succeed).toHaveBeenCalledWith('Calling method successfully!');
-  }, 20000);
+  });
   test('should process address after prompt', async () => {
     const answerInput = { contractAddress: address };
     const result = await callCommand.processAddressAfterPrompt(aelf, wallet, answerInput);
     expect(result.address).toBe(address);
-  }, 20000);
+  });
   test('should run with valid inputs', async () => {
     const commander = new Command();
     commander.option('-e, --endpoint <URI>', 'The URI of an AElf node. Eg: http://127.0.0.1:8000');
@@ -73,7 +73,7 @@ describe('CallCommand', () => {
       })
     );
     expect(logger.info).toHaveBeenCalled();
-  }, 20000);
+  });
   test('should run without contractAddress', async () => {
     inquirer.prompt = questions => Promise.resolve('');
     const commander = new Command();
@@ -87,7 +87,7 @@ describe('CallCommand', () => {
     commander.parse([process.argv[0], '', 'call', '-e', endPoint, '-a', account, '-p', password, '-d', dataDir]);
     await callCommand.run(commander);
     expect(logger.fatal).toHaveBeenCalled();
-  }, 5000);
+  });
 
   test('should run without params', async () => {
     inquirer.prompt = questions => Promise.resolve({ symbol: 'ELF' });
@@ -102,7 +102,7 @@ describe('CallCommand', () => {
     commander.parse([process.argv[0], '', 'call', '-e', endPoint, '-a', account, '-p', password, '-d', dataDir]);
     await callCommand.run(commander, 'AElf.ContractNames.Token', 'GetTokenInfo');
     expect(logger.info).toHaveBeenCalled();
-  }, 20000);
+  });
 
   test('should run with invalid parameters', async () => {
     inquirer.prompt = backup;
@@ -133,7 +133,7 @@ describe('CallCommand', () => {
       })
     );
     expect(logger.info).toHaveBeenCalled();
-  }, 20000);
+  });
 
   afterEach(() => {
     inquirer.prompt = backup;

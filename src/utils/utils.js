@@ -138,6 +138,7 @@ async function promptTolerateSeveralTimes({ processAfterPrompt = () => {}, patte
       askTimes++;
     } catch (e) {
       oraInstance.fail('Failed');
+      break;
     }
   }
   if (askTimes >= times && answerInput === null) {

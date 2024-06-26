@@ -118,13 +118,6 @@ describe('Socket Server with sign', () => {
 });
 
 describe('Socket Server with sign', () => {
-  // let clientSocket,
-  //   socketInstance,
-  //   port = 35444;
-  // const serverUrl = `http://localhost:${port}`;
-  // const aelf = new AElf(new AElf.providers.HttpProvider(endpoint));
-  // const wallet = getWallet(dataDir, account, password);
-
   beforeEach(done => {
     socketInstance = new Socket({
       port,
@@ -142,20 +135,6 @@ describe('Socket Server with sign', () => {
       await new Promise(resolve => setTimeout(resolve, 1000));
       done();
     });
-    // first need to connect
-    // const connectData = {
-    //   action: 'connect',
-    //   params: {
-    //     publicKey:
-    //       '04b00b9a0c0359a5e0a55b0efa32469929765b30bc5a8b375d2dbffa43322f87df3401845a4cc3841a36c3f14a7481ce1c4e9d920f18ede0f4bcbd29e291a4190a',
-    //     timestamp: 1718870995,
-    //     encryptAlgorithm: 'secp256k1',
-    //     signature:
-    //       '33977ec3965229628feb4b95846442d71d20fa9bfd54efe6958daa5fdf369a3ecde738f9a10374dd8b56064618e50746b9c3581ade80abfc3b69decadadec7a200'
-    //   },
-    //   appId: '28e653ec-20d4-55e1-b077-a346df57666a',
-    //   id: '4b62bc590a4d43beb432c1692e1a2234'
-    // };
     Sign.verify = jest.fn().mockReturnValue(true);
     Sign.mockImplementation(() => {
       return {
@@ -200,7 +179,7 @@ describe('Socket Server with sign', () => {
       id: 'cd78bea8c031411fb6659939f9070527'
     };
     clientSocket.emit('bridge', data);
-  }, 20000);
+  });
 
   test('should handle api action', done => {
     clientSocket.on('bridge', message => {
@@ -228,7 +207,7 @@ describe('Socket Server with sign', () => {
       id: 'e647eda5134a4325a5bf03f429336c03'
     };
     clientSocket.emit('bridge', data);
-  }, 20000);
+  });
 
   test('should handle invoke action', done => {
     clientSocket.on('bridge', message => {
@@ -258,7 +237,7 @@ describe('Socket Server with sign', () => {
       id: 'a31b390269ad4caa8da0557c43dea556'
     };
     clientSocket.emit('bridge', data);
-  }, 20000);
+  });
 
   test('should handle invokeRead action', done => {
     clientSocket.on('bridge', message => {
@@ -288,7 +267,7 @@ describe('Socket Server with sign', () => {
       id: '36055f21b2d6418998dda7eda6526a2a'
     };
     clientSocket.emit('bridge', data);
-  }, 20000);
+  });
 
   test('should handle getContractMethods action', done => {
     clientSocket.on('bridge', message => {
@@ -315,7 +294,7 @@ describe('Socket Server with sign', () => {
       id: '08400d6bac284c40a5984821c2ef4f53'
     };
     clientSocket.emit('bridge', data);
-  }, 20000);
+  });
 
   test('should handle invalid signature', done => {
     clientSocket.on('bridge', message => {
@@ -335,7 +314,7 @@ describe('Socket Server with sign', () => {
       id: '08400d6bac284c40a5984821c2ef4f53'
     };
     clientSocket.emit('bridge', data);
-  }, 20000);
+  });
 
   test('should handle invalid signature', done => {
     clientSocket.on('bridge', message => {
@@ -355,5 +334,5 @@ describe('Socket Server with sign', () => {
       id: '08400d6bac284c40a5984821c2ef4f53'
     };
     clientSocket.emit('bridge', data);
-  }, 20000);
+  });
 });

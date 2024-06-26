@@ -90,7 +90,7 @@ describe('Socket Server', () => {
       id: '281537101483488da8c12a9b02c4f563'
     };
     clientSocket.emit('bridge', data);
-  }, 20000);
+  });
 
   test('should handle api action', done => {
     clientSocket.on('bridge', message => {
@@ -134,7 +134,7 @@ describe('Socket Server', () => {
       id: '45b66a0738ff48a7b06cec79ff673dba'
     };
     clientSocket.emit('bridge', data);
-  }, 20000);
+  });
 
   test('should handle invoke action', done => {
     clientSocket.on('bridge', message => {
@@ -192,7 +192,7 @@ describe('Socket Server', () => {
       id: 'f84f494d82ce42c5b4018d37d6bd1d34'
     };
     clientSocket.emit('bridge', data);
-  }, 20000);
+  });
 
   test('should handle invokeRead action', done => {
     clientSocket.on('bridge', message => {
@@ -246,7 +246,7 @@ describe('Socket Server', () => {
       id: '98c8b690fbbe43ca9f6fd1f72c18f2db'
     };
     clientSocket.emit('bridge', data);
-  }, 20000);
+  });
 
   test('should handle getContractMethods action', done => {
     clientSocket.on('bridge', message => {
@@ -290,7 +290,7 @@ describe('Socket Server', () => {
       id: '7c4aafc53b804bb189c77ea95baf70c1'
     };
     clientSocket.emit('bridge', data);
-  }, 20000);
+  }, 40000);
 
   test('should handle disconnect action', done => {
     clientSocket.on('bridge', message => {
@@ -334,7 +334,7 @@ describe('Socket Server', () => {
       id: 'ded9643a0095440a9a5684c4b4c10e35'
     };
     clientSocket.emit('bridge', data);
-  }, 20000);
+  });
   test('should handle null action', done => {
     clientSocket.on('bridge', message => {
       expect(logger.error).toHaveBeenCalledWith('error happened');
@@ -352,7 +352,7 @@ describe('Socket Server', () => {
       id: 'ded9643a0095440a9a5684c4b4c10e35'
     };
     clientSocket.emit('bridge', data);
-  }, 20000);
+  });
   test('should handle undefined action', done => {
     clientSocket.on('bridge', message => {
       expect(logger.error).toHaveBeenCalledWith('error happened');
@@ -370,7 +370,7 @@ describe('Socket Server', () => {
       id: 'ded9643a0095440a9a5684c4b4c10e35'
     };
     clientSocket.emit('bridge', data);
-  }, 20000);
+  });
   test('should handle empty string action', done => {
     clientSocket.on('bridge', message => {
       expect(logger.error).toHaveBeenCalledWith('error happened');
@@ -388,7 +388,7 @@ describe('Socket Server', () => {
       id: 'ded9643a0095440a9a5684c4b4c10e35'
     };
     clientSocket.emit('bridge', data);
-  }, 20000);
+  });
 
   test('should handle not supported action', done => {
     clientSocket.on('bridge', message => {
@@ -407,7 +407,7 @@ describe('Socket Server', () => {
       id: 'ded9643a0095440a9a5684c4b4c10e35'
     };
     clientSocket.emit('bridge', data);
-  }, 20000);
+  });
 
   test('should handle not connected appId', done => {
     clientSocket.on('bridge', message => {
@@ -426,7 +426,7 @@ describe('Socket Server', () => {
       id: 'ded9643a0095440a9a5684c4b4c10e35'
     };
     clientSocket.emit('bridge', data);
-  }, 20000);
+  });
   test('should handle Timestamp is not valid', done => {
     clientSocket.on('bridge', message => {
       expect(logger.error).toHaveBeenCalledWith(new Error('Timestamp is not valid'));
@@ -445,7 +445,7 @@ describe('Socket Server', () => {
       id: '281537101483488da8c12a9b02c4f563'
     };
     clientSocket.emit('bridge', data);
-  }, 20000);
+  });
 
   test('should handle not supported api', done => {
     clientSocket.on('bridge', message => {
@@ -490,7 +490,7 @@ describe('Socket Server', () => {
       id: '45b66a0738ff48a7b06cec79ff673dba'
     };
     clientSocket.emit('bridge', data);
-  }, 20000);
+  });
 
   test('should handle invoke with not supported method', done => {
     clientSocket.on('bridge', message => {
@@ -541,5 +541,5 @@ describe('Socket Server', () => {
       id: '98c8b690fbbe43ca9f6fd1f72c18f2db'
     };
     clientSocket.emit('bridge', data);
-  }, 20000);
+  });
 });

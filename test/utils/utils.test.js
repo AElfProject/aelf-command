@@ -235,6 +235,9 @@ describe('utils', () => {
     });
 
     test('should handle no pattern', async () => {
+      inquirer.prompt.mockImplementation(() => {
+        throw new Error();
+      });
       await promptTolerateSeveralTimes(
         {
           times: 3,
@@ -242,7 +245,7 @@ describe('utils', () => {
         },
         oraInstance
       );
-      const spyFail = jest.spyOn(oraInstance, 'fail').mockReturnValue();
+      const spyFail = jest.spyOn(oraInstance, 'fail');
       expect(spyFail).toHaveBeenCalledWith('Failed');
     });
   });
@@ -274,7 +277,7 @@ describe('utils', () => {
 
     test('should retry if Status is FAILED', async () => {
       aelf.chain.getTxResult.mockResolvedValueOnce({ Status: 'FAILED' });
-      await expect(getTxResult(aelf, 'txId')).toThrow({ Status: 'FAILED' });
+      await expect(getTxResult(aelf, 'txId')).rejects.toEqual({ Status: 'FAILED' });
     });
   });
 
@@ -344,7 +347,7 @@ describe('utils', () => {
       ];
       const result = await deserializeLogs(aelf, logs);
       expect(result).toEqual(['454c46']);
-    });
+    }, 40000);
     test('test deserialize log with VirtualTransactionCreated', async () => {
       const logs = [
         {

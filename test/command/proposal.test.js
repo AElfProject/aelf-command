@@ -53,7 +53,7 @@ describe('ProposalCommand processAddressAfterPrompt', () => {
     };
     const result = await proposalCommand.processAddressAfterPrompt(aelf, wallet, answerInput);
     expect(result.address).toBe(contractAddress);
-  }, 20000);
+  });
 });
 describe('ProposalCommand run', () => {
   let proposalCommand;
@@ -153,7 +153,7 @@ describe('ProposalCommand run', () => {
     expect(oraInstanceMock.succeed).toHaveBeenCalled();
     expect(logger.info).toHaveBeenCalledWith({ TransactionId: 'mockTxId' });
     expect(logger.info).toHaveBeenCalledWith('Proposal id: mockProposal.');
-  }, 20000);
+  });
   test('should run and show pending info', async () => {
     const commander = new Command();
     commander.option('-e, --endpoint <URI>', 'The URI of an AElf node. Eg: http://127.0.0.1:8000');
@@ -204,7 +204,7 @@ describe('ProposalCommand run', () => {
     expect(logger.info).toHaveBeenCalledWith(
       'Transaction is still pending, you can get proposal id later by running yellow(aelf-command event mockTxId)'
     );
-  }, 20000);
+  });
 
   test('should handle failure to create proposal', async () => {
     const commander = new Command();

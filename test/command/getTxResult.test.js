@@ -42,7 +42,7 @@ describe('GetTxResultCommand', () => {
     commander.parse([process.argv[0], '', 'get-tx-result', '-e', endPoint, '-a', account, '-p', password, '-d', dataDir]);
     await getTxResultCommand.run(commander, txId);
     expect(oraInstanceMock.succeed).toHaveBeenCalled();
-  }, 20000);
+  });
   test('should log error and fail on validation error', async () => {
     jest.spyOn(process, 'exit').mockImplementation(() => {});
     const commander = new Command();
@@ -57,5 +57,5 @@ describe('GetTxResultCommand', () => {
     await getTxResultCommand.run(commander, true);
     expect(process.exit).toHaveBeenCalledWith(1);
     expect(oraInstanceMock.fail).toHaveBeenCalled();
-  }, 20000);
+  });
 });

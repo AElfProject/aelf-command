@@ -46,7 +46,7 @@ describe('ConsoleCommand', () => {
     await consoleCommand.run(commander);
     expect(oraInstance.succeed).toHaveBeenCalledWith('Succeed!');
     expect(logger.info).toHaveBeenCalledTimes(2);
-  }, 20000);
+  });
   test('should handle errors correctly', async () => {
     const commander = new Command();
     commander.option('-e, --endpoint <URI>', 'The URI of an AElf node. Eg: http://127.0.0.1:8000');
@@ -63,5 +63,5 @@ describe('ConsoleCommand', () => {
     await consoleCommand.run(commander);
     expect(oraInstance.fail).toHaveBeenCalledWith('Failed!');
     expect(logger.error).toHaveBeenCalled();
-  }, 20000);
+  });
 });
