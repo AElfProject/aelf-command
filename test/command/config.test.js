@@ -19,7 +19,7 @@ describe('ConfigCommand', () => {
     deleteConfig: jest.fn()
   };
   const endPoint = 'https://tdvw-test-node.aelf.io/';
-  const dataDir = path.resolve(__dirname, '../datadir/aelf');
+  const dataDir = path.resolve(__dirname, '../dataDir/aelf');
   beforeEach(() => {
     mockOraInstance = {
       start: jest.fn(),

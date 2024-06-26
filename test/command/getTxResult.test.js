@@ -12,7 +12,7 @@ describe('GetTxResultCommand', () => {
   const endPoint = 'https://tdvw-test-node.aelf.io/';
   const account = 'GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk';
   const password = '1234*Qwer';
-  const dataDir = path.resolve(__dirname, '../datadir/aelf');
+  const dataDir = path.resolve(__dirname, '../dataDir/aelf');
 
   beforeEach(() => {
     oraInstanceMock = {

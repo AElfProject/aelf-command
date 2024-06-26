@@ -3,7 +3,7 @@ import fs from 'fs';
 import { mkdirpSync } from 'mkdirp';
 import { getWallet, saveKeyStore } from '../../src/utils/wallet';
 import { endpoint, account, password, dataDir } from '../constants.js';
-import keyJSON from '../datadir/aelf/keys/GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk.json';
+import keyJSON from '../dataDir/aelf/keys/GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk.json';
 
 jest.mock('inquirer');
 jest.mock('mkdirp');
