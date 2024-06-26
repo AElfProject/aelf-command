@@ -5,6 +5,7 @@ import LoadCommand from '../../src/command/load.js';
 import { userHomeDir } from '../../src/utils/userHomeDir.js';
 import { logger } from '../../src/utils/myLogger';
 import { saveKeyStore } from '../../src/utils/wallet';
+import { endpoint as endPoint, account, password, dataDir } from '../constants.js';
 
 jest.mock('../../src/utils/wallet');
 jest.mock('../../src/utils/myLogger');
@@ -13,10 +14,6 @@ describe('LoadCommand', () => {
   let loadCommand;
   let oraInstanceMock;
   const sampleRc = { getConfigs: jest.fn() };
-  const endPoint = 'https://tdvw-test-node.aelf.io/';
-  const account = 'GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk';
-  const password = '1234*Qwer';
-  const dataDir = path.resolve(__dirname, '../dataDir/aelf');
   const privateKey = '9a2c6023e8b2221f4b02f4ccc5128392c1bd968ae45a42fa62848d793fff148f';
   beforeEach(() => {
     oraInstanceMock = {

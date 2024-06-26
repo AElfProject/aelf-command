@@ -1,12 +1,13 @@
 import { Command } from 'commander';
 import path from 'path';
 import AElf from 'aelf-sdk';
+import inquirer from 'inquirer';
 import { CallCommand } from '../../src/command';
 import { callCommandUsages, callCommandParameters } from '../../src/utils/constants.js';
 import { getContractInstance } from '../../src/utils/utils.js';
 import { userHomeDir } from '../../src/utils/userHomeDir.js';
 import { logger } from '../../src/utils/myLogger.js';
-import inquirer from 'inquirer';
+import { endpoint as endPoint, account, password, dataDir } from '../constants.js';
 
 const sampleRc = { getConfigs: jest.fn() };
 jest.mock('../../src/utils/myLogger');
@@ -14,13 +15,10 @@ jest.mock('../../src/utils/myLogger');
 describe('CallCommand', () => {
   let callCommand;
   let mockOraInstance;
-  const endPoint = 'https://tdvw-test-node.aelf.io/';
   const aelf = new AElf(new AElf.providers.HttpProvider(endPoint));
   const wallet = AElf.wallet.getWalletByPrivateKey('943df6d39fd1e1cc6ae9813e54f7b9988cf952814f9c31e37744b52594cb4096');
   const address = 'ASh2Wt7nSEmYqnGxPPzp4pnVDU4uhj1XW9Se5VeZcX2UDdyjx';
-  const account = 'GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk';
-  const password = '1234*Qwer';
-  const dataDir = path.resolve(__dirname, '../dataDir/aelf');
+
   beforeEach(() => {
     backup = inquirer.prompt;
     mockOraInstance = {

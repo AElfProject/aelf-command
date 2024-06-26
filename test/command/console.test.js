@@ -5,6 +5,7 @@ import { Command } from 'commander';
 import ConsoleCommand from '../../src/command/console.js';
 import { userHomeDir } from '../../src/utils/userHomeDir.js';
 import { logger } from '../../src/utils/myLogger';
+import { endpoint as endPoint, account, password, dataDir } from '../constants.js';
 
 jest.mock('boxen');
 jest.mock('repl');
@@ -16,10 +17,6 @@ describe('ConsoleCommand', () => {
   const sampleRc = {
     getConfigs: jest.fn()
   };
-  const endPoint = 'https://tdvw-test-node.aelf.io/';
-  const account = 'GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk';
-  const password = '1234*Qwer';
-  const dataDir = path.resolve(__dirname, '../dataDir/aelf');
   beforeEach(() => {
     oraInstance = {
       succeed: jest.fn(),
