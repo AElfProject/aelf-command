@@ -5,7 +5,6 @@
 import { interopImportCJSDefault } from 'node-cjs-interop';
 import asyncValidator from 'async-validator';
 const Schema = interopImportCJSDefault(asyncValidator);
-
 import BaseSubCommand from './baseSubCommand.js';
 import { configCommandParameters, configCommandUsage, commonGlobalOptionValidatorDesc } from '../utils/constants.js';
 import { logger } from '../utils/myLogger.js';
@@ -100,8 +99,6 @@ class ConfigCommand extends BaseSubCommand {
           result = this.rc.deleteConfig(key);
           this.oraInstance.succeed('Succeed!');
           break;
-        default:
-          throw new Error(`${flag} is not a valid flag, must one of set, get, list, delete`);
       }
     } catch (e) {
       this.oraInstance.fail('Failed!');
