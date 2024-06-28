@@ -18,8 +18,8 @@ function getWallet(commandRoot, address, password) {
     throw new Error('Make sure you entered the correct account address');
   }
   try {
-    const { privateKey } = AElf.wallet.keyStore.unlockKeystore(keyStore, password);
-    return AElf.wallet.getWalletByPrivateKey(privateKey);
+    const { privateKey, mnemonic } = AElf.wallet.keyStore.unlockKeystore(keyStore, password);
+    return { ...AElf.wallet.getWalletByPrivateKey(privateKey), mnemonic };
   } catch (e) {
     throw new Error(e.message || 'Make sure you entered the correct password');
   }
