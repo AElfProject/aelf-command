@@ -13,7 +13,7 @@ import DeployCommand from './deploy';
 import ConfigCommand from './config';
 import EventCommand from './event';
 import DappServerCommand from './dappServer/index';
-declare namespace _default {
+namespace _default {
   export { CallCommand };
   export { SendCommand };
   export { GetBlkHeightCommand };

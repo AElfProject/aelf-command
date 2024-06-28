@@ -1,6 +1,9 @@
-export default GetBlkHeightCommand;
+import { Command } from 'commander';
+import BaseSubCommand from './baseSubCommand';
+import Registry from '../rc/index';
 declare class GetBlkHeightCommand extends BaseSubCommand {
-    constructor(rc: any);
-    run(commander: any, ...args: any[]): Promise<void>;
+  constructor(rc: Registry);
+  run(commander: Command, ...args: any[]): Promise<void>;
 }
-import BaseSubCommand from './baseSubCommand.js';
+
+export default GetBlkHeightCommand;

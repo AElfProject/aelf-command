@@ -1,4 +1,4 @@
-declare class Registry {
+class Registry {
   static getFileOrNot(file: string, defaultContent?: string): any;
   static getFileOrCreate(file: string): string;
   static loadConfig(content?: string): {};

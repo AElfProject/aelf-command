@@ -1,7 +1,3 @@
-/**
- * @file utils
- * @author atom-yang
- */
 export function serializeMessage(data: any): string;
-export function deserializeMessage(str: any): string;
-export function checkTimestamp(time: any, timeBuffer?: number): boolean;
+export function deserializeMessage(str: string): any;
+export function checkTimestamp(time: number | string, timeBuffer?: number): boolean;

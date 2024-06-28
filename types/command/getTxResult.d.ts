@@ -1,7 +1,11 @@
-export default GetTxResultCommand;
+import { Command } from 'commander';
+import type { Rules, Values } from 'async-validator';
+import BaseSubCommand from './baseSubCommand';
+import Registry from '../rc/index';
+
 declare class GetTxResultCommand extends BaseSubCommand {
-    constructor(rc: any);
-    validateParameters(rule: any, parameters: any): Promise<void>;
-    run(commander: any, ...args: any[]): Promise<void>;
+  constructor(rc: Registry);
+  validateParameters(rule: Rules, parameters: Values): Promise<void>;
+  run(commander: Command, ...args: any[]): Promise<void>;
 }
-import BaseSubCommand from './baseSubCommand.js';
+export default GetTxResultCommand;

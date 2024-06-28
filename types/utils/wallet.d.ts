@@ -1,2 +1,2 @@
-export function getWallet(commandRoot: any, address: any, password: any): any;
-export function saveKeyStore(wallet: any, datadir: any, cipher?: string): Promise<any>;
+export function getWallet(commandRoot: string, address: string, password: string): any;
+export function saveKeyStore(wallet: any, datadir: string, cipher?: string): Promise<string>;

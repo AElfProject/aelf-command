@@ -1,7 +1,7 @@
 export default Logger;
 declare class Logger {
-    constructor(props: any);
-    symbol: string;
-    name: any;
-    log: any;
+  constructor(props: { [key: string]: any });
+  symbol: string;
+  name: string;
+  log: boolean;
 }

@@ -1,6 +1,7 @@
 import { Command } from 'commander';
 import BaseSubCommand from './baseSubCommand';
 import Registry from '../rc/index';
+import { CallCommandParameter } from '../utils/constants';
 declare class CallCommand extends BaseSubCommand {
   /**
    * Creates an instance of CallCommand.
@@ -15,16 +16,7 @@ declare class CallCommand extends BaseSubCommand {
     rc: Registry,
     name?: string,
     description?: string,
-    parameters?: {
-      type: string;
-      name: string;
-      message: string;
-      pageSize?: number;
-      choices?: string[];
-      suffix: string;
-      extraName?: string;
-      filter?: (input: any) => string;
-    }[],
+    parameters?: CallCommandParameter[],
     usage?: string[],
     options?: any[],
   );
