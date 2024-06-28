@@ -1,0 +1,18 @@
+{
+  "include": ["src/**/*.js", "*.ts"],
+  "exclude": ["node_modules", "src/protobuf"],
+  "compilerOptions": {
+    "module": "esnext",
+    "esModuleInterop": true,
+    "declaration": true,
+    "declarationMap": true,
+    "moduleResolution": "node",
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "allowJs": true,
+    "allowSyntheticDefaultImports": false,
+    "noEmit": true
+  }
+}
