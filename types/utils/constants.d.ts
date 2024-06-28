@@ -6,7 +6,7 @@ export interface CallCommandParameter {
   pageSize?: number;
   choices?: string[];
   suffix: string;
-  extraName?: string;
+  extraName?: string[];
   filter?: (input: any) => string;
 }
 export const callCommandParameters: CallCommandParameter[];
@@ -21,7 +21,7 @@ export interface PasswordValidatorDesc {
 export interface EndpointValidatorDesc {
   type: string;
   required: boolean;
-  regex: RegExp;
+  pattern: RegExp;
   message: string;
 }
 
