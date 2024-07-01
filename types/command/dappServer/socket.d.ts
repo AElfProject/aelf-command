@@ -37,6 +37,7 @@ interface Result {
 interface Client {
   emit(event: string, data: any): void;
   disconnect(close?: boolean): void;
+  on(event: string, cb: Function): void;
 }
 declare class Socket {
   private aelf: any;
@@ -48,7 +49,7 @@ declare class Socket {
 
   constructor(options: SocketOptions);
 
-  private responseFormat(id: string, result: any, errors: any): Result;
+  private responseFormat(id: string, result?: any, errors?: any): { id: string; result: Result };
   private send(client: Client, result: Result, action: string, appId: string): void;
   private handleConnection(client: Client): void;
   private deserializeParams(request: Message): Promise<any>;

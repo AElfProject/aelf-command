@@ -5,19 +5,9 @@ import type { Options as OraOptions } from 'ora';
 import Registry from '../rc/index';
 
 declare class BaseSubCommand {
-  static getUniConfig(commander: any): {};
+  static getUniConfig(commander: Command): { [key: string]: any };
   static parseBoolean(val: any): any;
-  static normalizeConfig(obj: any): {};
-  /**
-   * @param {string} commandName sub command name
-   * @param {{ [key: string]: any }[]} parameters sub command parameters
-   * @param {string} description sub command description
-   * @param {{ [key: string]: any }[]} options sub command options
-   * @param {string[]} usage make examples
-   * @param {Registry} rc instance of Registry
-   * @param {{ [key: string]: any }} validatorDesc rules of async-validator
-   * @param {{ [key: string]: any }} oraOptions an ora options
-   */
+  static normalizeConfig(obj: any): { [key: string]: any };
   constructor(
     commandName: string,
     parameters: { [key: string]: any }[] | undefined,
@@ -26,7 +16,7 @@ declare class BaseSubCommand {
     usage: string[] | undefined,
     rc: Registry,
     validatorDesc?: { [key: string]: any },
-    oraOptions?: OraOptions,
+    oraOptions?: OraOptions
   );
   commandName: string;
   parameters: { [key: string]: any }[];

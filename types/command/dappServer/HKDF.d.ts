@@ -1,4 +1,4 @@
-class HKDF {
+declare class HKDF {
   constructor(hash: string, salt: Buffer, initialKey: string);
   private hashMethod: string;
   private hashLength: number;
