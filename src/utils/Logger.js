@@ -34,9 +34,28 @@ const levels = [
 ];
 
 class Logger {
+  info(arg0) {
+    throw new Error('Method not implemented.');
+  }
+  /**
+   * Constructs a new Logger instance.
+   * @param {Object.<string, any>} props - Logger properties.
+   */
   constructor(props) {
+    /**
+     * Symbol for the logger.
+     * @type {string}
+     */
     this.symbol = '';
+    /**
+     * Name of the logger.
+     * @type {string}
+     */
     this.name = '';
+    /**
+     * Determines whether to log messages.
+     * @type {boolean}
+     */
     this.log = props.log !== undefined ? props.log : true; // determin whether console.log or not
     if (!props.onlyWords) {
       this.symbol = '';
@@ -50,6 +69,15 @@ class Logger {
 levels.forEach(item => {
   const { level, color } = item;
   const fnName = level.toLocaleLowerCase();
+
+  /**
+   * Logs an error message.
+   * @function
+   * @memberof Logger.prototype
+   * @param {string} firstParam - The first parameter to log.
+   * @param {...any} rest - Additional parameters to log.
+   * @returns {string} - The formatted log message.
+   */
   Logger.prototype[fnName] = function fn(firstParam, ...rest) {
     // if (typeof params === 'obejct') params = JSON.stringify(params);
 

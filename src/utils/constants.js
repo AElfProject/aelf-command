@@ -1,7 +1,3 @@
-/**
- * @file constants
- * @author atom-yang
- */
 import path from 'path';
 import moment from 'moment';
 import inquirer from 'inquirer';
@@ -9,6 +5,30 @@ import { logger } from './myLogger.js';
 import DatePrompt from 'inquirer-date-prompt';
 import SearchList from 'inquirer-search-list';
 
+/**
+ * @typedef {import('../../types/utils/constants.js').CallCommandParameter} CallCommandParameter
+ * @typedef {import('../../types/utils/constants.js').PasswordValidatorDesc} PasswordValidatorDesc
+ * @typedef {import('../../types/utils/constants.js').EndpointValidatorDesc} EndpointValidatorDesc
+ * @typedef {import('../../types/utils/constants.js').DatadirValidatorDesc} DatadirValidatorDesc
+ * @typedef {import('../../types/utils/constants.js').AccountValidatorDesc} AccountValidatorDesc
+ * @typedef {import('../../types/utils/constants.js').CommonGlobalOptionValidatorDesc} CommonGlobalOptionValidatorDesc
+ * @typedef {import('../../types/utils/constants.js').BlkInfoCommandParameter} BlkInfoCommandParameter
+ * @typedef {import('../../types/utils/constants.js').TxResultCommandParameter} TxResultCommandParameter
+ * @typedef {import('../../types/utils/constants.js').GlobalOptionPrompt} GlobalOptionPrompt
+ * @typedef {import('../../types/utils/constants.js').CreateCommandParameter} CreateCommandParameter
+ * @typedef {import('../../types/utils/constants.js').LoadCommandParameter} LoadCommandParameter
+ * @typedef {import('../../types/utils/constants.js').PasswordPrompt} PasswordPrompt
+ * @typedef {import('../../types/utils/constants.js').DeployCommandParameter} DeployCommandParameter
+ * @typedef {import('../../types/utils/constants.js').ConfigCommandParameter} ConfigCommandParameter
+ * @typedef {import('../../types/utils/constants.js').ProposalCommandParameter} ProposalCommandParameter
+ * @typedef {import('../../types/utils/constants.js').EventCommandParameter} EventCommandParameter
+ * @typedef {'password' | 'endpoint' | 'datadir' | 'account'} CommonGlobalOptionKey
+ */
+
+/**
+ * Array of usage strings for the call command.
+ * @type {string[]}
+ */
 const callCommandUsages = [
   '<contractName|contractAddress> <method> <params>',
   '<contractName|contractAddress> <method>',
@@ -16,6 +36,10 @@ const callCommandUsages = [
   ''
 ];
 
+/**
+ * Parameters for the call command.
+ * @type {CallCommandParameter[]}
+ */
 const callCommandParameters = [
   {
     type: 'input',
@@ -53,6 +77,10 @@ const callCommandParameters = [
   }
 ];
 
+/**
+ * Parameters for the blkInfo command.
+ * @type {BlkInfoCommandParameter[]}
+ */
 const blkInfoCommandParameters = [
   {
     type: 'input',
@@ -73,11 +101,20 @@ const blkInfoCommandParameters = [
   }
 ];
 
+/**
+ * Array of usage strings for the blkInfo command.
+ * @type {string[]}
+ */
 const blkInfoCommandUsage = ['<height|block-hash> <include-txs>', '<height|block-hash>', ''];
 
+// @ts-ignore
 inquirer.registerPrompt('datetime', DatePrompt);
 inquirer.registerPrompt('search-list', SearchList);
 
+/**
+ * Parameters for the proposal command.
+ * @type {ProposalCommandParameter[]}
+ */
 const proposalCommandParameters = [
   {
     type: 'list',
@@ -113,6 +150,10 @@ const proposalCommandParameters = [
   }
 ];
 
+/**
+ * Array of usage strings for the proposal command.
+ * @type {string[]}
+ */
 const proposalCommandUsage = [
   '<proposal-contract> <organization> <expired-time>',
   '<proposal-contract> <organization>',
@@ -120,6 +161,10 @@ const proposalCommandUsage = [
   ''
 ];
 
+/**
+ * Parameters for the txResult command.
+ * @type {TxResultCommandParameter[]}
+ */
 const txResultCommandParameters = [
   {
     type: 'input',
@@ -129,8 +174,16 @@ const txResultCommandParameters = [
   }
 ];
 
+/**
+ * Array of usage strings for the txResult command.
+ * @type {string[]}
+ */
 const txResultCommandUsage = ['<tx-id>', ''];
 
+/**
+ * Parameters for the create command.
+ * @type {CreateCommandParameter[]}
+ */
 const createCommandParameters = [
   {
     type: 'confirm',
@@ -144,8 +197,16 @@ const createCommandParameters = [
   }
 ];
 
+/**
+ * Array of usage strings for the create command.
+ * @type {string[]}
+ */
 const createCommandUsage = ['<save-to-file> -c, cipher', '-c, cipher', ''];
 
+/**
+ * Parameters for the config command.
+ * @type {ConfigCommandParameter[]}
+ */
 const configCommandParameters = [
   {
     type: 'input',
@@ -170,8 +231,16 @@ const configCommandParameters = [
   }
 ];
 
+/**
+ * Array of usage strings for the config command.
+ * @type {string[]}
+ */
 const configCommandUsage = ['get <key>', 'set <key> <value>', 'delete <key>', 'list'];
 
+/**
+ * Parameters for the load command.
+ * @type {LoadCommandParameter[]}
+ */
 const loadCommandParameters = [
   {
     type: 'input',
@@ -208,6 +277,10 @@ const loadCommandParameters = [
   }
 ];
 
+/**
+ * Array of usage strings for the load command.
+ * @type {string[]}
+ */
 const loadCommandUsage = [
   '<private-key|mnemonic> <created-by-old> <save-to-file>',
   '<private-key|mnemonic> <save-to-file>',
@@ -215,6 +288,10 @@ const loadCommandUsage = [
   ''
 ];
 
+/**
+ * Parameters for the deploy command.
+ * @type {DeployCommandParameter[]}
+ */
 const deployCommandParameters = [
   {
     type: 'input',
@@ -233,8 +310,16 @@ const deployCommandParameters = [
   }
 ];
 
+/**
+ * Array of usage strings for the deploy command.
+ * @type {string[]}
+ */
 const deployCommandUsage = ['<category> <code-path>', '<category>', ''];
 
+/**
+ * Parameters for the event command.
+ * @type {EventCommandParameter[]}
+ */
 const eventCommandParameters = [
   {
     type: 'input',
@@ -244,8 +329,16 @@ const eventCommandParameters = [
   }
 ];
 
+/**
+ * Array of usage strings for the event command.
+ * @type {string[]}
+ */
 const eventCommandUsage = ['<tx-id>', ''];
 
+/**
+ * Validator description for common global options.
+ * @type {CommonGlobalOptionValidatorDesc}
+ */
 const commonGlobalOptionValidatorDesc = {
   password: {
     type: 'string',
@@ -276,9 +369,10 @@ const commonGlobalOptionValidatorDesc = {
   }
 };
 
-const strictGlobalOptionValidatorDesc = {};
+const strictGlobalOptionValidatorDesc = /**@type {CommonGlobalOptionValidatorDesc}*/ ({});
 
-Object.entries(commonGlobalOptionValidatorDesc).forEach(([key, value]) => {
+// @ts-ignore
+Object.entries(commonGlobalOptionValidatorDesc).forEach((/** @type {[CommonGlobalOptionKey, any]} */ [key, value]) => {
   strictGlobalOptionValidatorDesc[key] = {
     ...value,
     required: true
@@ -286,8 +380,8 @@ Object.entries(commonGlobalOptionValidatorDesc).forEach(([key, value]) => {
 });
 
 /**
- * specified the prompts options for CLI global options
- * @type {*[]}
+ * Array of global option prompts.
+ * @type {GlobalOptionPrompt[]}
  */
 const globalOptionsPrompts = [
   {
@@ -311,6 +405,10 @@ const globalOptionsPrompts = [
   }
 ];
 
+/**
+ * Array of password prompts.
+ * @type {PasswordPrompt[]}
+ */
 const passwordPrompts = [
   {
     type: 'password',
@@ -319,6 +417,7 @@ const passwordPrompts = [
     message: 'Enter a password',
     validate(val) {
       if (!val || val.length <= 6) {
+        // @ts-ignore
         logger.error('\npassword is too short');
         process.exit(1);
       }

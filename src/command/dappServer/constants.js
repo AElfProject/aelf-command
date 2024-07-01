@@ -1,8 +1,3 @@
-/**
- * @file constants
- * @author atom-yang
- */
-
 const CHAIN_APIS = {
   '/api/blockChain/chainStatus': 'getChainStatus',
   '/api/blockChain/blockState': 'getChainState',

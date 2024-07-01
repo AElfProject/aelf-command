@@ -1,7 +1,3 @@
-/**
- * @file call read-only method on contract
- * @author atom-yang
- */
 import assert from 'assert';
 import AElf from 'aelf-sdk';
 import moment from 'moment';
@@ -22,10 +18,22 @@ import {
 import { getWallet } from '../utils/wallet.js';
 import { logger } from '../utils/myLogger.js';
 
+/**
+ * @typedef {import('commander').Command} Command
+ * @typedef {import('async-validator').Rules} Rules
+ * @typedef {import('async-validator').Values} Values
+ * @typedef {import ('inquirer').InputQuestion } InputQuestion
+ * @typedef {import ('inquirer').ListQuestion } ListQuestion
+ * @typedef {import('../../types/rc/index.js').default} Registry
+ */
+/**
+ * @type {Array<InputQuestion | ListQuestion>}
+ */
 const toContractPrompts = [
   {
     type: 'input',
     name: 'contract-address',
+    // @ts-ignore
     extraName: ['contract-name'],
     message: 'Enter a contract address or name',
     suffix: ':'
@@ -55,6 +63,15 @@ async function getContractAddress(aelf, wallet, address) {
 }
 
 class ProposalCommand extends BaseSubCommand {
+  /**
+   * Constructs a new ProposalCommand instance.
+   * @param {Registry} rc - The registry instance.
+   * @param {string} [name] - Optional name of the command.
+   * @param {string} [description] - Optional description of the command.
+   * @param {Array<Object>} [parameters] - Optional array of parameter objects.
+   * @param {string[]} [usage] - Optional array of usage strings.
+   * @param {any[]} [options] - Optional array of options.
+   */
   constructor(
     rc,
     name = 'proposal',
@@ -67,6 +84,13 @@ class ProposalCommand extends BaseSubCommand {
     this.aelfMock = {};
   }
 
+  /**
+   * Processes address after prompting.
+   * @param {any} aelf - The AElf instance.
+   * @param {any} wallet - The wallet instance.
+   * @param {{ [key: string]: any }} answerInput - Input from the user.
+   * @returns {Promise<any>} A promise that resolves with the processed address.
+   */
   async processAddressAfterPrompt(aelf, wallet, answerInput) {
     this.toContractAddress = await getContractAddress(aelf, wallet, answerInput['contract-address']);
     let { contractAddress } = BaseSubCommand.normalizeConfig(answerInput);
@@ -74,12 +98,19 @@ class ProposalCommand extends BaseSubCommand {
     return contractAddress;
   }
 
+  /**
+   * Runs the ProposalCommand.
+   * @param {Command} commander - The commander instance.
+   * @param {...any} args - Additional arguments.
+   * @returns {Promise<void>} A promise that resolves when the command execution is complete.
+   */
   async run(commander, ...args) {
+    // @ts-ignore
     const { options, subOptions } = await super.run(commander, ...args);
     const { endpoint, datadir, account, password } = options;
     const { descriptionUrl, proposalContract, organization, expiredTime } = subOptions;
     try {
-      if (!proposalCommandParameters[0].choices.includes(proposalContract)) {
+      if (!proposalCommandParameters[0].choices?.includes(proposalContract)) {
         throw new Error(
           // eslint-disable-next-line max-len
           `${proposalContract} is not in the list of proposal contracts, choice one of \`AElf.ContractNames.Parliament\`, \`AElf.ContractNames.Referendum\` and \`AElf.ContractNames.Association\``
@@ -144,11 +175,13 @@ class ProposalCommand extends BaseSubCommand {
           proposalDescriptionUrl: descriptionUrl
         })
       );
+      // @ts-ignore
       logger.info(txId);
       this.oraInstance.start('loading proposal id...');
       const tx = await getTxResult(aelf, txId.TransactionId);
       this.oraInstance.succeed();
       if (tx.Status === 'PENDING') {
+        // @ts-ignore
         logger.info(
           `Transaction is still pending, you can get proposal id later by running ${chalk.yellow(
             `aelf-command event ${txId.TransactionId}`
@@ -161,11 +194,13 @@ class ProposalCommand extends BaseSubCommand {
           (Logs || []).filter(v => v.Name === 'ProposalCreated')
         );
         assert.strictEqual(results.length, 1, 'No related log');
+        // @ts-ignore
         logger.info(`Proposal id: ${results[0].proposalId}.`);
         this.oraInstance.succeed('Succeed!');
       }
     } catch (e) {
       this.oraInstance.fail('Failed!');
+      // @ts-ignore
       logger.fatal(e);
     }
   }

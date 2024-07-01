@@ -1,7 +1,3 @@
-/**
- * @file call read-only method on contract
- * @author atom-yang
- */
 import AElf from 'aelf-sdk';
 import inquirer from 'inquirer';
 import chalk from 'chalk';
@@ -18,7 +14,21 @@ import {
 import { getWallet } from '../utils/wallet.js';
 import { logger } from '../utils/myLogger.js';
 
+/**
+ * @typedef {import('commander').Command} Command
+ * @typedef {import('ora').Options} OraOptions
+ * @typedef {import('../../types/rc/index.js').default} Registry
+ */
 class CallCommand extends BaseSubCommand {
+  /**
+   * Creates an instance of CallCommand.
+   * @param {Registry} rc The instance of the Registry.
+   * @param {string} [name] The name of the command.
+   * @param {string} [description] The description of the command.
+   * @param {Object[]} [parameters] The parameters for the command.
+   * @param {string[]} [usage] The usage examples for the command.
+   * @param {any[]} [options] The options for the command.
+   */
   constructor(
     rc,
     name = 'call',
@@ -29,22 +39,40 @@ class CallCommand extends BaseSubCommand {
   ) {
     super(name, parameters, description, options, usage, rc);
   }
-
+  /**
+   * Calls a method with specified parameters.
+   * @param {any} method The method to call.
+   * @param {any} params The parameters for the method call.
+   * @returns {Promise<any>} A promise that resolves with the result of the method call.
+   */
   async callMethod(method, params) {
     this.oraInstance.start('Calling method...');
     const result = await method.call(params);
     this.oraInstance.succeed('Calling method successfully!');
     return result;
   }
-
+  /**
+   * Processes address after prompting for input.
+   * @param {any} aelf The AElf instance.
+   * @param {any} wallet The wallet instance.
+   * @param {Object.<string, any>} answerInput The input parameters.
+   * @returns {Promise<any>} A promise that resolves with the processed result.
+   */
   async processAddressAfterPrompt(aelf, wallet, answerInput) {
     let { contractAddress } = BaseSubCommand.normalizeConfig(answerInput);
     contractAddress = await getContractInstance(contractAddress, aelf, wallet, this.oraInstance);
     return contractAddress;
   }
 
+  /**
+   * Runs the command.
+   * @param {Command} commander The Commander instance.
+   * @param {...any[]} args Additional arguments passed to the command.
+   * @returns {Promise<void>} A promise that resolves when the command execution completes.
+   */
   async run(commander, ...args) {
     this.setCustomPrompts(true);
+    // @ts-ignore
     const { options, subOptions } = await super.run(commander, ...args);
     const subOptionsLength = Object.keys(subOptions).length;
     const { endpoint, datadir, account, password } = options;
@@ -102,10 +130,12 @@ class CallCommand extends BaseSubCommand {
         params = '';
       }
       const result = await this.callMethod(method, params);
+      // @ts-ignore
       logger.info(`\nResult:\n${JSON.stringify(result, null, 2)}`);
       this.oraInstance.succeed('Succeed!');
     } catch (e) {
       this.oraInstance.fail('Failed!');
+      // @ts-ignore
       logger.fatal(e);
     }
   }
