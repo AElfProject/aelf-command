@@ -34,6 +34,9 @@ const levels = [
 ];
 
 class Logger {
+  info(arg0) {
+    throw new Error('Method not implemented.');
+  }
   /**
    * Constructs a new Logger instance.
    * @param {Object.<string, any>} props - Logger properties.

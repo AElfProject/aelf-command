@@ -1,7 +1,3 @@
-/**
- * @file get block height
- * @author atom-yang
- */
 import { interopImportCJSDefault } from 'node-cjs-interop';
 import asyncValidator from 'async-validator';
 const Schema = interopImportCJSDefault(asyncValidator);
@@ -17,7 +13,17 @@ const configCommandValidatorDesc = {
   }
 };
 
+/**
+ * @typedef {import('commander').Command} Command
+ * @typedef {import('async-validator').Rules} Rules
+ * @typedef {import('async-validator').Values} Values
+ * @typedef {import('../../types/rc/index.js').default} Registry
+ */
 class ConfigCommand extends BaseSubCommand {
+  /**
+   * Constructs a new ConfigCommand instance.
+   * @param {Registry} rc - The registry instance.
+   */
   constructor(rc) {
     super(
       'config',
@@ -29,7 +35,12 @@ class ConfigCommand extends BaseSubCommand {
       configCommandValidatorDesc
     );
   }
-
+  /**
+   * Validates parameters based on the provided rules.
+   * @param {Rules} rule - The validation rules.
+   * @param {Values} parameters - The parameters to validate.
+   * @returns {Promise<void>} A promise that resolves when the validation is complete.
+   */
   async validateParameters(rule, parameters) {
     const validator = new Schema(rule);
     try {
@@ -39,6 +50,11 @@ class ConfigCommand extends BaseSubCommand {
     }
   }
 
+  /**
+   * Handles the list operation and returns the processed content as a string.
+   * @param {any} content - The content to process.
+   * @returns {string} The processed content.
+   */
   handleList(content) {
     return Object.entries(content)
       .filter(([, value]) => {
@@ -50,9 +66,15 @@ class ConfigCommand extends BaseSubCommand {
       .map(([key, value]) => `${key}=${value}\n`)
       .join('');
   }
-
+  /**
+   * Executes the command.
+   * @param {Command} commander - The commander instance.
+   * @param {...any} args - Additional arguments.
+   * @returns {Promise<void>} A promise that resolves when the command execution is complete.
+   */
   async run(commander, ...args) {
     this.setCustomPrompts(true);
+    // @ts-ignore
     const { subOptions } = await super.run(commander, ...args);
     // todo: specified which .aelfrc file to read or write
     const { flag, key, value } = subOptions;
@@ -85,6 +107,7 @@ class ConfigCommand extends BaseSubCommand {
       switch (flag) {
         case 'get':
           result = this.rc.getOption(key);
+          // @ts-ignore
           logger.info(result);
           break;
         case 'set':
@@ -102,6 +125,7 @@ class ConfigCommand extends BaseSubCommand {
       }
     } catch (e) {
       this.oraInstance.fail('Failed!');
+      // @ts-ignore
       logger.error(e);
     }
   }

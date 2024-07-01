@@ -5,9 +5,9 @@ import type { Options as OraOptions } from 'ora';
 import Registry from '../rc/index';
 
 declare class BaseSubCommand {
-  static getUniConfig(commander: Command): {};
+  static getUniConfig(commander: Command): { [key: string]: any };
   static parseBoolean(val: any): any;
-  static normalizeConfig(obj: any): {};
+  static normalizeConfig(obj: any): { [key: string]: any };
   constructor(
     commandName: string,
     parameters: { [key: string]: any }[] | undefined,

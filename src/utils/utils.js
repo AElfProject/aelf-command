@@ -1,7 +1,3 @@
-/**
- * @file utils
- * @author atom-yang
- */
 import AElf from 'aelf-sdk';
 import moment from 'moment';
 import chalk from 'chalk';
@@ -13,6 +9,16 @@ import inquirer from 'inquirer';
 import { plainLogger } from './myLogger.js';
 import * as protobuf from '@aelfqueen/protobufjs';
 
+/**
+ * @typedef {import('ora').Ora} Ora
+ * @typedef {import('inquirer').DistinctQuestion} DistinctQuestion
+ */
+/**
+ * Promisifies a function.
+ * @param {Function} fn - The function to promisify.
+ * @param {boolean} [firstData] - Whether to pass first data.
+ * @returns {Function} A promisified function.
+ */
 function promisify(fn, firstData) {
   return (...args) =>
     new Promise((resolve, reject) => {
@@ -40,6 +46,11 @@ function promisify(fn, firstData) {
     });
 }
 
+/**
+ * Converts a string to camelCase.
+ * @param {string} str - The input string.
+ * @returns {string} The camelCase version of the string.
+ */
 function camelCase(str) {
   return _camelCase(str);
 }
@@ -60,12 +71,13 @@ function isRegExp(o) {
 }
 
 /**
- * get contract methods' keys
- * @param {Object} contract contract instance
- * @return {string[]}
+ * Retrieves the list of methods of a contract.
+ * @param {Object.<string, any>} [contract] - The contract object.
+ * @returns {string[]} An array of method names.
  */
 function getContractMethods(contract = {}) {
   if (!contract) {
+    // @ts-ignore
     plainLogger.fatal('There is no such contract');
     process.exit(1);
   }
@@ -74,6 +86,14 @@ function getContractMethods(contract = {}) {
     .sort();
 }
 
+/**
+ * Retrieves an instance of a contract.
+ * @param {string} contractAddress - The address of the contract.
+ * @param {any} aelf - The AElf instance.
+ * @param {any} wallet - The wallet instance.
+ * @param {Ora} oraInstance - The ora instance for logging.
+ * @returns {Promise<any>} A promise that resolves to the contract instance.
+ */
 async function getContractInstance(contractAddress, aelf, wallet, oraInstance) {
   if (typeof contractAddress !== 'string') {
     return contractAddress;
@@ -90,6 +110,7 @@ async function getContractInstance(contractAddress, aelf, wallet, oraInstance) {
       contract = await aelf.chain.contractAt(address, wallet);
     }
   } catch (e) {
+    // @ts-ignore
     oraInstance.fail(plainLogger.error('Failed to find the contract, please enter the correct contract name!'));
     process.exit(1);
   }
@@ -108,15 +129,14 @@ function getMethod(method, contract) {
 }
 
 /**
- * @description prompt contract address three times at most
- * @param {*} {
- *     times,
- *     prompt,
- *     processAfterPrompt, // a function that will process user's input with first param as the raw input value of user
- *     pattern // the regular expression to validate the user's input
- *   }
- * @param {Object} oraInstance the instance of ora library
- * @return {Object} the correct input value, if no correct was inputted, it will throw an error then exit the process
+ * Prompts with tolerance for multiple attempts.
+ * @param {Object} options - Prompt options.
+ * @param {Function} options.processAfterPrompt - Function to process after prompt.
+ * @param {string | RegExp} options.pattern - Pattern for the prompt.
+ * @param {number} options.times - Number of times to prompt.
+ * @param {DistinctQuestion} options.prompt - prompt.
+ * @param {Ora} oraInstance - The ora instance for logging.
+ * @returns {Promise<Object.<string, any>>} The result of the prompt.
  */
 async function promptTolerateSeveralTimes({ processAfterPrompt = () => {}, pattern, times = 3, prompt = [] }, oraInstance) {
   if (pattern && !isRegExp(pattern)) {
@@ -130,8 +150,8 @@ async function promptTolerateSeveralTimes({ processAfterPrompt = () => {}, patte
   while (askTimes < times) {
     try {
       answerInput = await inquirer.prompt(prompt);
-
       answerInput = await processAfterPrompt(answerInput);
+      // @ts-ignore
       if (!pattern || pattern.test(answerInput)) {
         break;
       }
@@ -142,6 +162,7 @@ async function promptTolerateSeveralTimes({ processAfterPrompt = () => {}, patte
     }
   }
   if (askTimes >= times && answerInput === null) {
+    // @ts-ignore
     oraInstance.fail(plainLogger.fatal(`You has entered wrong message ${times} times!`));
     process.exit(1);
   }
@@ -161,13 +182,24 @@ function isFilePath(val) {
   }
 }
 
+/**
+ * Retrieves the result of a transaction.
+ * @param {*} aelf - The AElf instance.
+ * @param {string} txId - The transaction ID.
+ * @param {number} [times] - Number of times to retry.
+ * @param {number} [delay] - Delay between retries.
+ * @param {number} [timeLimit] - Time limit for retries.
+ * @returns {Promise<any>} The transaction result.
+ */
 async function getTxResult(aelf, txId, times = 0, delay = 3000, timeLimit = 3) {
   const currentTime = times + 1;
-  await new Promise(resolve => {
-    setTimeout(() => {
-      resolve();
-    }, delay);
-  });
+  await /** @type {Promise<void>} */ (
+    new Promise(resolve => {
+      setTimeout(() => {
+        resolve();
+      }, delay);
+    })
+  );
   const tx = await aelf.chain.getTxResult(txId);
   if (tx.Status === 'PENDING' && currentTime <= timeLimit) {
     const result = await getTxResult(aelf, txId, currentTime, delay, timeLimit);
@@ -182,6 +214,11 @@ async function getTxResult(aelf, txId, times = 0, delay = 3000, timeLimit = 3) {
   throw tx;
 }
 
+/**
+ * Parses a JSON string.
+ * @param {string} [str] - The JSON string to parse.
+ * @returns {*} The parsed JSON object.
+ */
 function parseJSON(str = '') {
   let result = null;
   try {
@@ -192,6 +229,10 @@ function parseJSON(str = '') {
   return result;
 }
 
+/**
+ * Generates a random ID.
+ * @returns {string} The random ID.
+ */
 function randomId() {
   return uuid().replace(/-/g, '');
 }
@@ -261,6 +302,11 @@ async function getParamValue(type, fieldName) {
   return value;
 }
 
+/**
+ * Retrieves parameters of a method.
+ * @param {*} method - The method.
+ * @returns {Promise<Object.<string, any>>} A promise that resolves to the parameters object.
+ */
 async function getParams(method) {
   const fields = Object.entries(method.inputTypeInfo.fields || {});
   let result = {};
@@ -272,6 +318,9 @@ async function getParams(method) {
     );
     console.log('Enter the params one by one, type `Enter` to skip optional param:');
     if (isSpecialParameters(method.inputType)) {
+      /**
+       * @type {Object.<string, any>}
+       */
       let prompts = PROTO_TYPE_PROMPT_TYPE.default;
       prompts = {
         ...prompts,
@@ -300,6 +349,9 @@ async function getParams(method) {
           const innerInputTypeInfo = innerType.toJSON();
           const innerFields = Object.entries(innerInputTypeInfo.fields || {});
           if (isSpecialParameters(innerFields)) {
+            /**
+             * @type {Object.<string, any>}
+             */
             let prompts = PROTO_TYPE_PROMPT_TYPE.default;
             prompts = {
               ...prompts,
@@ -357,7 +409,12 @@ function getDeserializeLogResult(serializedData, dataType) {
   deserializeLogResult = AElf.utils.transform.transformArrayToMap(dataType, deserializeLogResult);
   return deserializeLogResult;
 }
-
+/**
+ * Deserializes logs from AElf.
+ * @param {*} aelf - The AElf instance.
+ * @param {Array} [logs] - The logs array to deserialize.
+ * @returns {Promise<any>} A promise that resolves to the deserialized logs.
+ */
 async function deserializeLogs(aelf, logs = []) {
   if (!logs || logs.length === 0) {
     return null;
@@ -373,6 +430,7 @@ async function deserializeLogs(aelf, logs = []) {
     if (Name === 'VirtualTransactionCreated') {
       // VirtualTransactionCreated is system-default
       try {
+        // @ts-ignore
         const dataType = Root.VirtualTransactionCreated;
         return getDeserializeLogResult(serializedData, dataType);
       } catch (e) {

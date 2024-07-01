@@ -1,7 +1,3 @@
-/**
- * @file message signed and verified
- * @author atom-yang
- */
 import elliptic from 'elliptic';
 
 const defaultEncryptAlgorithm = 'secp256k1';
@@ -79,6 +75,10 @@ class Sign {
     }
   }
 
+  /**
+   * Gets the public key.
+   * @returns {string} The public key.
+   */
   getPublicKey() {
     return this.keyPair.getPublic().encode('hex');
   }

@@ -119,7 +119,7 @@ class BaseSubCommand {
    * Retrieves universal configuration.
    * @static
    * @param {Command} commander - The commander instance.
-   * @returns {{}} Universal configuration.
+   * @returns {Record<string, any>} Universal configuration.
    */
   static getUniConfig(commander) {
     const result = {};
@@ -152,7 +152,7 @@ class BaseSubCommand {
    * Normalizes configuration object.
    * @static
    * @param {any} obj - The configuration object to normalize.
-   * @returns {{}} Normalized configuration object.
+   * @returns {Record<string, any>} Normalized configuration object.
    */
   static normalizeConfig(obj) {
     // dash to camel-case

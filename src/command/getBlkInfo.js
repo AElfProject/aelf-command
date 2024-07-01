@@ -1,7 +1,3 @@
-/**
- * @file get block info
- * @author atom-yang
- */
 import AElf from 'aelf-sdk';
 import { interopImportCJSDefault } from 'node-cjs-interop';
 import asyncValidator from 'async-validator';
@@ -10,7 +6,17 @@ import BaseSubCommand from './baseSubCommand.js';
 import { commonGlobalOptionValidatorDesc, blkInfoCommandParameters, blkInfoCommandUsage } from '../utils/constants.js';
 import { logger } from '../utils/myLogger.js';
 
+/**
+ * @typedef {import('commander').Command} Command
+ * @typedef {import('async-validator').Rules} Rules
+ * @typedef {import('async-validator').Values} Values
+ * @typedef {import('../../types/rc/index.js').default} Registry
+ */
 class GetBlkInfoCommand extends BaseSubCommand {
+  /**
+   * Constructs a new GetBlkInfoCommand instance.
+   * @param {Registry} rc - The registry instance.
+   */
   constructor(rc) {
     super(
       'get-blk-info',
@@ -22,7 +28,12 @@ class GetBlkInfoCommand extends BaseSubCommand {
       commonGlobalOptionValidatorDesc
     );
   }
-
+  /**
+   * Validates the provided parameters against the given rules.
+   * @param {Rules} rule - The validation rules.
+   * @param {Values} parameters - The parameters to validate.
+   * @returns {Promise<void>} A promise that resolves when validation is complete.
+   */
   async validateParameters(rule, parameters) {
     const validator = new Schema(rule);
     try {
@@ -31,8 +42,14 @@ class GetBlkInfoCommand extends BaseSubCommand {
       this.handleUniOptionsError(e);
     }
   }
-
+  /**
+   * Executes the get block info command.
+   * @param {Command} commander - The commander instance.
+   * @param {...any} args - Additional arguments.
+   * @returns {Promise<void>} A promise that resolves when the command execution is complete.
+   */
   async run(commander, ...args) {
+    // @ts-ignore
     const { options, subOptions } = await super.run(commander, ...args);
     await this.validateParameters(
       {
@@ -60,9 +77,11 @@ class GetBlkInfoCommand extends BaseSubCommand {
         blockInfo = await aelf.chain.getBlockByHeight(height, includeTxs);
       }
       this.oraInstance.succeed('Succeed!');
+      // @ts-ignore
       logger.info(blockInfo);
     } catch (e) {
       this.oraInstance.fail('Failed!');
+      // @ts-ignore
       logger.error(e);
     }
   }
