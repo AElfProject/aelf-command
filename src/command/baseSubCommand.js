@@ -188,7 +188,7 @@ class BaseSubCommand {
     const lastArg = args.slice(this.parameters.length)[0];
     const localOptions = {};
     this.options.forEach(({ name }) => {
-      localOptions[name] = lastArg[name] || undefined;
+      localOptions[name] = lastArg?.[name] || undefined;
     });
     const uniOptions = BaseSubCommand.getUniConfig(commander);
     // get options from global config and process.argv
@@ -199,7 +199,7 @@ class BaseSubCommand {
     });
 
     const globalPrompts = globalOptionsPrompts.filter(
-      prompt => this.validatorDesc[prompt.name].required && !options[prompt.name]
+      prompt => this.validatorDesc[prompt.name]?.required && !options[prompt.name]
     );
     const globalPromptsAns = await inquirer.prompt(globalPrompts);
     options = {
