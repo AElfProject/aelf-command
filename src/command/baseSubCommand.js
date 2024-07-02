@@ -1,10 +1,7 @@
-/**
- * @file base sub command
- * @author atom-yang
- */
 import { interopImportCJSDefault } from 'node-cjs-interop';
 import asyncValidator from 'async-validator';
 const Schema = interopImportCJSDefault(asyncValidator);
+
 import inquirer from 'inquirer';
 import ora from 'ora';
 import { logger } from '../utils/myLogger.js';
@@ -16,17 +13,25 @@ import { globalOptionsPrompts, strictGlobalOptionValidatorDesc } from '../utils/
 const defaultOraOptions = {
   text: 'AElf loading...'
 };
+/**
+ * @typedef {import('commander').Command} Command
+ * @typedef {import('ora').Options} OraOptions
+ * @typedef {import('../../types/rc/index.js').default} Registry
+ */
 
+/**
+ * @class
+ */
 class BaseSubCommand {
   /**
    * @param {string} commandName sub command name
-   * @param {Object[]} parameters sub command parameters
+   * @param {{ [key: string]: any }[]} parameters sub command parameters
    * @param {string} description sub command description
-   * @param {Object[]} options sub command options
+   * @param {{ [key: string]: any }[]} options sub command options
    * @param {string[]} usage make examples
    * @param {Registry} rc instance of Registry
-   * @param {Object} validatorDesc rules of async-validator
-   * @param {Object} oraOptions an ora options
+   * @param {{ [key: string]: any }} validatorDesc rules of async-validator
+   * @param {{ [key: string]: any }} oraOptions an ora options
    */
   constructor(
     commandName,
@@ -54,11 +59,17 @@ class BaseSubCommand {
       };
     });
   }
-
+  /**
+   * Sets custom prompts.
+   * @param {any} val - The value to set for custom prompts.
+   */
   setCustomPrompts(val) {
     this.customPrompts = val;
   }
-
+  /**
+   * Initializes the sub command with commander.
+   * @param {Command} commander - The commander instance.
+   */
   init(commander) {
     let command = commander.command(`${this.commandName} ${this.getParameters()}`).description(this.description);
 
@@ -79,6 +90,10 @@ class BaseSubCommand {
       });
   }
 
+  /**
+   * Retrieves parameters as a string.
+   * @returns {string} Parameters string.
+   */
   getParameters() {
     return this.parameters
       .map(v => {
@@ -89,12 +104,23 @@ class BaseSubCommand {
       .join(' ');
   }
 
+  /**
+   * Handles errors related to universal options.
+   * @param {any} error - The error to handle.
+   */
   handleUniOptionsError(error) {
     const { errors = [] } = error;
+    // @ts-ignore
     logger.error(errors.reduce((acc, i) => `${acc}${i.message}\n`, ''));
     process.exit(1);
   }
 
+  /**
+   * Retrieves universal configuration.
+   * @static
+   * @param {Command} commander - The commander instance.
+   * @returns {Record<string, any>} Universal configuration.
+   */
   static getUniConfig(commander) {
     const result = {};
     ['password', 'endpoint', 'account', 'datadir'].forEach(v => {
@@ -106,6 +132,12 @@ class BaseSubCommand {
     return result;
   }
 
+  /**
+   * Parses a boolean value.
+   * @static
+   * @param {any} val - The value to parse.
+   * @returns {any} Parsed boolean value.
+   */
   static parseBoolean(val) {
     if (val === 'true') {
       return true;
@@ -116,6 +148,12 @@ class BaseSubCommand {
     return val;
   }
 
+  /**
+   * Normalizes configuration object.
+   * @static
+   * @param {any} obj - The configuration object to normalize.
+   * @returns {Record<string, any>} Normalized configuration object.
+   */
   static normalizeConfig(obj) {
     // dash to camel-case
     // 'true', 'false' to true, false
@@ -128,7 +166,16 @@ class BaseSubCommand {
     });
     return result;
   }
-
+  /**
+   * Runs the sub command.
+   * @param {Command} commander - The commander instance.
+   * @param {...any} args - Additional arguments.
+   * @returns {Promise<{
+   *   localOptions: { [key: string]: any },
+   *   options: { [key: string]: any },
+   *   subOptions: { [key: string]: any }
+   * } | void>} Promise resolving to options or void.
+   */
   async run(commander, ...args) {
     let subCommandOptions = {};
     args.slice(0, this.parameters.length).forEach((v, i) => {
@@ -188,7 +235,10 @@ class BaseSubCommand {
       subOptions: subCommandOptions
     };
   }
-
+  /**
+   * Generates examples for usage.
+   * @returns {string[]} Array of example strings.
+   */
   makeExamples() {
     return this.usage.map(cmd => `aelf-command ${this.commandName} ${cmd}`);
   }

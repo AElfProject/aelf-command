@@ -1,7 +1,3 @@
-/**
- * @file show wallet info
- * @author atom-yang
- */
 import BaseSubCommand from './baseSubCommand.js';
 import { commonGlobalOptionValidatorDesc } from '../utils/constants.js';
 import { getWallet } from '../utils/wallet.js';
@@ -22,8 +18,15 @@ const walletCommandValidatorDesc = {
     required: true
   }
 };
-
+/**
+ * @typedef {import('commander').Command} Command
+ * @typedef {import('../../types/rc/index.js').default} Registry
+ */
 class WalletCommand extends BaseSubCommand {
+  /**
+   * Constructs a new WalletCommand instance.
+   * @param {Registry} rc - The Registry instance for configuration.
+   */
   constructor(rc) {
     super(
       'wallet',
@@ -36,21 +39,33 @@ class WalletCommand extends BaseSubCommand {
     );
   }
 
+  /**
+   * Runs the wallet command logic.
+   * @param {Command} commander - The Commander instance for command handling.
+   * @param {...any} args - Additional arguments for command execution.
+   * @returns {Promise<void>} A promise that resolves when the command execution is complete.
+   */
   async run(commander, ...args) {
+    // @ts-ignore
     const { options } = await super.run(commander, ...args);
     const { datadir, account, password } = options;
     try {
       const wallet = getWallet(datadir, account, password);
       if (wallet.mnemonic) {
+        // @ts-ignore
         logger.info(`Mnemonic            : ${wallet.mnemonic}`);
       }
       wallet.publicKey = wallet.keyPair.getPublic().encode('hex');
+      // @ts-ignore
       logger.info(`Private Key         : ${wallet.privateKey}`);
+      // @ts-ignore
       logger.info(`Public Key          : ${wallet.publicKey}`);
+      // @ts-ignore
       logger.info(`Address             : ${wallet.address}`);
       this.oraInstance.succeed('Succeed!');
     } catch (e) {
       this.oraInstance.fail('Failed!');
+      // @ts-ignore
       logger.error(e);
     }
   }

@@ -1,7 +1,3 @@
-/**
- * @file load wallet from command argv
- * @author atom-yang
- */
 import AElf from 'aelf-sdk';
 import BaseSubCommand from './baseSubCommand.js';
 import { commonGlobalOptionValidatorDesc, loadCommandParameters, loadCommandUsage } from '../utils/constants.js';
@@ -16,7 +12,15 @@ const loadCommandValidatorDesc = {
   }
 };
 
+/**
+ * @typedef {import('commander').Command} Command
+ * @typedef {import('../../types/rc/index.js').default} Registry
+ */
 class LoadCommand extends BaseSubCommand {
+  /**
+   * Constructs a new LoadCommand instance.
+   * @param {Registry} rc - The registry instance.
+   */
   constructor(rc) {
     super(
       'load',
@@ -29,12 +33,20 @@ class LoadCommand extends BaseSubCommand {
     );
   }
 
+  /**
+   * Executes the load command.
+   * @param {Command} commander - The commander instance.
+   * @param {...any} args - Additional arguments.
+   * @returns {Promise<void>} A promise that resolves when the command execution is complete.
+   */
   async run(commander, ...args) {
+    // @ts-ignore
     const { options, subOptions } = await super.run(commander, ...args);
     const { datadir } = options;
     const { privateKey, saveToFile, createdByOld } = subOptions;
     try {
       let wallet = null;
+      // @ts-ignore
       logger.info('Your wallet info is :');
       if (privateKey.trim().split(' ').length > 1) {
         if (createdByOld) {
@@ -43,13 +55,17 @@ class LoadCommand extends BaseSubCommand {
           return;
         }
         wallet = AElf.wallet.getWalletByMnemonic(privateKey.trim());
+        // @ts-ignore
         logger.info(`Mnemonic            : ${wallet.mnemonic}`);
       } else {
         wallet = AElf.wallet.getWalletByPrivateKey(privateKey.trim());
       }
       wallet.publicKey = wallet.keyPair.getPublic().encode('hex');
+      // @ts-ignore
       logger.info(`Private Key         : ${wallet.privateKey}`);
+      // @ts-ignore
       logger.info(`Public Key          : ${wallet.publicKey}`);
+      // @ts-ignore
       logger.info(`Address             : ${wallet.address}`);
       if (saveToFile === true || saveToFile === 'true') {
         const keyStorePath = await saveKeyStore(wallet, datadir);
@@ -59,6 +75,7 @@ class LoadCommand extends BaseSubCommand {
       }
     } catch (e) {
       this.oraInstance.fail('Failed!');
+      // @ts-ignore
       logger.error(e);
     }
   }

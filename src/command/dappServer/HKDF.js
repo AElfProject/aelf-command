@@ -1,8 +1,3 @@
-/**
- * @file hkdf
- * @author atom-yang
- * @link https://asecuritysite.com/encryption/HKDF
- */
 import { createHmac } from 'crypto';
 
 class HKDF {
@@ -24,7 +19,14 @@ class HKDF {
     this.prk = hmac.digest();
   }
 
+  /**
+   * Expands the pseudorandom key to the desired length.
+   * @param {string} [info] - Optional context and application-specific information.
+   * @param {number} [size] - The length of the output keying material in bytes.
+   * @returns {Buffer} - The expanded keying material.
+   */
   expand(info = '', size = 32) {
+    /** @type {string | Buffer} */
     let pre = '';
     const output = [];
     const numBlocks = Math.ceil(size / this.hashLength);
@@ -39,7 +41,10 @@ class HKDF {
     return Buffer.concat(output, size);
   }
 }
-
+/**
+ * A static property that maps hash algorithm names to their output lengths in bytes.
+ * @type {{ [key: string]: number }}
+ */
 HKDF.hashList = {
   sha256: 32,
   sha224: 54,
