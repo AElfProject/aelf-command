@@ -1,7 +1,3 @@
-/**
- * @file get wallet instance
- * @author atom-yang
- */
 import AElf from 'aelf-sdk';
 import fs from 'fs';
 import path from 'path';
@@ -11,6 +7,13 @@ import Registry from '../rc/index.js';
 import { passwordPrompts } from './constants.js';
 import BaseSubCommand from '../command/baseSubCommand.js';
 
+/**
+ * Retrieves a wallet based on the provided command root, address, and password.
+ * @param {string} commandRoot - The root directory of the command.
+ * @param {string} address - The address of the wallet.
+ * @param {string} password - The password for the wallet.
+ * @returns {any} - The wallet instance.
+ */
 function getWallet(commandRoot, address, password) {
   const keyStoreFile = path.resolve(commandRoot, `keys/${address}.json`);
   const keyStore = JSON.parse(Registry.getFileOrNot(keyStoreFile, '{}').toString());
@@ -25,6 +28,13 @@ function getWallet(commandRoot, address, password) {
   }
 }
 
+/**
+ * Saves the wallet keystore to the specified directory.
+ * @param {any} wallet - The wallet instance to be saved.
+ * @param {string} datadir - The directory to save the wallet keystore.
+ * @param {string} [cipher] - Optional cipher to be used for encryption.
+ * @returns {Promise<string>} - A promise that resolves to the path of the saved keystore file.
+ */
 async function saveKeyStore(wallet, datadir, cipher = 'aes-128-ctr') {
   const { password, confirmPassword } = BaseSubCommand.normalizeConfig(await inquirer.prompt(passwordPrompts));
   if (password !== confirmPassword) {

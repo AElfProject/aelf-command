@@ -1,7 +1,3 @@
-/**
- * @file socket server
- * @author atom-yang
- */
 import { Server } from 'socket.io';
 import AElf from 'aelf-sdk';
 import { interopImportCJSDefault } from 'node-cjs-interop';
@@ -14,6 +10,10 @@ import { randomId } from '../../utils/utils.js';
 import { serializeMessage, deserializeMessage, checkTimestamp } from './utils.js';
 import { CHAIN_APIS } from './constants.js';
 
+/**
+ * @typedef {import ('async-validator').Rules} Rules
+ */
+/** @type {Rules} */
 const signRequestRules = {
   id: {
     required: true,
@@ -46,7 +46,7 @@ const signRequestRules = {
     }
   }
 };
-
+/** @type {Rules} */
 const encryptRequestRules = {
   ...signRequestRules,
   params: {
@@ -64,7 +64,7 @@ const encryptRequestRules = {
     }
   }
 };
-
+/** @type {Rules} */
 const connectSignRules = {
   ...signRequestRules,
   params: {
@@ -93,7 +93,7 @@ const connectSignRules = {
     }
   }
 };
-
+/** @type {Rules} */
 const connectEncryptRules = {
   ...signRequestRules,
   params: {
@@ -121,7 +121,41 @@ const encryptRequestValidator = new Schema(encryptRequestRules);
 const connectSignValidator = new Schema(connectSignRules);
 const connectEncryptValidator = new Schema(connectEncryptRules);
 
+/**
+ * Represents the result of an operation.
+ * @typedef {Object} Result
+ * @property {number} code - The status code of the result.
+ * @property {string} msg - The message associated with the result.
+ * @property {any[]} error - An array of errors, if any.
+ * @property {any} data - The data returned by the operation.
+ */
+
+/**
+ * Represents a client connected to the server.
+ * @typedef {Object} Client
+ * @property {function(string, any): void} emit - Sends an event to the client.
+ * @property {function(boolean=): void} disconnect - Disconnects the client.
+ * @property {function(string, function): void} on - Sends an event to the client.
+ */
+
+/**
+ * Represents a message sent to the server.
+ * @typedef {Object} Message
+ * @property {string} id - The unique identifier for the message.
+ * @property {string} appId - The application ID sending the message.
+ * @property {string} action - The action to be performed.
+ * @property {any} params - The parameters for the action.
+ */
 class Socket {
+  /**
+   * Creates an instance of Socket.
+   * @param {Object} options - The socket options.
+   * @param {number} options.port - The port to run the socket server.
+   * @param {string} options.endpoint - The default endpoint for the socket server.
+   * @param {any} options.aelf - The AElf instance.
+   * @param {any} options.wallet - The wallet instance.
+   * @param {string} options.address - The address associated with the wallet.
+   */
   constructor(options) {
     const { port, endpoint, aelf, wallet, address } = options;
     this.aelf = aelf;
@@ -132,6 +166,7 @@ class Socket {
     this.socket = new Server(port, {
       transports: ['websocket']
     });
+    // @ts-ignore
     this.socket.on('connection', this.handleConnection);
     this.clientConfig = {
       // default: {
@@ -140,7 +175,13 @@ class Socket {
       // }
     };
   }
-
+  /**
+   * Formats the response.
+   * @param {string} id - The request ID.
+   * @param {any} [result] - The result data.
+   * @param {any} [errors] - The errors array.
+   * @returns {{id: string, result: Result}} The formatted result.
+   */
   responseFormat(id, result, errors) {
     if (errors && (errors instanceof Error || (Array.isArray(errors) && errors.length > 0) || errors.Error)) {
       return {
@@ -163,7 +204,13 @@ class Socket {
       }
     };
   }
-
+  /**
+   * Sends a response to the client.
+   * @param {Client} client - The client instance.
+   * @param {Result} result - The result object.
+   * @param {string} action - The action type.
+   * @param {string} appId - The application ID.
+   */
   send(client, result, action, appId) {
     client.emit('bridge', result);
     if (action === 'disconnect') {
@@ -171,10 +218,14 @@ class Socket {
       client.disconnect(true);
     }
   }
-
+  /**
+   * Handles new client connections.
+   * @param {Client} client - The client instance.
+   */
   handleConnection(client) {
     client.on('bridge', async data => {
       logger.info('Message received');
+      /**@type {any} */
       let result = {};
       const { action, id, appId } = data;
       try {
@@ -211,7 +262,9 @@ class Socket {
         }
         this.send(client, result, action, appId);
       } catch (e) {
+        // @ts-ignore
         logger.error('error happened');
+        // @ts-ignore
         logger.error(e);
         result = this.responseFormat(id, {}, e.errors ? e.errors : e);
         if (action !== 'connect') {
@@ -221,7 +274,11 @@ class Socket {
       }
     });
   }
-
+  /**
+   * Deserializes request parameters.
+   * @param {Message} request - The request message.
+   * @returns {Promise<any>} The deserialized parameters.
+   */
   async deserializeParams(request) {
     const { appId, params } = request;
     if (!this.clientConfig[appId]) {
@@ -266,7 +323,11 @@ class Socket {
     const originalResult = serializeMessage(result);
     return this.clientConfig[appId]?.encrypt.encrypt(originalResult);
   }
-
+  /**
+   * Handles connect actions.
+   * @param {Message} message - The message object.
+   * @returns {Promise<any>} The result of the connect action.
+   */
   async handleConnect(message) {
     const { appId, params } = message;
     const { encryptAlgorithm, publicKey } = params;
@@ -315,10 +376,15 @@ class Socket {
         signature: responseSignature
       };
     }
+    // @ts-ignore
     logger.error('Not support encrypt method or not enough params');
     throw new Error('Not support encrypt method or not enough params');
   }
-
+  /**
+   * Handles method list requests.
+   * @param {Message} message - The message object.
+   * @returns {Promise<string[]>} The list of methods.
+   */
   async handleMethodList(message) {
     const params = await this.deserializeParams(message);
     const { endpoint = this.defaultEndpoint, address } = params;
@@ -328,7 +394,11 @@ class Socket {
       .filter(v => /^[A-Z]/.test(v))
       .sort();
   }
-
+  /**
+   * Handles API requests.
+   * @param {Message} message - The message object.
+   * @returns {Promise<any>} The API result.
+   */
   async handleApi(message) {
     const params = await this.deserializeParams(message);
     const { endpoint = this.defaultEndpoint, apiPath, arguments: apiArgs, methodName } = params;
@@ -340,7 +410,11 @@ class Socket {
     const result = await this.aelf.chain[methodName](...apiArgs.map(v => v.value));
     return result;
   }
-
+  /**
+   * Handles account actions.
+   * @param {Message} message - The message object.
+   * @returns {Promise<any>} The account result.
+   */
   async handleAccount(message) {
     logger.info('Querying account information');
     await this.deserializeParams(message);
@@ -362,7 +436,12 @@ class Socket {
       ]
     };
   }
-
+  /**
+   * Handles invoke actions.
+   * @param {Message} message - The message object.
+   * @param {boolean} isReadOnly - If the invoke action is read-only.
+   * @returns {Promise<any>} The invoke result.
+   */
   async handleInvoke(message, isReadOnly) {
     const params = await this.deserializeParams(message);
     const { endpoint = this.defaultEndpoint, contractAddress, contractMethod, arguments: contractArgs } = params;
@@ -381,6 +460,11 @@ class Socket {
     return result;
   }
 
+  /**
+   * Handles disconnect actions.
+   * @param {Message} message - The message object.
+   * @returns {Promise<{}>} The result of the disconnect action.
+   */
   async handleDisconnect(message) {
     // just to verify client
     await this.deserializeParams(message);

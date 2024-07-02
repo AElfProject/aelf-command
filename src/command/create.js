@@ -1,7 +1,3 @@
-/**
- * @file create command
- * @author atom-yang
- */
 import AElf from 'aelf-sdk';
 import chalk from 'chalk';
 import BaseSubCommand from './baseSubCommand.js';
@@ -16,8 +12,16 @@ const createCommandValidatorDesc = {
     required: false
   }
 };
+/**
+ * @typedef {import('commander').Command} Command
+ * @typedef {import('../../types/rc/index.js').default} Registry
+ */
 
 class CreateCommand extends BaseSubCommand {
+  /**
+   * Constructs a new CreateCommand instance.
+   * @param {Registry} rc - The registry instance.
+   */
   constructor(rc) {
     super(
       'create',
@@ -35,15 +39,26 @@ class CreateCommand extends BaseSubCommand {
       createCommandValidatorDesc
     );
   }
-
+  /**
+   * Executes the create command.
+   * @param {Command} commander - The commander instance.
+   * @param {...any} args - Additional arguments.
+   * @returns {Promise<void>} A promise that resolves when the command execution is complete.
+   */
   async run(commander, ...args) {
     const wallet = AElf.wallet.createNewWallet();
     wallet.publicKey = wallet.keyPair.getPublic().encode('hex');
+    // @ts-ignore
     logger.info('Your wallet info is :');
+    // @ts-ignore
     logger.info(`Mnemonic            : ${wallet.mnemonic}`);
+    // @ts-ignore
     logger.info(`Private Key         : ${wallet.privateKey}`);
+    // @ts-ignore
     logger.info(`Public Key          : ${wallet.publicKey}`);
+    // @ts-ignore
     logger.info(`Address             : ${wallet.address}`);
+    // @ts-ignore
     const { localOptions, options, subOptions } = await super.run(commander, ...args);
     const { datadir } = options;
     const { saveToFile } = subOptions;
@@ -57,6 +72,7 @@ class CreateCommand extends BaseSubCommand {
       }
     } catch (e) {
       this.oraInstance.fail('Failed!');
+      // @ts-ignore
       logger.error(e);
     }
   }
