@@ -22,7 +22,7 @@ jobs:
       - name: install
         run: yarn install
       - name: lint
-        run: npm lint
+        run: yarn run lint
       # Publish to npm if this version is not published
       - name: publish
         run: |
