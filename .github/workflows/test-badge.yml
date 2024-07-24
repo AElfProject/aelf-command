@@ -3,7 +3,7 @@ name: Test Badge
 on:
   push:
     branches:
-      - master
+      - feature/use-github-actions
 
 jobs:
   test:
