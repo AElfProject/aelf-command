@@ -20,11 +20,6 @@ jobs:
           node-version: 20
           cache: yarn
       - run: yarn install
-      - run: yarn run test:coverage
-      - name: Coverage Diff
-        uses: greatwizard/coverage-diff-action@v1
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
       - run: yarn run test
       - name: Install xmlstarlet
         run: |
