@@ -1,6 +1,6 @@
 {
   "name": "aelf-command",
-  "version": "0.1.47-beta.6",
+  "version": "0.1.47-beta.7",
   "description": "A CLI tools for AElf",
   "main": "src/index.js",
   "type": "module",
@@ -92,11 +92,12 @@
     "git-cz": "^4.9.0",
     "husky": "^9.0.11",
     "jest": "^29.7.0",
+    "jest-junit": "^16.0.0",
     "lint-staged": "^15.2.5",
     "prettier": "^3.3.2",
+    "socket.io-client": "^4.7.5",
     "standard-version": "^9.5.0",
-    "typescript": "^5.5.2",
-    "socket.io-client": "^4.7.5"
+    "typescript": "^5.5.2"
   },
   "keywords": [
     "AElf",
