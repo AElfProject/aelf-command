@@ -3,11 +3,13 @@ name: Test Badge
 on:
   push:
     branches:
-      - feature/use-github-actions
+      - dev
+      - master
+      - feature/badge
 
 jobs:
   test:
-    name: Coverage Diff
+    name: Generate Test Badge
     runs-on: ubuntu-latest
 
     steps:
@@ -76,18 +78,30 @@ jobs:
               });
               sha = data.sha;
             } catch (error) {
+<<<<<<< HEAD
             if (error.status !== 404) {
               throw error;
             }
+=======
+              if (error.status !== 404) {
+                throw error;
+              }
+>>>>>>> 35eb825645686f26efe5b0aa2fe1f13bfd0f4d7f
               // File does not exist, so we'll create it
             }
 
-            await github.rest.repos.createOrUpdateFileContents({
+            const params = {
               owner: context.repo.owner,
               repo: context.repo.repo,
               path: filename,
               message: `Update ${filename}`,
               content: Buffer.from(fileContent).toString('base64'),
-              sha,
               branch: 'feature/use-github-actions'
-            });
+              };
+
+                // Only add sha to params if it is defined
+                if (sha) {
+                  params.sha = sha;
+              }
+
+            await github.rest.repos.createOrUpdateFileContents(params);
