@@ -7,7 +7,7 @@ on:
 
 jobs:
   test:
-    name: Coverage Diff
+    name: Generate Test Badge
     runs-on: ubuntu-latest
 
     steps:
@@ -66,19 +66,34 @@ jobs:
             const filePath = path.join(process.env.GITHUB_WORKSPACE, filename);
             const fileContent = fs.readFileSync(filePath, 'utf8');
 
-            const { data: { sha } } = await github.rest.repos.getContent({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              path: filename,
-              ref: 'feature/use-github-actions'
-            });
+            let sha;
+            try {
+              const { data } = await github.rest.repos.getContent({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                path: filename,
+                ref: 'feature/use-github-actions'
+              });
+              sha = data.sha;
+            } catch (error) {
+              if (error.status !== 404) {
+                throw error;
+              }
+              // File does not exist, so we'll create it
+            }
 
-            await github.rest.repos.createOrUpdateFileContents({
+            const params = {
               owner: context.repo.owner,
               repo: context.repo.repo,
               path: filename,
               message: `Update ${filename}`,
               content: Buffer.from(fileContent).toString('base64'),
-              sha,
               branch: 'feature/use-github-actions'
-            });
+              };
+
+                // Only add sha to params if it is defined
+                if (sha) {
+                  params.sha = sha;
+              }
+
+            await github.rest.repos.createOrUpdateFileContents(params);
