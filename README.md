@@ -6,6 +6,7 @@
   <a href="http://commitizen.github.io/cz-cli/">
     <img alt="Commitizen friendly" src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg">
   </a>
+  <img alt="TESTS" src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/eanzhao/aelf-command/feature/use-github-actions/master-test-results.json">
 </p>
 
 ## Descriptions
