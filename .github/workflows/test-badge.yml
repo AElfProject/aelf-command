@@ -54,7 +54,22 @@ jobs:
 
             fs.writeFileSync(filename, content);
 
-      - name: Commit and push
+      - name: Check if file exists
+        id: check_file
+        run: |
+          const { data } = await github.rest.repos.getContent({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            path: filename,
+            ref: 'feature/use-github-actions'
+          });
+          if (data) {
+            echo "FILE_EXISTS=true" >> $GITHUB_ENV
+          } else {
+            echo "FILE_EXISTS=false" >> $GITHUB_ENV
+          }
+
+      - name: Create or update file
         uses: actions/github-script@v5
         with:
           github-token: ${{ secrets.COMMIT_TOKEN }}
@@ -67,22 +82,6 @@ jobs:
             const filePath = path.join(process.env.GITHUB_WORKSPACE, filename);
             const fileContent = fs.readFileSync(filePath, 'utf8');
 
-            let sha;
-            try {
-              const { data } = await github.rest.repos.getContent({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                path: filename,
-                ref: 'feature/use-github-actions'
-              });
-              sha = data.sha;
-            } catch (error) {
-              if (error.status !== 404) {
-                throw error;
-              }
-              // File does not exist, so we'll create it
-            }
-
             const params = {
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -90,11 +89,16 @@ jobs:
               message: `Update ${filename}`,
               content: Buffer.from(fileContent).toString('base64'),
               branch: 'feature/use-github-actions'
-              };
+            };
 
-                // Only add sha to params if it is defined
-                if (sha) {
-                  params.sha = sha;
-              }
+            if (${{ env.FILE_EXISTS }}) {
+              const { data } = await github.rest.repos.getContent({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                path: filename,
+                ref: 'feature/use-github-actions'
+              });
+              params.sha = data.sha;
+            }
 
             await github.rest.repos.createOrUpdateFileContents(params);
