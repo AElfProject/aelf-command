@@ -82,12 +82,18 @@ jobs:
               // File does not exist, so we'll create it
             }
 
-            await github.rest.repos.createOrUpdateFileContents({
+            const params = {
               owner: context.repo.owner,
               repo: context.repo.repo,
               path: filename,
               message: `Update ${filename}`,
               content: Buffer.from(fileContent).toString('base64'),
-              sha,
               branch: 'feature/use-github-actions'
-            });
+              };
+
+                // Only add sha to params if it is defined
+                if (sha) {
+                  params.sha = sha;
+              }
+
+            await github.rest.repos.createOrUpdateFileContents(params);
