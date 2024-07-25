@@ -78,15 +78,9 @@ jobs:
               });
               sha = data.sha;
             } catch (error) {
-<<<<<<< HEAD
-            if (error.status !== 404) {
-              throw error;
-            }
-=======
               if (error.status !== 404) {
                 throw error;
               }
->>>>>>> 35eb825645686f26efe5b0aa2fe1f13bfd0f4d7f
               // File does not exist, so we'll create it
             }
 
