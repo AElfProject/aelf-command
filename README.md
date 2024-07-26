@@ -4,7 +4,7 @@
   <img alt="Node" src="https://img.shields.io/badge/node->=10.9.0-brightgreen">
   <img alt="NPM" src="https://img.shields.io/npm/l/aelf-command">
   <a href="http://commitizen.github.io/cz-cli/"><img alt="Commitizen friendly" src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg"></a>
-  <img alt="TESTS" src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/eanzhao/aelf-command/feature/badge-json/master-test-results.json">
+  <img alt="TESTS" src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/AElfProject/aelf-command/feature/badge-json/master-test-results.json">
 </p>
 
 ## Descriptions
