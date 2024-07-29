@@ -14,6 +14,7 @@
     "allowJs": true,
     "checkJs": true,
     "allowSyntheticDefaultImports": true,
-    "noEmit": true
+    "noEmit": true,
+    "resolveJsonModule": true
   }
 }

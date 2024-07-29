@@ -3,7 +3,7 @@ import path from 'path';
 import check from 'check-node-version';
 import updateNotifier from 'update-notifier';
 import { logger } from '../src/utils/myLogger.js';
-import pkg from '../package.json' assert { type: 'json' };
+import pkg from '../package.json';
 
 const commandBin = path.resolve(__dirname, '../bin/aelf-command.js');
 

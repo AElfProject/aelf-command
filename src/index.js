@@ -9,7 +9,7 @@ import check from 'check-node-version';
 import { execSync } from 'child_process';
 import commands from './command/index.js';
 import RC from './rc/index.js';
-import pkg from '../package.json' assert { type: 'json' };
+import pkg from '../package.json';
 import { logger } from './utils/myLogger.js';
 import { userHomeDir } from './utils/userHomeDir.js';
 
