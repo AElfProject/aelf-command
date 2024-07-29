@@ -3,7 +3,9 @@ import path from 'path';
 import check from 'check-node-version';
 import updateNotifier from 'update-notifier';
 import { logger } from '../src/utils/myLogger.js';
-import pkg from '../package.json';
+import { createRequire } from 'module'; // Bring in the ability to create the 'require' method
+const require = createRequire(import.meta.url); // construct the require method
+const pkg = require('../package.json');
 
 const commandBin = path.resolve(__dirname, '../bin/aelf-command.js');
 

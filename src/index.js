@@ -4,12 +4,15 @@
  */
 import { Command } from 'commander';
 import chalk from 'chalk';
+// @ts-ignore
 import updateNotifier from 'update-notifier';
 import check from 'check-node-version';
 import { execSync } from 'child_process';
 import commands from './command/index.js';
 import RC from './rc/index.js';
-import pkg from '../package.json';
+import { createRequire } from 'module'; // Bring in the ability to create the 'require' method
+const require = createRequire(import.meta.url); // construct the require method
+const pkg = require('../package.json');
 import { logger } from './utils/myLogger.js';
 import { userHomeDir } from './utils/userHomeDir.js';
 
@@ -44,7 +47,9 @@ function init(options) {
   });
   commander.command('*').action(() => {
     // change into help
+    // @ts-ignore
     logger.warn('not a valid command\n');
+    // @ts-ignore
     logger.info(execSync('aelf-command -h').toString());
   });
   const isTest = process.env.NODE_ENV === 'test';
@@ -67,6 +72,7 @@ function init(options) {
 function run(args, options) {
   check({ node: `>= ${minVersion}` }, (error, results) => {
     if (error) {
+      // @ts-ignore
       logger.error(error);
       return;
     }
@@ -77,6 +83,7 @@ function run(args, options) {
         isTest ? { from: 'user' } : undefined
       );
     } else {
+      // @ts-ignore
       logger.error('Your Node.js version is needed to >= %s', minVersion);
     }
   });
