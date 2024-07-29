@@ -1,19 +1,16 @@
 # aelf-command
 
-<p align="center">
+<p>
   <img alt="Node" src="https://img.shields.io/badge/node->=18.18.0-brightgreen">
   <img alt="NPM" src="https://img.shields.io/npm/l/aelf-command">
   <a href="http://commitizen.github.io/cz-cli/"><img alt="Commitizen friendly" src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg"></a>
-  <img alt="TESTS" src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/AElfProject/aelf-command/feature/badge-json/feature-badge-success-test-results.json">
-
 </p>
-<p align="center">
 
   | Branch       | GitHub Actions | Tests           | Coverage       |
 |--------------|----------------|-----------------|----------------|
 | `master`        | [![publish](https://github.com/AElfProject/aelf-command/actions/workflows/publish.yml/badge.svg)](https://github.com/AElfProject/aelf-command/actions/workflows/publish.yml) | ![Tests](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/AElfProject/aelf-command/feature/badge-json/feature-badge-success-test-results.json) | ![Coverage](https://AElfProject.github.io/aelf-command/badges/coverage.svg) |
 
-</p>
+
 
 
 ## Descriptions
