@@ -10,15 +10,31 @@ import check from 'check-node-version';
 import { execSync } from 'child_process';
 import commands from './command/index.js';
 import RC from './rc/index.js';
-import { createRequire } from 'module'; // Bring in the ability to create the 'require' method
-const require = createRequire(import.meta.url); // construct the require method
-const pkg = require('../package.json');
+import { readFileSync } from 'fs';
+import { fileURLToPath } from 'url';
+import path from 'path';
 import { logger } from './utils/myLogger.js';
 import { userHomeDir } from './utils/userHomeDir.js';
 
 const minVersion = '10.9.0';
 
+export function getPackageJson() {
+  let dirname;
+  try {
+    // for test as we cannot use import.meta.url in Jest
+    dirname = __dirname;
+  } catch {
+    const __filename = fileURLToPath(import.meta.url);
+    dirname = path.dirname(__filename);
+  }
+  const filePath = path.resolve(dirname, '../package.json');
+  const data = readFileSync(filePath, 'utf-8');
+  const packageJson = JSON.parse(data);
+  return packageJson;
+}
+
 function init(options) {
+  const pkg = getPackageJson();
   const commander = new Command();
   // Configuration for test
   if (options?.exitOverride) {

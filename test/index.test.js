@@ -3,9 +3,7 @@ import path from 'path';
 import check from 'check-node-version';
 import updateNotifier from 'update-notifier';
 import { logger } from '../src/utils/myLogger.js';
-import { createRequire } from 'module'; // Bring in the ability to create the 'require' method
-const require = createRequire(import.meta.url); // construct the require method
-const pkg = require('../package.json');
+import { getPackageJson } from '../src/index.js';
 
 const commandBin = path.resolve(__dirname, '../bin/aelf-command.js');
 
@@ -17,7 +15,18 @@ jest.mock('child_process', () => {
   };
 });
 jest.mock('../src/utils/myLogger.js');
+
+describe('test get packagon json', () => {
+  test('should return correct packagon json', () => {
+    const pkg = getPackageJson();
+    expect(pkg.name).toBe('aelf-command');
+  });
+});
 describe('test index', () => {
+  let pkg;
+  beforeEach(() => {
+    pkg = getPackageJson();
+  });
   afterEach(() => {
     // Restore any mocks
     jest.restoreAllMocks();
