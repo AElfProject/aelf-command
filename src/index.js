@@ -4,18 +4,37 @@
  */
 import { Command } from 'commander';
 import chalk from 'chalk';
+// @ts-ignore
 import updateNotifier from 'update-notifier';
 import check from 'check-node-version';
 import { execSync } from 'child_process';
 import commands from './command/index.js';
 import RC from './rc/index.js';
-import pkg from '../package.json' assert { type: 'json' };
+import { readFileSync } from 'fs';
+import { fileURLToPath } from 'url';
+import path from 'path';
 import { logger } from './utils/myLogger.js';
 import { userHomeDir } from './utils/userHomeDir.js';
 
 const minVersion = '10.9.0';
 
+export function getPackageJson() {
+  let dirname;
+  try {
+    // for test as we cannot use import.meta.url in Jest
+    dirname = __dirname;
+  } catch {
+    const __filename = fileURLToPath(import.meta.url);
+    dirname = path.dirname(__filename);
+  }
+  const filePath = path.resolve(dirname, '../package.json');
+  const data = readFileSync(filePath, 'utf-8');
+  const packageJson = JSON.parse(data);
+  return packageJson;
+}
+
 function init(options) {
+  const pkg = getPackageJson();
   const commander = new Command();
   // Configuration for test
   if (options?.exitOverride) {
@@ -44,7 +63,9 @@ function init(options) {
   });
   commander.command('*').action(() => {
     // change into help
+    // @ts-ignore
     logger.warn('not a valid command\n');
+    // @ts-ignore
     logger.info(execSync('aelf-command -h').toString());
   });
   const isTest = process.env.NODE_ENV === 'test';
@@ -67,6 +88,7 @@ function init(options) {
 function run(args, options) {
   check({ node: `>= ${minVersion}` }, (error, results) => {
     if (error) {
+      // @ts-ignore
       logger.error(error);
       return;
     }
@@ -77,6 +99,7 @@ function run(args, options) {
         isTest ? { from: 'user' } : undefined
       );
     } else {
+      // @ts-ignore
       logger.error('Your Node.js version is needed to >= %s', minVersion);
     }
   });
