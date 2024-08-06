@@ -4,10 +4,12 @@ import chalk from 'chalk';
 import path from 'path';
 import { v4 as uuid } from 'uuid';
 import fs from 'fs';
+import { fileURLToPath } from 'url';
 import _camelCase from 'camelcase';
 import inquirer from 'inquirer';
 import { plainLogger } from './myLogger.js';
-import * as protobuf from '@aelfqueen/protobufjs';
+import protobuf from '@aelfqueen/protobufjs';
+const { load } = protobuf;
 
 /**
  * @typedef {import('ora').Ora} Ora
@@ -269,7 +271,7 @@ function isSpecialParameters(inputType) {
   );
 }
 
-async function getParamValue(type, fieldName) {
+async function getParamValue(type, fieldName, rule) {
   let prompts = PROTO_TYPE_PROMPT_TYPE[type] || PROTO_TYPE_PROMPT_TYPE.default;
   const fieldNameWithoutDot = fieldName.replace('.', '');
   prompts = {
@@ -277,9 +279,10 @@ async function getParamValue(type, fieldName) {
     name: fieldNameWithoutDot,
     message: `Enter the required param <${fieldName}>:`
   };
-
   const promptValue = (await inquirer.prompt(prompts))[fieldNameWithoutDot];
-
+  if (rule === 'repeated') {
+    prompts.transformFunc = v => JSON.parse(v.replace(/'/g, '"'));
+  }
   let value = parseJSON(await prompts.transformFunc(promptValue));
   if (typeof value === 'string' && isFilePath(value)) {
     const filePath = path.resolve(process.cwd(), value);
@@ -367,7 +370,7 @@ async function getParams(method) {
           }
           paramValue = innerResult;
         } else {
-          paramValue = await getParamValue(type, fieldName);
+          paramValue = await getParamValue(type, fieldName, rule);
         }
         result[fieldName] = parseJSON(paramValue);
       }
@@ -419,7 +422,16 @@ async function deserializeLogs(aelf, logs = []) {
   if (!logs || logs.length === 0) {
     return null;
   }
-  const Root = await protobuf.load('./src/protobuf/virtual_transaction.proto');
+  let dirname;
+  try {
+    // for test as we cannot use import.meta.url in Jest
+    dirname = __dirname;
+  } catch {
+    const __filename = fileURLToPath(import.meta.url);
+    dirname = path.dirname(__filename);
+  }
+  const filePath = path.resolve(dirname, '../package.json');
+  const Root = await load(path.resolve(dirname, '../protobuf/virtual_transaction.proto'));
   let results = await Promise.all(logs.map(v => getProto(aelf, v.Address)));
   results = results.map((proto, index) => {
     const { Name, NonIndexed, Indexed = [] } = logs[index];
