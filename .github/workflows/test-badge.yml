@@ -8,6 +8,7 @@ on:
     branches:
       - dev
       - master
+      - feature/badge-success
 
 env:
   BRANCH_NAME: 'feature/badge-json'
@@ -48,8 +49,9 @@ jobs:
             const tests = "${{ env.TESTS }}";
             const failures = "${{ env.FAILURES }}";
             const errors = "${{ env.ERRORS }}";
+            const success = tests - failures;
             const color = errors > 0 ? "red" : (failures > 0 ? "green" : "brightgreen");
-            const content = `{"schemaVersion":1,"label":"tests","message":"${tests} tests, ${failures} failures, ${errors} errors","color":"${color}"}`;
+            const content = `{"schemaVersion":1,"label":"tests","message":"${tests} tests, ${success} success","color":"${color}"}`;
 
             fs.writeFileSync("${{ env.FILENAME }}", content);
 
