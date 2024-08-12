@@ -13,7 +13,7 @@
 
   | Branch       | Tests           | Coverage       |
 |--------------|-----------------|----------------|
-| `master` | ![Tests](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/AElfProject/aelf-command/feature/badge-json/master-test-results.json) | ![Coverage](https://AElfProject.github.io/aelf-command/badges/coverage.svg) |
+| `master` | ![Tests](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/AElfProject/aelf-command/feature/badge-json/master-test-results.json) | ![Coverage](https://AElfProject.github.io/aelf-command/badges.svg) |
 
 
 
