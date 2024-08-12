@@ -1,14 +1,19 @@
 # aelf-command
 
 <p>
-  <img alt="Node" src="https://img.shields.io/badge/node->=18.18.0-brightgreen">
+  <a href="https://nodejs.org/download/">
+    <img alt="Node version" src="https://img.shields.io/node/v/aelf-command.svg">
+  </a>
   <img alt="NPM" src="https://img.shields.io/npm/l/aelf-command">
   <a href="http://commitizen.github.io/cz-cli/"><img alt="Commitizen friendly" src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg"></a>
+  <a href="https://github.com/AElfProject/aelf-command/actions/workflows/publish.yml">
+    <img alt="coverage" src="https://github.com/AElfProject/aelf-command/actions/workflows/publish.yml/badge.svg">
+  </a>
 </p>
 
-  | Branch       | GitHub Actions | Tests           | Coverage       |
-|--------------|----------------|-----------------|----------------|
-| `master`        | [![publish](https://github.com/AElfProject/aelf-command/actions/workflows/publish.yml/badge.svg)](https://github.com/AElfProject/aelf-command/actions/workflows/publish.yml) | ![Tests](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/AElfProject/aelf-command/feature/badge-json/feature-badge-success-test-results.json) | ![Coverage](https://AElfProject.github.io/aelf-command/badges/coverage.svg) |
+  | Branch       | Tests           | Coverage       |
+|--------------|-----------------|----------------|
+| `master` | ![Tests](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/AElfProject/aelf-command/feature/badge-json/master-test-results.json) | ![Coverage](https://AElfProject.github.io/aelf-command/badges/coverage.svg) |
 
 
 
