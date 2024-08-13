@@ -225,6 +225,9 @@ function parseJSON(str = '') {
   let result = null;
   try {
     result = JSON.parse(str);
+    if (typeof result === 'number' && /^-?\d+(\.\d+)?[eE][+-]?\d+$/.test(String(result))) {
+      result = str;
+    }
   } catch (e) {
     result = str;
   }
