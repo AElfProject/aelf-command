@@ -1,6 +1,8 @@
 import AElf from 'aelf-sdk';
 import inquirer from 'inquirer';
 import chalk from 'chalk';
+import { createReadStream } from 'fs';
+import csv from 'csv-parser';
 import BaseSubCommand from './baseSubCommand.js';
 import { callCommandUsages, callCommandParameters } from '../utils/constants.js';
 import {
@@ -9,7 +11,8 @@ import {
   getMethod,
   promptTolerateSeveralTimes,
   getParams,
-  parseJSON
+  parseJSON,
+  parseCSV
 } from '../utils/utils.js';
 import { getWallet } from '../utils/wallet.js';
 import { logger } from '../utils/myLogger.js';
@@ -65,6 +68,19 @@ class CallCommand extends BaseSubCommand {
   }
 
   /**
+   * Calls a method with specified parameters.
+   * @param {any} method The method to call.
+   * @param {any} params The parameters for the method call.
+   * @returns {Promise<any>} A promise that resolves with the result of the method call.
+   */
+  async showRes(method, params) {
+    const result = await this.callMethod(method, params);
+    // @ts-ignore
+    logger.info(`\nResult:\n${JSON.stringify(result, null, 2)}`);
+    this.oraInstance.succeed('Succeed!');
+  }
+
+  /**
    * Runs the command.
    * @param {Command} commander The Commander instance.
    * @param {...any[]} args Additional arguments passed to the command.
@@ -75,7 +91,7 @@ class CallCommand extends BaseSubCommand {
     // @ts-ignore
     const { options, subOptions } = await super.run(commander, ...args);
     const subOptionsLength = Object.keys(subOptions).length;
-    const { endpoint, datadir, account, password } = options;
+    const { endpoint, datadir, account, password, csv } = options;
     const aelf = new AElf(new AElf.providers.HttpProvider(endpoint));
     try {
       let { contractAddress, method, params } = subOptions;
@@ -109,13 +125,16 @@ class CallCommand extends BaseSubCommand {
               break;
             case 'params':
               contractAddress = await getContractInstance(contractAddress, aelf, wallet, this.oraInstance);
-
               method = getMethod(method, contractAddress);
-
-              params = await getParams(method);
-              params = typeof params === 'string' ? params : BaseSubCommand.normalizeConfig(params);
-              if (Object.keys(params || {}).length > 0) {
-                console.log(chalk.hex('#3753d3')(`The params you entered is:\n${JSON.stringify(params, null, 2)}`));
+              if (csv) {
+                const csvParams = await parseCSV(csv);
+                params = csvParams;
+              } else {
+                params = await getParams(method);
+                params = typeof params === 'string' ? params : BaseSubCommand.normalizeConfig(params);
+                if (Object.keys(params || {}).length > 0) {
+                  console.log(chalk.hex('#3753d3')(`The params you entered is:\n${JSON.stringify(params, null, 2)}`));
+                }
               }
               break;
             default:
@@ -124,15 +143,23 @@ class CallCommand extends BaseSubCommand {
         }
       }
       contractAddress = await getContractInstance(contractAddress, aelf, wallet, this.oraInstance);
-      params = parseJSON(params);
+      if (Array.isArray(params)) {
+        params.forEach(param => parseJSON(param));
+      } else {
+        params = parseJSON(params);
+      }
+
       method = getMethod(method, contractAddress);
       if (method.inputTypeInfo && (Object.keys(method.inputTypeInfo.fields).length === 0 || !method.inputTypeInfo.fields)) {
         params = '';
       }
-      const result = await this.callMethod(method, params);
-      // @ts-ignore
-      logger.info(`\nResult:\n${JSON.stringify(result, null, 2)}`);
-      this.oraInstance.succeed('Succeed!');
+      if (Array.isArray(params)) {
+        for (const param of params) {
+          await this.showRes(method, param);
+        }
+      } else {
+        await this.showRes(method, params);
+      }
     } catch (e) {
       this.oraInstance.fail('Failed!');
       // @ts-ignore
