@@ -366,6 +366,11 @@ const commonGlobalOptionValidatorDesc = {
     type: 'string',
     required: false,
     message: 'set a valid account address in global config file or passed by -a <address>'
+  },
+  csv: {
+    type: 'string',
+    required: false,
+    message: 'set params in csv file by -c <csv>'
   }
 };
 
@@ -374,8 +379,8 @@ const strictGlobalOptionValidatorDesc = /**@type {CommonGlobalOptionValidatorDes
 // @ts-ignore
 Object.entries(commonGlobalOptionValidatorDesc).forEach((/** @type {[CommonGlobalOptionKey, any]} */ [key, value]) => {
   strictGlobalOptionValidatorDesc[key] = {
-    ...value,
-    required: true
+    ...value
+    // required: true
   };
 });
 

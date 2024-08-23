@@ -7,7 +7,7 @@ import { callCommandUsages, callCommandParameters } from '../../src/utils/consta
 import { getContractInstance } from '../../src/utils/utils.js';
 import { userHomeDir } from '../../src/utils/userHomeDir.js';
 import { logger } from '../../src/utils/myLogger.js';
-import { endpoint as endPoint, account, password, dataDir } from '../constants.js';
+import { endpoint as endPoint, account, password, dataDir, csvDir } from '../constants.js';
 
 const sampleRc = { getConfigs: jest.fn() };
 jest.mock('../../src/utils/myLogger');
@@ -99,6 +99,26 @@ describe('CallCommand', () => {
     );
     commander.parse([process.argv[0], '', 'call', '-e', endPoint, '-a', account, '-p', password, '-d', dataDir]);
     await callCommand.run(commander, 'AElf.ContractNames.Token', 'GetTokenInfo');
+    expect(logger.info).toHaveBeenCalled();
+  });
+
+  test('should run with csv', async () => {
+    inquirer.prompt = questions =>
+      Promise.resolve({
+        symbol: 'ELF',
+        owner: 'GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk'
+      });
+    const commander = new Command();
+    commander.option('-e, --endpoint <URI>', 'The URI of an AElf node. Eg: http://127.0.0.1:8000');
+    commander.option('-a, --account <account>', 'The address of AElf wallet');
+    commander.option('-p, --password <password>', 'The password of encrypted keyStore');
+    commander.option(
+      '-d, --datadir <directory>',
+      `The directory that contains the AElf related files. Default to be ${userHomeDir}/aelf`
+    );
+    commander.option('-c, --csv <csv>', 'The location of the CSV file containing the parameters.');
+    commander.parse([process.argv[0], '', 'call', '-e', endPoint, '-a', account, '-p', password, '-d', dataDir, '-c', csvDir]);
+    await callCommand.run(commander, 'AElf.ContractNames.Token', 'GetBalance');
     expect(logger.info).toHaveBeenCalled();
   });
 

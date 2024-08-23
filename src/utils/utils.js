@@ -9,6 +9,8 @@ import _camelCase from 'camelcase';
 import inquirer from 'inquirer';
 import { plainLogger } from './myLogger.js';
 import protobuf from '@aelfqueen/protobufjs';
+import { createReadStream } from 'fs';
+import csv from 'csv-parser';
 const { load } = protobuf;
 
 /**
@@ -462,6 +464,23 @@ async function deserializeLogs(aelf, logs = []) {
   return results;
 }
 
+const parseCSV = async address => {
+  let results = [];
+  const stream = createReadStream(address).pipe(csv());
+  for await (const data of stream) {
+    const cleanData = {};
+    for (const key in data) {
+      const cleanKey = key.replace(/\n/g, '').trim();
+      const cleanValue = typeof data[key] === 'string' ? data[key].replace(/\n/g, '').trim() : data[key];
+      if (cleanValue !== '') {
+        cleanData[cleanKey] = cleanValue;
+      }
+    }
+    Object.keys(cleanData).length && results.push(cleanData);
+  }
+  return results;
+};
+
 export {
   promisify,
   camelCase,
@@ -474,5 +493,6 @@ export {
   parseJSON,
   randomId,
   getParams,
-  deserializeLogs
+  deserializeLogs,
+  parseCSV
 };

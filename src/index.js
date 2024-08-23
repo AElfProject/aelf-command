@@ -51,11 +51,11 @@ function init(options) {
   commander.option('-e, --endpoint <URI>', 'The URI of an AElf node. Eg: http://127.0.0.1:8000');
   commander.option('-a, --account <account>', 'The address of AElf wallet');
   commander.option('-p, --password <password>', 'The password of encrypted keyStore');
-
   commander.option(
     '-d, --datadir <directory>',
     `The directory that contains the AElf related files. Default to be ${userHomeDir}/aelf`
   );
+  commander.option('-c, --csv <csv>', 'The location of the CSV file containing the parameters.');
   const rc = new RC();
   Object.values(commands).forEach(Value => {
     const command = new Value(rc);

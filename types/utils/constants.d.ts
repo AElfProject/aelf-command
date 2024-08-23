@@ -36,11 +36,17 @@ export interface AccountValidatorDesc {
   required: boolean;
   message: string;
 }
+export interface CSVValidatorDesc {
+  type: string;
+  required: boolean;
+  message: string;
+}
 export interface CommonGlobalOptionValidatorDesc {
   password: PasswordValidatorDesc;
   endpoint: EndpointValidatorDesc;
   datadir: DatadirValidatorDesc;
   account: AccountValidatorDesc;
+  csv: CSVValidatorDesc;
 }
 export const commonGlobalOptionValidatorDesc: CommonGlobalOptionValidatorDesc;
 

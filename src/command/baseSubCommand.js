@@ -6,7 +6,7 @@ import inquirer from 'inquirer';
 import ora from 'ora';
 import { logger } from '../utils/myLogger.js';
 import { camelCase } from '../utils/utils.js';
-import { globalOptionsPrompts, strictGlobalOptionValidatorDesc } from '../utils/constants.js';
+import { commonGlobalOptionValidatorDesc, globalOptionsPrompts, strictGlobalOptionValidatorDesc } from '../utils/constants.js';
 
 // Schema.warning = () => {}; // TypeError: Cannot add property warning, object is not extensible
 
@@ -123,7 +123,7 @@ class BaseSubCommand {
    */
   static getUniConfig(commander) {
     const result = {};
-    ['password', 'endpoint', 'account', 'datadir'].forEach(v => {
+    Object.keys(commonGlobalOptionValidatorDesc).forEach(v => {
       const options = commander.opts();
       if (options[v]) {
         result[v] = options[v];
