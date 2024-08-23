@@ -15,10 +15,11 @@ import {
   parseJSON,
   randomId,
   getParams,
-  deserializeLogs
+  deserializeLogs,
+  parseCSV
 } from '../../src/utils/utils';
 import { plainLogger } from '../../src/utils/myLogger';
-import { endpoint, account, password, dataDir } from '../constants.js';
+import { endpoint, account, password, dataDir, csvDir } from '../constants.js';
 
 jest.mock('inquirer');
 
@@ -389,6 +390,13 @@ describe('utils', () => {
     test('test deserialize log with empty logs', async () => {
       const result = await deserializeLogs(aelf);
       expect(result).toEqual(null);
+    });
+  });
+
+  describe('parseCSV', () => {
+    test('test parse csv file', async () => {
+      const results = await parseCSV(csvDir);
+      expect(results).toEqual([{ owner: 'GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk', symbol: 'ELF' }]);
     });
   });
 });

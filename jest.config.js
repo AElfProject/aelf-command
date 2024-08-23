@@ -33,7 +33,7 @@ export default {
   coveragePathIgnorePatterns: ['/node_modules/', '/src/utils/constants.js', '/src/command/index.js'],
 
   // A list of reporter names that Jest uses when writing coverage reports
-  coverageReporters: ['text', 'json-summary'],
+  coverageReporters: ['text', 'json-summary', 'html'],
 
   // An object that configures minimum threshold enforcement for coverage results
   // coverageThreshold: null,
@@ -146,7 +146,7 @@ export default {
 
   // The glob patterns Jest uses to detect test files
   testMatch: [
-    // '**/test/command/proposal.test.js'
+    // '**/test/utils/utils.test.js'
     '**/test/command/dappServer/socket-sign.test.js',
     '**/test/**/?(*.)+(spec|test).[jt]s?(x)'
     // "**/?(*.)+(spec|test).[tj]s?(x)"
