@@ -1,9 +1,7 @@
 /* eslint-disable max-len */
 import { Command } from 'commander';
-import path from 'path';
 import inquirer from 'inquirer';
 import AElf from 'aelf-sdk';
-import chalk from 'chalk';
 import moment from 'moment';
 import ProposalCommand from '../../src/command/proposal.js';
 import { userHomeDir } from '../../src/utils/userHomeDir.js';
