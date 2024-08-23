@@ -11,12 +11,9 @@
   </a>
 </p>
 
-  | Branch       | Tests           | Coverage       |
-|--------------|-----------------|----------------|
+| Branch   | Tests                                                                                                                                                | Coverage                                                           |
+| -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
 | `master` | ![Tests](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/AElfProject/aelf-command/feature/badge-json/master-test-results.json) | ![Coverage](https://AElfProject.github.io/aelf-command/badges.svg) |
-
-
-
 
 ## Descriptions
 
@@ -24,7 +21,7 @@ _A CLI tools built for AElf_
 
 ## Features
 
-- Get or Set common configs, `endpoint`, `account`, `datadir`, `password`.
+- Get or Set common configs, `endpoint`, `account`, `datadir`, `password`, `csv`.
 - For new users who are not familiar with the CLI parameters, any missing parameters will be asked in a prompting way.
 - Create a new `account`.
 - Load an account from a given `private key` or `mnemonic`.
@@ -157,6 +154,7 @@ Options:
   -a, --account <account>                                  The address of AElf wallet
   -p, --password <password>                                The password of encrypted keyStore
   -d, --datadir <directory>                                The directory that contains the AElf related files. Defaults to {home}/.local/share/aelf
+  -c, --csv <csv>                                          The location of the CSV file containing the parameters.
   -h, --help                                               output usage information
 
 Commands:
@@ -218,6 +216,7 @@ aelf-command console
 - `endpoint`: The endpoint for the RPC service.
 - `account`: The account to be used to interact with the blockchain `endpoint`.
 - `password`: The password for unlocking the given `account`.
+- `csv>`: The location of the CSV file containing the parameters.
 
 You can specified options above in several ways, and the priority is in the order of low to high.
 
