@@ -1,8 +1,6 @@
 import AElf from 'aelf-sdk';
 import inquirer from 'inquirer';
 import chalk from 'chalk';
-import { createReadStream } from 'fs';
-import csv from 'csv-parser';
 import BaseSubCommand from './baseSubCommand.js';
 import { callCommandUsages, callCommandParameters } from '../utils/constants.js';
 import {
@@ -12,7 +10,8 @@ import {
   promptTolerateSeveralTimes,
   getParams,
   parseJSON,
-  parseCSV
+  parseCSV,
+  parseJSONFile
 } from '../utils/utils.js';
 import { getWallet } from '../utils/wallet.js';
 import { logger } from '../utils/myLogger.js';
@@ -91,7 +90,7 @@ class CallCommand extends BaseSubCommand {
     // @ts-ignore
     const { options, subOptions } = await super.run(commander, ...args);
     const subOptionsLength = Object.keys(subOptions).length;
-    const { endpoint, datadir, account, password, csv } = options;
+    const { endpoint, datadir, account, password, csv, json } = options;
     const aelf = new AElf(new AElf.providers.HttpProvider(endpoint));
     try {
       let { contractAddress, method, params } = subOptions;
@@ -127,8 +126,9 @@ class CallCommand extends BaseSubCommand {
               contractAddress = await getContractInstance(contractAddress, aelf, wallet, this.oraInstance);
               method = getMethod(method, contractAddress);
               if (csv) {
-                const csvParams = await parseCSV(csv);
-                params = csvParams;
+                params = await parseCSV(csv);
+              } else if (json) {
+                params = await parseJSONFile(json);
               } else {
                 params = await getParams(method);
                 params = typeof params === 'string' ? params : BaseSubCommand.normalizeConfig(params);

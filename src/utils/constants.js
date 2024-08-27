@@ -371,6 +371,11 @@ const commonGlobalOptionValidatorDesc = {
     type: 'string',
     required: false,
     message: 'set params in csv file by -c <csv>'
+  },
+  json: {
+    type: 'string',
+    required: false,
+    message: 'set params in csv file by -j <json>'
   }
 };
 

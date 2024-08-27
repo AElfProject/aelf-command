@@ -5,3 +5,4 @@ export const account = 'GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk';
 export const password = '1234*Qwer';
 export const dataDir = path.resolve(__dirname, './dataDir/aelf');
 export const csvDir = path.resolve(__dirname, './test.csv');
+export const jsonDir = path.resolve(__dirname, './test.json');

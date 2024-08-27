@@ -11,42 +11,32 @@ export interface CallCommandParameter {
 }
 export const callCommandParameters: CallCommandParameter[];
 
-export interface PasswordValidatorDesc {
+interface BaseValidatorDesc {
   type: string;
   required: boolean;
   message: string;
+}
+export interface PasswordValidatorDesc extends BaseValidatorDesc {
   validator(rule: any, value: any): boolean;
 }
 
-export interface EndpointValidatorDesc {
-  type: string;
-  required: boolean;
+export interface EndpointValidatorDesc extends BaseValidatorDesc {
   pattern: RegExp;
-  message: string;
 }
 
-export interface DatadirValidatorDesc {
-  type: string;
-  required: boolean;
-  message: string;
-}
+export interface DatadirValidatorDesc extends BaseValidatorDesc {}
 
-export interface AccountValidatorDesc {
-  type: string;
-  required: boolean;
-  message: string;
-}
-export interface CSVValidatorDesc {
-  type: string;
-  required: boolean;
-  message: string;
-}
+export interface AccountValidatorDesc extends BaseValidatorDesc {}
+export interface CSVValidatorDesc extends BaseValidatorDesc {}
+
+export interface JSONValidatorDesc extends BaseValidatorDesc {}
 export interface CommonGlobalOptionValidatorDesc {
   password: PasswordValidatorDesc;
   endpoint: EndpointValidatorDesc;
   datadir: DatadirValidatorDesc;
   account: AccountValidatorDesc;
   csv: CSVValidatorDesc;
+  json: JSONValidatorDesc;
 }
 export const commonGlobalOptionValidatorDesc: CommonGlobalOptionValidatorDesc;
 

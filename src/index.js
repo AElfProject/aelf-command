@@ -56,6 +56,7 @@ function init(options) {
     `The directory that contains the AElf related files. Default to be ${userHomeDir}/aelf`
   );
   commander.option('-c, --csv <csv>', 'The location of the CSV file containing the parameters.');
+  commander.option('-j, --json <json>', 'The location of the JSON file containing the parameters.');
   const rc = new RC();
   Object.values(commands).forEach(Value => {
     const command = new Value(rc);

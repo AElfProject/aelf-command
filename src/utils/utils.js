@@ -481,6 +481,17 @@ const parseCSV = async address => {
   return results;
 };
 
+const parseJSONFile = async address => {
+  try {
+    const absolutePath = path.resolve(address);
+    const data = await fs.readFileSync(absolutePath);
+    const jsonObject = JSON.parse(data.toString('utf8'));
+    return jsonObject;
+  } catch (error) {
+    throw new Error(`An error occurred while reading or parsing the JSON file: ${error.message}`);
+  }
+};
+
 export {
   promisify,
   camelCase,
@@ -494,5 +505,6 @@ export {
   randomId,
   getParams,
   deserializeLogs,
-  parseCSV
+  parseCSV,
+  parseJSONFile
 };
