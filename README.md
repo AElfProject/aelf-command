@@ -21,7 +21,7 @@ _A CLI tools built for AElf_
 
 ## Features
 
-- Get or Set common configs, `endpoint`, `account`, `datadir`, `password`, `csv`.
+- Get or Set common configs, `endpoint`, `account`, `datadir`, `password`, `csv`, `json`.
 - For new users who are not familiar with the CLI parameters, any missing parameters will be asked in a prompting way.
 - Create a new `account`.
 - Load an account from a given `private key` or `mnemonic`.
@@ -130,7 +130,7 @@ Welcome to aelf interactive console. Ctrl + C to terminate the program. Double t
    ║   NAME       | DESCRIPTION                                ║
    ║   AElf       | imported from aelf-sdk                     ║
    ║   aelf       | the instance of an aelf-sdk, connect to    ║
-   ║              | http://13.231.179.27:8000                  ║
+   ║              | https://tdvw-test-node.aelf.io                  ║
    ║   _account   | the instance of an AElf wallet, address    ║
    ║              | is                                         ║
    ║              | 2Ue31YTuB5Szy7cnr3SCEGU2gtGi5uMQBYarYUR…   ║
@@ -155,6 +155,7 @@ Options:
   -p, --password <password>                                The password of encrypted keyStore
   -d, --datadir <directory>                                The directory that contains the AElf related files. Defaults to {home}/.local/share/aelf
   -c, --csv <csv>                                          The location of the CSV file containing the parameters.
+  -j, --json <json>                                        The location of the JSON file containing the parameters.
   -h, --help                                               output usage information
 
 Commands:
@@ -216,7 +217,8 @@ aelf-command console
 - `endpoint`: The endpoint for the RPC service.
 - `account`: The account to be used to interact with the blockchain `endpoint`.
 - `password`: The password for unlocking the given `account`.
-- `csv>`: The location of the CSV file containing the parameters.
+- `csv`: The location of the CSV file containing the parameters.
+- `json`: The location of the JSON file containing the parameters.
 
 You can specified options above in several ways, and the priority is in the order of low to high.
 
@@ -670,7 +672,7 @@ In each item:
 
 ```bash
 $ aelf-command send
-✔ Enter the the URI of an AElf node … http://13.231.179.27:8000
+✔ Enter the the URI of an AElf node … https://tdvw-test-node.aelf.io
 ✔ Enter a valid wallet address, if you don't have, create one by aelf-command create … D3vSjRYL8MpeRpvUDy85ktXijnBe2tHn8NTACsggUVteQCNGP
 ✔ Enter the password you typed when creating a wallet … ********
 ✔ Enter contract name (System contracts only) or the address of contract … AElf.ContractNames.Token
@@ -708,7 +710,7 @@ aelf-command send AElf.ContractNames.Token Transfer '{"symbol": "ELF", "to": "C9
 
 ```bash
 $ aelf-command call
-✔ Enter the the URI of an AElf node … http://13.231.179.27:8000
+✔ Enter the the URI of an AElf node … https://tdvw-test-node.aelf.io
 ✔ Enter a valid wallet address, if you don't have, create one by aelf-command create … D3vSjRYL8MpeRpvUDy85ktXijnBe2tHn8NTACsggUVteQCNGP
 ✔ Enter the password you typed when creating a wallet … ********
 ✔ Enter contract name (System contracts only) or the address of contract … AElf.ContractNames.Token
@@ -744,6 +746,38 @@ Result:
 aelf-command call AElf.ContractNames.Token GetTokenInfo '{"symbol":"ELF"}'
 ```
 
+#### Call a read-only method and pass params through CSV
+
+```bash
+$ aelf-command call -e https://tdvw-test-node.aelf.io/ -a GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk -p 1234*Qwer -j ./test.csv  AElf.ContractNames.Token GetBalance
+✔ Fetching contract successfully!
+✔ Calling method successfully!
+AElf [Info]:
+Result:
+{
+  "symbol": "ELF",
+  "owner": "GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk",
+  "balance": "155000"
+}
+✔ Succeed!
+```
+
+#### Call a read-only method and pass params through JSON
+
+```bash
+$ aelf-command call -e https://tdvw-test-node.aelf.io/ -a GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk -p 1234*Qwer -j ./test.json  AElf.ContractNames.Token GetBalance
+✔ Fetching contract successfully!
+✔ Calling method successfully!
+AElf [Info]:
+Result:
+{
+  "symbol": "ELF",
+  "owner": "GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk",
+  "balance": "155000"
+}
+✔ Succeed!
+```
+
 ### get-chain-status - Get the current status of the block chain
 
 ```bash
@@ -770,7 +804,7 @@ $ aelf-command get-chain-status
 
 ```bash
 $ aelf-command get-tx-result
-✔ Enter the the URI of an AElf node … http://13.231.179.27:8000
+✔ Enter the the URI of an AElf node … https://tdvw-test-node.aelf.io
 ✔ Enter a valid transaction id in hex format … 7b620a49ee9666c0c381fdb33f94bd31e1b5eb0fdffa081463c3954e9f734a02
 ✔ Succeed!
 { TransactionId:
@@ -800,7 +834,7 @@ $ aelf-command get-tx-result
 
 ```bash
 $ aelf-command get-blk-height
-✔ Enter the the URI of an AElf node … http://13.231.179.27:8000
+✔ Enter the the URI of an AElf node … https://tdvw-test-node.aelf.io
 > 7902091
 ```
 
@@ -810,7 +844,7 @@ You can pass a block height or a block hash to this sub-command.
 
 ```bash
 $ aelf-command get-blk-info
-✔ Enter the the URI of an AElf node: http://13.231.179.27:8000
+✔ Enter the the URI of an AElf node: https://tdvw-test-node.aelf.io
 ✔ Enter a valid height or block hash: 123
 ✔ Include transactions whether or not: no / yes
 { BlockHash:
@@ -845,7 +879,7 @@ aelf-command get-blk-info ca61c7c8f5fc1bc8af0536bc9b51c61a94f39641a93a748e72802b
 
 ```bash
 $ aelf-command console
-✔ Enter the the URI of an AElf node … http://13.231.179.27:8000
+✔ Enter the the URI of an AElf node … https://tdvw-test-node.aelf.io
 ✔ Enter a valid wallet address, if you don't have, create one by aelf-command create … 2Ue31YTuB5Szy7cnr3SCEGU2gtGi5uMQBYarYUR5oGin1sys6H
 ✔ Enter the password you typed when creating a wallet … ********
 ✔ Succeed!
@@ -856,7 +890,7 @@ Welcome to aelf interactive console. Ctrl + C to terminate the program. Double t
    ║   NAME       | DESCRIPTION                                ║
    ║   AElf       | imported from aelf-sdk                     ║
    ║   aelf       | instance of aelf-sdk, connect to           ║
-   ║              | http://13.231.179.27:8000                  ║
+   ║              | https://tdvw-test-node.aelf.io                  ║
    ║   _account   | instance of AElf wallet, wallet address    ║
    ║              | is                                         ║
    ║              | 2Ue31YTuB5Szy7cnr3SCEGU2gtGi5uMQBYarYUR…   ║
