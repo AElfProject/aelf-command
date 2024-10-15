@@ -1,6 +1,6 @@
 {
   "name": "aelf-command",
-  "version": "0.1.50-beta.0",
+  "version": "0.1.51-beta.0",
   "description": "A CLI tools for AElf",
   "main": "src/index.js",
   "type": "module",
@@ -114,14 +114,5 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
-  },
-  "jest": {
-    "collectCoverageFrom": [
-      "src/**/*.js"
-    ],
-    "transform": {
-      "^.+\\.js$": "babel-jest"
-    },
-    "testEnvironment": "node"
   }
 }

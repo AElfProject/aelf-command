@@ -2,7 +2,7 @@ import AElf from 'aelf-sdk';
 import inquirer from 'inquirer';
 import chalk from 'chalk';
 import BaseSubCommand from './baseSubCommand.js';
-import { callCommandUsages, callCommandParameters } from '../utils/constants.js';
+import { callCommandUsages, callCommandParameters, callGlobalOptionValidatorDesc } from '../utils/constants.js';
 import {
   getContractMethods,
   getContractInstance,
@@ -37,9 +37,10 @@ class CallCommand extends BaseSubCommand {
     description = 'Call a read-only method on a contract.',
     parameters = callCommandParameters,
     usage = callCommandUsages,
-    options = []
+    options = [],
+    validatorDesc = callGlobalOptionValidatorDesc
   ) {
-    super(name, parameters, description, options, usage, rc);
+    super(name, parameters, description, options, usage, rc, validatorDesc);
   }
   /**
    * Calls a method with specified parameters.
@@ -94,7 +95,13 @@ class CallCommand extends BaseSubCommand {
     const aelf = new AElf(new AElf.providers.HttpProvider(endpoint));
     try {
       let { contractAddress, method, params } = subOptions;
-      const wallet = getWallet(datadir, account, password);
+      let wallet;
+      if (!account || !password) {
+        // no need to provide account and password
+        wallet = AElf.wallet.createNewWallet();
+      } else {
+        wallet = getWallet(datadir, account, password);
+      }
       if (subOptionsLength < this.parameters.length) {
         for (const prompt of this.parameters.slice(subOptionsLength)) {
           switch (prompt.name) {
