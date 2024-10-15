@@ -4,7 +4,6 @@ import AElf from 'aelf-sdk';
 import inquirer from 'inquirer';
 import { CallCommand } from '../../src/command';
 import { callCommandUsages, callCommandParameters } from '../../src/utils/constants.js';
-import { getContractInstance } from '../../src/utils/utils.js';
 import { userHomeDir } from '../../src/utils/userHomeDir.js';
 import { logger } from '../../src/utils/myLogger.js';
 import { endpoint as endPoint, account, password, dataDir, csvDir, jsonDir } from '../constants.js';
@@ -14,7 +13,7 @@ jest.mock('../../src/utils/myLogger');
 
 describe('CallCommand', () => {
   let callCommand;
-  let mockOraInstance;
+  let backup, mockOraInstance;
   const aelf = new AElf(new AElf.providers.HttpProvider(endPoint));
   const wallet = AElf.wallet.getWalletByPrivateKey('943df6d39fd1e1cc6ae9813e54f7b9988cf952814f9c31e37744b52594cb4096');
   const address = 'ASh2Wt7nSEmYqnGxPPzp4pnVDU4uhj1XW9Se5VeZcX2UDdyjx';
@@ -62,6 +61,26 @@ describe('CallCommand', () => {
       `The directory that contains the AElf related files. Default to be ${userHomeDir}/aelf`
     );
     commander.parse([process.argv[0], '', 'call', '-e', endPoint, '-a', account, '-p', password, '-d', dataDir]);
+    await callCommand.run(
+      commander,
+      'AElf.ContractNames.Token',
+      'GetTokenInfo',
+      JSON.stringify({
+        symbol: 'ELF'
+      })
+    );
+    expect(logger.info).toHaveBeenCalled();
+  });
+  test('should run without account', async () => {
+    const commander = new Command();
+    commander.option('-e, --endpoint <URI>', 'The URI of an AElf node. Eg: http://127.0.0.1:8000');
+    commander.option('-a, --account <account>', 'The address of AElf wallet');
+    commander.option('-p, --password <password>', 'The password of encrypted keyStore');
+    commander.option(
+      '-d, --datadir <directory>',
+      `The directory that contains the AElf related files. Default to be ${userHomeDir}/aelf`
+    );
+    commander.parse([process.argv[0], '', 'call', '-e', endPoint, '-d', dataDir]);
     await callCommand.run(
       commander,
       'AElf.ContractNames.Token',
