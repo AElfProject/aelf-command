@@ -383,19 +383,10 @@ const strictGlobalOptionValidatorDesc = /**@type {CommonGlobalOptionValidatorDes
 
 // @ts-ignore
 Object.entries(commonGlobalOptionValidatorDesc).forEach((/** @type {[CommonGlobalOptionKey, any]} */ [key, value]) => {
-  strictGlobalOptionValidatorDesc[key] = {
-    ...value
-    // required: true
-  };
-});
-
-const callGlobalOptionValidatorDesc = /**@type {CommonGlobalOptionValidatorDesc}*/ ({});
-// @ts-ignore
-Object.entries(commonGlobalOptionValidatorDesc).forEach((/** @type {[CommonGlobalOptionKey, any]} */ [key, value]) => {
   if (key === 'account' || key === 'password') {
     strictGlobalOptionValidatorDesc[key] = {
       ...value,
-      required: false
+      required: true
     };
   } else {
     strictGlobalOptionValidatorDesc[key] = {
@@ -464,7 +455,6 @@ export {
   callCommandParameters,
   commonGlobalOptionValidatorDesc,
   strictGlobalOptionValidatorDesc,
-  callGlobalOptionValidatorDesc,
   blkInfoCommandParameters,
   blkInfoCommandUsage,
   txResultCommandParameters,
