@@ -1,3 +1,4 @@
+import { callCommandParameters, callCommandUsages, strictGlobalOptionValidatorDesc } from '../utils/constants.js';
 import CallCommand from './call.js';
 
 /**
@@ -9,7 +10,15 @@ class SendCommand extends CallCommand {
    * @param {Registry} rc - The registry instance.
    */
   constructor(rc) {
-    super(rc, 'send', 'Execute a method on a contract.');
+    super(
+      rc,
+      'send',
+      'Execute a method on a contract.',
+      callCommandParameters,
+      callCommandUsages,
+      [],
+      strictGlobalOptionValidatorDesc
+    );
   }
 
   /**
