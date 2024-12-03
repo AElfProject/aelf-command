@@ -2,7 +2,7 @@ import AElf from 'aelf-sdk';
 import inquirer from 'inquirer';
 import chalk from 'chalk';
 import BaseSubCommand from './baseSubCommand.js';
-import { callCommandUsages, callCommandParameters, callGlobalOptionValidatorDesc } from '../utils/constants.js';
+import { callCommandUsages, callCommandParameters, commonGlobalOptionValidatorDesc } from '../utils/constants.js';
 import {
   getContractMethods,
   getContractInstance,
@@ -38,7 +38,7 @@ class CallCommand extends BaseSubCommand {
     parameters = callCommandParameters,
     usage = callCommandUsages,
     options = [],
-    validatorDesc = callGlobalOptionValidatorDesc
+    validatorDesc = commonGlobalOptionValidatorDesc
   ) {
     super(name, parameters, description, options, usage, rc, validatorDesc);
   }
