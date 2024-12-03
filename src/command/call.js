@@ -96,9 +96,18 @@ class CallCommand extends BaseSubCommand {
     try {
       let { contractAddress, method, params } = subOptions;
       let wallet;
-      if (!account || !password) {
-        // no need to provide account and password
+      if (!account) {
+        // No account and password provided, create a new wallet
         wallet = AElf.wallet.createNewWallet();
+      } else if (account && !password) {
+        // Account provided but no password, prompt user for password
+        const passwordPrompt = await inquirer.prompt({
+          type: 'password',
+          name: 'password',
+          message: 'Please enter your password:',
+          mask: '*'
+        });
+        wallet = getWallet(datadir, account, passwordPrompt.password);
       } else {
         wallet = getWallet(datadir, account, password);
       }
