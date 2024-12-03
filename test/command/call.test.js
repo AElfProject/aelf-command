@@ -1,5 +1,4 @@
 import { Command } from 'commander';
-import path from 'path';
 import AElf from 'aelf-sdk';
 import inquirer from 'inquirer';
 import { CallCommand } from '../../src/command';
@@ -194,5 +193,66 @@ describe('CallCommand', () => {
 
   afterEach(() => {
     inquirer.prompt = backup;
+  });
+});
+
+describe('run call method when only account is provided', () => {
+  let callCommand;
+  let mockCommander;
+  let mockOraInstance;
+  let mockInquirer;
+  let getWallet;
+  let AElf;
+  beforeEach(() => {
+    jest.resetModules();
+    jest.mock('inquirer');
+    jest.mock('../../src/utils/wallet.js');
+    jest.mock('aelf-sdk');
+    mockInquirer = require('inquirer');
+    mockOraInstance = {
+      start: jest.fn(),
+      succeed: jest.fn(),
+      fail: jest.fn()
+    };
+    getWallet = require('../../src/utils/wallet.js').getWallet;
+    AElf = require('aelf-sdk');
+    mockCommander = {
+      name: 'call',
+      opts: jest.fn(() => ({
+        account,
+        endpoint: endPoint,
+        datadir: dataDir,
+        password: null
+      }))
+    };
+
+    callCommand = new CallCommand(sampleRc, 'call', 'Test description', [], [], []);
+    callCommand.oraInstance = mockOraInstance;
+  });
+  afterEach(() => {
+    jest.resetAllMocks();
+  });
+  test('should prompt for password when only account is provided', async () => {
+    // Mock getWallet to ensure it's called correctly
+    getWallet.mockReturnValueOnce({
+      address: 'testAddress'
+    });
+
+    // Mock AElf instance creation
+    AElf.providers.HttpProvider.mockImplementation(() => ({
+      send: jest.fn()
+    }));
+    inquirer.prompt = jest.fn();
+    // Run the method
+    await callCommand.run(mockCommander);
+    // Assertions
+    expect(inquirer.prompt).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: 'password',
+        name: 'password',
+        message: 'Please enter your password:',
+        mask: '*'
+      })
+    );
   });
 });

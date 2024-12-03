@@ -1,6 +1,6 @@
 {
   "name": "aelf-command",
-  "version": "0.1.51-beta.1",
+  "version": "0.1.52",
   "description": "A CLI tools for AElf",
   "main": "src/index.js",
   "type": "module",
