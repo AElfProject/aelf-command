@@ -1913,7 +1913,7 @@ add-stream@^1.0.0:
   resolved "https://registry.npmjs.org/add-stream/-/add-stream-1.0.0.tgz#6a7990437ca736d5e1288db92bd3266d5f5cb2aa"
   integrity sha512-qQLMr+8o0WC4FZGQTcJiKBVC59JylcPSrTtk6usvmIDFUOCKegapy1VHQwRbFMOFyb/inzUVqHs+eMYKDM1YeQ==
 
-aelf-sdk@^3.4.12:
+aelf-sdk@3.4.12:
   version "3.4.12"
   resolved "https://registry.npmjs.org/aelf-sdk/-/aelf-sdk-3.4.12.tgz#02eba7739f94ae021888054f25260ea5231578b0"
   integrity sha512-DpF0JBpb2GfewmSW3GfTmM05zoF/79YVeBJQeYIsJG2NgvgFoT2ZH1gub1JXVA4c9tjAMdVttFKt5f/LPOKZFQ==
