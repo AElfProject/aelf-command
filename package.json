@@ -1,6 +1,6 @@
 {
   "name": "aelf-command",
-  "version": "0.1.53",
+  "version": "0.1.53-beta.3",
   "description": "A CLI tools for AElf",
   "main": "src/index.js",
   "type": "module",
@@ -47,7 +47,7 @@
     "@babel/core": "^7.24.6",
     "@babel/plugin-syntax-import-attributes": "^7.24.6",
     "@babel/preset-env": "^7.24.6",
-    "aelf-sdk": "^3.4.12",
+    "aelf-sdk": "3.4.12",
     "async-validator": "^4.2.5",
     "babel-plugin-transform-import-meta": "^2.2.1",
     "boxen": "^7.1.1",
