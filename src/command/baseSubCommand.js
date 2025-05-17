@@ -197,7 +197,6 @@ class BaseSubCommand {
       ...rc,
       ...uniOptions
     });
-
     const globalPrompts = globalOptionsPrompts.filter(
       prompt => this.validatorDesc[prompt.name]?.required && !options[prompt.name]
     );
@@ -223,11 +222,15 @@ class BaseSubCommand {
     }
     const subOptionsLength = Object.keys(subCommandOptions).length;
     if (subOptionsLength < this.parameters.length) {
-      const response = BaseSubCommand.normalizeConfig(await inquirer.prompt(this.parameters.slice(subOptionsLength)));
-      subCommandOptions = {
-        ...subCommandOptions,
-        ...response
-      };
+      try {
+        const response = BaseSubCommand.normalizeConfig(await inquirer.prompt(this.parameters.slice(subOptionsLength)));
+        subCommandOptions = {
+          ...subCommandOptions,
+          ...response
+        };
+      } catch (e) {
+        console.error(e);
+      }
     }
     return {
       localOptions,

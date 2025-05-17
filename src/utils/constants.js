@@ -261,7 +261,7 @@ const loadCommandParameters = [
     inactive: 'no',
     suffix: '?',
     when(answers) {
-      return answers['private-key'].trim().split(' ').length > 1;
+      return answers['private-key']?.trim().split(' ').length > 1;
     }
   },
   {
